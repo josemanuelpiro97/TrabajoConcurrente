@@ -1,0 +1,7 @@
+# Directorios y archivos de configuracion no necesarios
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
