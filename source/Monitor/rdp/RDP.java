@@ -119,5 +119,54 @@ public class RDP {
         }
         return res;
     }
+
+    /**
+     * @return entero con el numero de transiciones
+     * @brief Metodo encargado de retornar el numero de transiciones que contiene la red de petri.
+     */
+    public int getNumTrans() {
+        return this.matrixI[0].length;
+
+    }
+
+    /**
+     * @return vector de tipo booleano.
+     * @brief Metodo encargado de devolver el vector de sensibilizado. En cada posicion del arreglo habra un True o
+     * un False indicando si se encuentra sensibilizada la transicion o no.
+     */
+    public boolean[] getSensiArray() {
+        boolean[] isSensi = new boolean[this.matrixI[0].length];
+        for (int i = 0; i < isSensi.length; i++) {
+            /* Simulo un disparo de la transicion con la marca actual para ver si el tiro es valido, de serlo, se seteara con true */
+            isSensi[i] = this.validShot(this.nextMark(i + 1));
+
+        }
+        return isSensi;
+    }
+
+
+    /*=================================================================================
+                         Metodos para la optencion de informacion de la red
+     ==================================================================================*/
+
+    /**
+     * @brief Metodo creado solo para los tests
+     *
+     * @return Devuelve una copia de la matriz de incidencia
+     */
+    int[][] getMatrixI() {
+        return this.matrixI.clone();
+    }
+
+    /**
+     * @brief Devuelve el vector de marcado.
+     * @return Devuelve una copia del vector de marcado
+     */
+    int[] getMarkInit(){
+        return this.MarkInit.clone();
+    }
+
+
+
 }
 
