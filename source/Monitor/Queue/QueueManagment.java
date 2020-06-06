@@ -36,6 +36,7 @@ public class QueueManagment {
                     this.sleepT[i] = true;
                     this.semaphores[i].acquire();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
         }
     }
@@ -51,6 +52,7 @@ public class QueueManagment {
                     this.sleepT[i] = false;
                     this.semaphores[i].release();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
         }
     }
