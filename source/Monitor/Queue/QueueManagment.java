@@ -8,11 +8,11 @@ public class QueueManagment {
      * Array of semaphores that represent all transition.
      */
     private Semaphore semaphores[];
-    private boolean sleepT [];
+    private boolean sleepT[];
 
     /**
-     * @brief QueueManagment constructor
      * @param arraySize Numbre of transitions in the Petri net
+     * @brief QueueManagment constructor
      */
     public QueueManagment(int arraySize) {
         this.semaphores = new Semaphore[arraySize];
@@ -56,14 +56,14 @@ public class QueueManagment {
     }
 
     /**
-     * @brief Check which thread are sleep
      * @param sensitizedT [in]
      * @return Array whit sensitive thread that are sleep
+     * @brief Check which thread are sleep
      */
-    public boolean[] isSleep(boolean [] sensitizedT) {
+    public boolean[] isSleep(boolean[] sensitizedT) {
         boolean result[] = new boolean[sensitizedT.length];
 
-        for(int i=0;i<sensitizedT.length;i++){
+        for (int i = 0; i < sensitizedT.length; i++) {
             result[i] = this.sleepT[i] && sensitizedT[i];
         }
 
