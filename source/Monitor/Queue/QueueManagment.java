@@ -72,5 +72,11 @@ public class QueueManagment {
         return result;
     }
 
+    public Semaphore[] getSemaphores() {
+        return semaphores;
+    }
 
+    public boolean[] getSleepT() {
+        return sleepT;
+    }
 }
