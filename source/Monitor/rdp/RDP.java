@@ -74,7 +74,7 @@ public class RDP {
 
         /* Creo el vector de disparo */
         int[] VecShot = new int[this.matrixI[0].length];
-        VecShot[trans - 1] = 1;
+        VecShot[trans] = 1;
 
         /* Multiplico el vector de disparo por la matriz de incidencia de la red */
         int[] nextMark = this.multMatrix2Vector(this.matrixI, VecShot);
@@ -84,7 +84,7 @@ public class RDP {
             nextMark[i] += this.MarkInit[i];
         }
 
-        return VecShot;
+        return nextMark;
     }
 
     /**
@@ -126,7 +126,6 @@ public class RDP {
      */
     public int getNumTrans() {
         return this.matrixI[0].length;
-
     }
 
     /**
@@ -138,7 +137,7 @@ public class RDP {
         boolean[] isSensi = new boolean[this.matrixI[0].length];
         for (int i = 0; i < isSensi.length; i++) {
             /* Simulo un disparo de la transicion con la marca actual para ver si el tiro es valido, de serlo, se seteara con true */
-            isSensi[i] = this.validShot(this.nextMark(i + 1));
+            isSensi[i] = this.validShot(this.nextMark(i));
 
         }
         return isSensi;
@@ -150,22 +149,20 @@ public class RDP {
      ==================================================================================*/
 
     /**
-     * @brief Metodo creado solo para los tests
-     *
      * @return Devuelve una copia de la matriz de incidencia
+     * @brief Metodo creado solo para los tests
      */
     int[][] getMatrixI() {
         return this.matrixI.clone();
     }
 
     /**
-     * @brief Devuelve el vector de marcado.
      * @return Devuelve una copia del vector de marcado
+     * @brief Devuelve el vector de marcado.
      */
-    int[] getMarkInit(){
+    int[] getMarkInit() {
         return this.MarkInit.clone();
     }
-
 
 
 }
