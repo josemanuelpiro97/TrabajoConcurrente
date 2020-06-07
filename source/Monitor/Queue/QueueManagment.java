@@ -8,6 +8,9 @@ public class QueueManagment {
      * Array of semaphores that represent all transition.
      */
     private Semaphore semaphores[];
+    /**
+     * Control array of semaphore array
+     */
     private boolean sleepT[];
 
     /**
@@ -76,7 +79,7 @@ public class QueueManagment {
         return semaphores;
     }
 
-    public boolean[] getSleepT() {
+    public boolean[] whoSleepT() {
         return sleepT;
     }
 }

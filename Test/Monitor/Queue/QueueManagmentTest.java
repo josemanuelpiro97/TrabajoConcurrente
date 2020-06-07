@@ -32,8 +32,8 @@ class QueueManagmentTest {
         t0.start();
         t1.start();
 
-        assertTrue(queueManagment.getSleepT()[INDEX_TEST1]);
-        assertTrue(queueManagment.getSleepT()[INDEX_TEST2]);
+        assertTrue(queueManagment.whoSleepT()[INDEX_TEST1]);
+        assertTrue(queueManagment.whoSleepT()[INDEX_TEST2]);
 
         assertEquals(SIZE_TEST,queueManagment.getSemaphores()[INDEX_TEST1].getQueueLength());
         assertEquals(SIZE_TEST,queueManagment.getSemaphores()[INDEX_TEST2].getQueueLength());
@@ -76,8 +76,8 @@ class QueueManagmentTest {
         //some delay
         for(int i=0 ; i<1000000; i++){}
 
-        assertFalse(queueManagment.getSleepT()[INDEX_TEST1]);
-        assertFalse(queueManagment.getSleepT()[INDEX_TEST2]);
+        assertFalse(queueManagment.whoSleepT()[INDEX_TEST1]);
+        assertFalse(queueManagment.whoSleepT()[INDEX_TEST2]);
 
         int teste = queueManagment.getSemaphores()[INDEX_TEST1].getQueueLength();
 
