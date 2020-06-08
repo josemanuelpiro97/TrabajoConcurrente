@@ -1,14 +1,8 @@
 package Monitor.rdp;
 
 /**
- * @TODO hardcodear la red basica para para poder debaggear mas facil.
- * @TODO -Metodos a crear: -Disparar
- * -QuienSeSensibilizo(return vector)
- * -QuienQuiereDisparar
- * -Constructor
- * -ProximoEstado
- * -(faltan mas seguramente)
- * @TODO Implementar Test -> Seria util para dejar todo andando mientras se va avanzando. (Junit)
+ * @TODO ver si se hardcodea la red o se arma desde un archivo.
+ * @TODO Agreguar el cumplimiento de los invariantes de plaza para cada disparo de la red (Se debera tener un vector para checkearlo[creo])
  */
 public class RDP {
     /**

@@ -32,6 +32,7 @@ class RDPTest {
         }
     }
 
+    @Tag("Sensibilizado")
     @Test
     void getSensiArray() {
         final boolean[] ARRAY_TEST_POSITIVE = new boolean[]{true, false, false, false};

@@ -1,10 +1,12 @@
 package Monitor.politics;
 
 /**
- * @TODO Despues de terminar con RPD, arrancar por aca. Testar tmb.
+ * @TODO Como setear la politica sin hardcodear?, Se puede traducir a prioridades ?
  */
 public class Policy {
+
     public Policy() {
+        
     }
 
     public int whoWake(boolean  ask[]){
