@@ -27,20 +27,26 @@ class RDPTest {
                     "La red no evoluciono como debia");
             Assertions.assertFalse(rdp1.ShotT(3), "Se disparo y no debia");
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (InvariantException e) {
+            e.printInfo();
         }
     }
 
     @Tag("Sensibilizado")
     @Test
     void getSensiArray() {
-        final boolean[] ARRAY_TEST_POSITIVE = new boolean[]{true, false, false, false};
-        final boolean[] ARRAY_TEST_NEXTSTATE = new boolean[]{true, true, true, false};
-        RDP rdp1 = new RDP();
-        //positive test
-        assertArrayEquals(ARRAY_TEST_POSITIVE, rdp1.getSensiArray());
-        rdp1.ShotT(0);
-        Assertions.assertArrayEquals(ARRAY_TEST_NEXTSTATE, rdp1.getSensiArray());
+        try {
+            final boolean[] ARRAY_TEST_POSITIVE = new boolean[]{true, false, false, false};
+            final boolean[] ARRAY_TEST_NEXTSTATE = new boolean[]{true, true, true, false};
+            RDP rdp1 = new RDP();
+            //positive test
+            assertArrayEquals(ARRAY_TEST_POSITIVE, rdp1.getSensiArray());
+            rdp1.ShotT(0);
+            Assertions.assertArrayEquals(ARRAY_TEST_NEXTSTATE, rdp1.getSensiArray());
+
+        } catch (InvariantException e) {
+            e.printInfo();
+        }
     }
+
 }

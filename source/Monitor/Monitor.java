@@ -2,6 +2,7 @@ package Monitor;
 
 import Monitor.Queue.QueueManagment;
 import Monitor.politics.Policy;
+import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
 
 import java.util.concurrent.Semaphore;
@@ -47,10 +48,10 @@ public class Monitor {
     }
 
     /**
-     * @brief operate monitor tasks
      * @param task task whit transition to shot
+     * @brief operate monitor tasks
      */
-    public void operate(Task task) {
+    public void operate(Task task) throws InvariantException {
         boolean controlFlag = true;
 
         while (controlFlag) {
@@ -62,7 +63,7 @@ public class Monitor {
                 int cant = 0;
                 for (int i = 0; i < this.rdp.getNumTrans(); i++) {
                     ask[i] = this.rdp.getSensiArray()[i] && this.queueManagment.whoSleepT()[i];
-                    if(ask[i])
+                    if (ask[i])
                         cant++;
                 }
 
@@ -76,8 +77,7 @@ public class Monitor {
                     this.queueManagment.wakeN(wakeThis);
                     break;
                 }
-            }
-            else{
+            } else {
                 //leave the monitor
                 this.mutex.release();
                 //go to sleep
