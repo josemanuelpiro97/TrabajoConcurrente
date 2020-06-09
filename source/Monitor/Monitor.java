@@ -15,7 +15,7 @@ public class Monitor {
     /**
      * Petri Net to monitorize
      */
-    private RDP rdp;
+    private final RDP rdp;
     /**
      * Queues for the Petri net
      */

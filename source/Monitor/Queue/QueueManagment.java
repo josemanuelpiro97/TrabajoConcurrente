@@ -75,6 +75,10 @@ public class QueueManagment {
         return result;
     }
 
+    /*======================================================================================
+                                    Obetencion de informacion de colas
+    ========================================================================================*/
+
     public Semaphore[] getSemaphores() {
         return semaphores;
     }
