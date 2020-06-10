@@ -3,6 +3,7 @@ package Monitor.rdp;
 /**
  * @TODO ver si se hardcodea la red o se arma desde un archivo.
  * @TODO agregar que en cada disparo se imprima y guarde en el archivo la transicion disparada
+ * @TODO Implementar el tiempo (Lo primero)
  */
 public class RDP {
     /**
