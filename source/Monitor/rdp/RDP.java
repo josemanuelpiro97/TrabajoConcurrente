@@ -26,10 +26,18 @@ public class RDP {
      * Vector utilizado para el checkeo de invariantes de plaza
      */
     private final int[] VecInvPlaces;
-
     /**
-     * Variables para tener registro de los tiempos (Proximamente)
+     * Matriz donde se almacenan los tiempos Alfa y Beta
      */
+    private int[][] MatrixTime;
+    /**
+     * Vector de stamptime para el sensibilizado de transiciones
+     */
+    private int[] vectorTime; //stamptime
+    /**
+     * Vector que indica el la transicion que depende del tiempo.
+     */
+    private int[] vectorTransWithTime;
 
     public RDP() {
         info = "RdP de Test, sin tiempo";
@@ -65,10 +73,17 @@ public class RDP {
      */
     public boolean ShotT(int trans) throws InvariantException {
 
+        /* Almaceno el tiempo para las transciones temporizadas */
+        long timestamp = java.lang.System.currentTimeMillis();
+
         /* Verifico que la transicion exista */
         if (trans < 0 || trans > this.matrixI[0].length) {
             //Ver si tirar una exepcion (q se debera crear) o hacer otra cosa
             return false;
+        }
+
+        if (this.isTransTime(trans)) {
+
         }
 
         int[] nextState = nextMark(trans);
@@ -189,6 +204,35 @@ public class RDP {
         return r;
     }
 
+    /**
+     * Metodo encargado de chequear que la trasicion depende del tiempo.
+     *
+     * @param trans numero de transicion a chequear.
+     * @return True en el caso que lo sea.
+     */
+    private boolean isTransTime(int trans) {
+        return (this.vectorTransWithTime[trans] != -2);
+    }
+
+    /**
+     * Metodo encargado de verificar si la red de petri es extendida en tiempo.
+     *
+     * @return True si lo es, false cas contrario.
+     */
+    private boolean isTimeExtend() {
+        return (this.MatrixTime != null);
+    }
+
+    /**
+     * @param time tiempo utilizado para calcular si se encuentra en al ventana de tiempo.
+     * @return True si se encuentra en la ventana, false caso contrario.
+     * @brief: Metodo encargado de certificar que la transicion se encuentra dentro de la ventana de tiempo para poder
+     * ser disparada.
+     */
+    private boolean getSensi4temp(long time) {
+        
+        return false;
+    }
     /*=================================================================================
                          Metodos para la optencion de informacion de la red
      ==================================================================================*/
