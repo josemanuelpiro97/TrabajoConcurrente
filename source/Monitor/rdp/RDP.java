@@ -138,7 +138,6 @@ public class RDP {
         for (int i = 0; i < isSensi.length; i++) {
             /* Simulo un disparo de la transicion con la marca actual para ver si el tiro es valido, de serlo, se seteara con true */
             isSensi[i] = this.validShot(this.nextMark(i));
-
         }
         return isSensi;
     }

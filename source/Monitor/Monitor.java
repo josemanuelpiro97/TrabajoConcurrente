@@ -31,7 +31,7 @@ public class Monitor {
     public Monitor() {
         this.rdp = new RDP();
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
-        this.policy = new Policy();
+      //  this.policy = new Policy();
         this.mutex = new Semaphore(1);
     }
 
@@ -48,13 +48,13 @@ public class Monitor {
 
     /**
      * @brief operate monitor tasks
-     * @param task task whit transition to shot
+     * @param transN [in] transition to shot
      */
-    public void operate(Task task) {
+    public void operate(int transN) {
         boolean controlFlag = true;
 
         while (controlFlag) {
-            controlFlag = this.rdp.ShotT(task.getTransitionN());
+            controlFlag = this.rdp.ShotT(transN);
 
             if (controlFlag) {
                 //check if there is some transition for wake
@@ -81,7 +81,7 @@ public class Monitor {
                 //leave the monitor
                 this.mutex.release();
                 //go to sleep
-                this.queueManagment.sleepN(task.getTransitionN());
+                this.queueManagment.sleepN(transN);
             }
         }
     }
