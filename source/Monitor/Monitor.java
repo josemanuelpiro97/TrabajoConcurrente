@@ -1,8 +1,6 @@
 package Monitor;
 
 import Monitor.Queue.QueueManagment;
-import Monitor.politics.Policy;
-import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
 
 import java.util.concurrent.Semaphore;
@@ -32,7 +30,7 @@ public class Monitor {
     public Monitor() {
         this.rdp = new RDP();
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
-        this.policy = new Policy();
+      //  this.policy = new Policy();
         this.mutex = new Semaphore(1);
     }
 
@@ -48,14 +46,21 @@ public class Monitor {
     }
 
     /**
+<<<<<<< HEAD
+     * @brief operate monitor tasks
+     * @param transN [in] transition to shot
+     */
+    public void operate(int transN) {
+=======
      * @param task task whit transition to shot
      * @brief operate monitor tasks
      */
     public void operate(Task task) throws InvariantException {
+>>>>>>> 84589c63d13507285ff7feb290121044cac60c64
         boolean controlFlag = true;
 
         while (controlFlag) {
-            controlFlag = this.rdp.ShotT(task.getTransitionN());
+            controlFlag = this.rdp.ShotT(transN);
 
             if (controlFlag) {
                 //check if there is some transition for wake
@@ -81,7 +86,7 @@ public class Monitor {
                 //leave the monitor
                 this.mutex.release();
                 //go to sleep
-                this.queueManagment.sleepN(task.getTransitionN());
+                this.queueManagment.sleepN(transN);
             }
         }
     }
