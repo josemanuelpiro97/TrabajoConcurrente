@@ -7,13 +7,15 @@ public class Policy {
     /**
      * policy that resolves conflict in t0 and t1
      */
+    private final int CONFLIC1_1 = 0;
+    private final int CONFLIC1_2 = 1;
     private int matrixP1[][];
 
     public Policy(int sizeT) {
-        //build identity matrix
+        //build identity matrix for P1
         this.matrixP1 = buildIdentity(sizeT);
-        //change policy column
-        int[] change = {0, 1};
+        //change policy rows
+        int[] change = {CONFLIC1_1, CONFLIC1_2};
         this.matrixP1 = this.changeRow(this.matrixP1, change);
     }
 
@@ -24,7 +26,7 @@ public class Policy {
      */
     public int whoWake(int ask[]) {
         //check for conflict at t0, t1
-        if (ask[0] == 1 && ask[1] == 1) {
+        if (ask[CONFLIC1_1] == 1 && ask[CONFLIC1_2] == 1) {
             int t = this.applyPolitic(ask, this.matrixP1);
 
             int[] change = {0, 1};

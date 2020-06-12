@@ -46,17 +46,10 @@ public class Monitor {
     }
 
     /**
-<<<<<<< HEAD
      * @brief operate monitor tasks
      * @param transN [in] transition to shot
      */
     public void operate(int transN) {
-=======
-     * @param task task whit transition to shot
-     * @brief operate monitor tasks
-     */
-    public void operate(Task task) throws InvariantException {
->>>>>>> 84589c63d13507285ff7feb290121044cac60c64
         boolean controlFlag = true;
 
         while (controlFlag) {
