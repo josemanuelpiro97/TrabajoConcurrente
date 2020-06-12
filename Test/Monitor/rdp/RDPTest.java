@@ -32,6 +32,34 @@ class RDPTest {
         }
     }
 
+    @Tag("DisparosContiempo")
+    @Test
+    void ShotT_time() {
+        try {
+            RDP rdp1 = new RDP("Red de petri con tiempo");
+            rdp1.ShotT(0);
+            Assertions.assertArrayEquals(new int[]{3, 1, 0, 1, 0}, rdp1.getMarkInit(),
+                    "La red no evoluciono como debia");
+            Assertions.assertFalse(rdp1.ShotT(1), "La red se disparo y no debia");
+            try {
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Assertions.assertTrue(rdp1.ShotT(1), "La red no se disparo y debia");
+            rdp1.ShotT(0);
+            try {
+                Thread.sleep(6000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Assertions.assertFalse(rdp1.ShotT(1), "La red se disparo y no debia");
+        } catch (InvariantException e) {
+            e.printInfo();
+        }
+    }
+
+
     @Tag("Sensibilizado")
     @Test
     void getSensiArray() {

@@ -17,7 +17,7 @@ public class Task  implements Runnable{
 
         for (int i =0;i<FINAL;i++){
             this.monitor.takeMonitor();
-            this.monitor.operate(this.transitionN);
+          //  this.monitor.operate(this.transitionN);
         }
     }
 }

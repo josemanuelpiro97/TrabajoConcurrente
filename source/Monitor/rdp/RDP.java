@@ -33,11 +33,7 @@ public class RDP {
     /**
      * Vector de stamptime para el sensibilizado de transiciones
      */
-    private int[] vectorTime; //stamptime
-    /**
-     * Vector que indica el la transicion que depende del tiempo.
-     */
-    private int[] vectorTransWithTime;
+    private long[] vectorTime; //stamptime
 
     public RDP() {
         info = "RdP de Test, sin tiempo";
@@ -62,6 +58,43 @@ public class RDP {
         /* Numero de invariante de plaza */
         this.VecInvPlaces = new int[]{4, 4};
 
+        this.MatrixTime = null;
+
+
+    }
+
+    public RDP(String info) {
+        this.info = info;
+
+        /* Matriz de incidencia de la red para test */
+        this.matrixI = new int[][]{
+                {-1, 0, 0, 1},
+                {1, -1, 0, 0},
+                {0, 1, 0, -1},
+                {1, 0, -1, 0},
+                {0, 0, 1, -1}};
+
+        /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0 */
+        this.MarkInit = new int[]{4, 0, 0, 0, 0};
+
+        /* Matriz de P invariantes */
+        this.MatrixInvPlace = new int[][]{
+                {1, 1, 1, 0, 0},
+                {1, 0, 0, 1, 1}
+        };
+
+        /* Numero de invariante de plaza */
+        this.VecInvPlaces = new int[]{4, 4};
+
+        /* Ventana de tiempo de las trasiciones */
+        this.MatrixTime = new int[][]{
+                {0, 1000, 0, 0},
+                {0, 3000, 0, 0}
+        };
+
+        /* Vector donde se almacenan los timestamp */
+        this.vectorTime = new long[this.matrixI[0].length];
+
     }
 
     /**
@@ -78,23 +111,43 @@ public class RDP {
 
         /* Verifico que la transicion exista */
         if (trans < 0 || trans > this.matrixI[0].length) {
-            //Ver si tirar una exepcion (q se debera crear) o hacer otra cosa
             return false;
         }
 
         if (this.isTransTime(trans)) {
+            if (this.getSensi4temp(timestamp, trans)) {
+
+            } else {
+
+                /* El disparo no esta habilitado por tiempo */
+                return false;
+            }
 
         }
 
+        /* Si es posible el disparo por tiempo chekeo la marca */
         int[] nextState = nextMark(trans);
 
         if (!validShot(nextState)) {
             /* tiro no valido */
             return false;
         } else {
-            /* Actualizo la marca */
-            this.MarkInit = nextState;
+            /* Si es extendida por tiempo debo actualziar los tiempos */
+            if (isTimeExtend()) {
+                boolean[] oldSensi = this.getSensiArray();
+                this.MarkInit = nextState;
+                boolean[] newSensi = this.getSensiArray();
+                for (int i = 0; i < newSensi.length; i++) {
+                    if (!oldSensi[i] && newSensi[i]) {
 
+                        /* actualizo el tiempo que hace q esta sensibilizada */
+                        this.vectorTime[i] = timestamp;
+                    }
+                }
+            } else {
+                /* Actualizo la marca */
+                this.MarkInit = nextState;
+            }
             /* Chequeo los invariantes de plaza */
             this.CheckInvariantPlace();
             return true;
@@ -210,7 +263,10 @@ public class RDP {
      * @return True en el caso que lo sea.
      */
     private boolean isTransTime(int trans) {
-        return (this.vectorTransWithTime[trans] != -2);
+        if(this.isTimeExtend()) {
+            return (this.MatrixTime[0][trans] != 0);
+        }
+        return false;
     }
 
     /**
@@ -228,9 +284,17 @@ public class RDP {
      * @brief: Metodo encargado de certificar que la transicion se encuentra dentro de la ventana de tiempo para poder
      * ser disparada.
      */
-    private boolean getSensi4temp(long time) {
-        
-        return false;
+    private boolean getSensi4temp(long time, int trans) {
+        boolean valid = true;
+        if (this.MatrixTime[0][trans] != 0) {
+            valid = this.MatrixTime[0][trans] < (time - this.vectorTime[trans]);
+        }
+        /* Si es cero podemos decir q el beta es infinito, por lo tanto se cumple solo alfa */
+        if (valid && this.MatrixTime[1][trans] != 0) {
+            /* verifico que se encuentre dentro de la ventana */
+            valid = this.MatrixTime[1][trans] > (time - this.vectorTime[trans]);
+        }
+        return valid;
     }
     /*=================================================================================
                          Metodos para la optencion de informacion de la red
