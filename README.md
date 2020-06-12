@@ -1,13 +1,13 @@
 # Trabajo Concurrente
-Proyecto dirigido a la confeccion de un Monitor de concurrencia basado en redes de petri. 
+>Proyecto dirigido a la confeccion de un Monitor de concurrencia basado en redes de petri. 
 
-## Caracteristicas del Monitor: @TO-DO
+#### Caracteristicas del Monitor: @TO-DO
 
-## Descripcion y funncionamiento. 
+#### Descripcion y funcionamiento. 
 
 ## Modulo de RDP
 
-## Partes y como se construye la red 
+#### Partes y como se construye la red 
 
 ## TO-DO
 - Modulo-> otro mas necesario q haya q describir

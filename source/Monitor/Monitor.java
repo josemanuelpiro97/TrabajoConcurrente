@@ -1,7 +1,6 @@
 package Monitor;
 
 import Monitor.Queue.QueueManagment;
-import Monitor.politics.Policy;
 import Monitor.rdp.RDP;
 
 import java.util.concurrent.Semaphore;
@@ -14,7 +13,7 @@ public class Monitor {
     /**
      * Petri Net to monitorize
      */
-    private RDP rdp;
+    private final RDP rdp;
     /**
      * Queues for the Petri net
      */
@@ -47,10 +46,17 @@ public class Monitor {
     }
 
     /**
+<<<<<<< HEAD
      * @brief operate monitor tasks
      * @param transN [in] transition to shot
      */
     public void operate(int transN) {
+=======
+     * @param task task whit transition to shot
+     * @brief operate monitor tasks
+     */
+    public void operate(Task task) throws InvariantException {
+>>>>>>> 84589c63d13507285ff7feb290121044cac60c64
         boolean controlFlag = true;
 
         while (controlFlag) {
@@ -62,7 +68,7 @@ public class Monitor {
                 int cant = 0;
                 for (int i = 0; i < this.rdp.getNumTrans(); i++) {
                     ask[i] = this.rdp.getSensiArray()[i] && this.queueManagment.whoSleepT()[i];
-                    if(ask[i])
+                    if (ask[i])
                         cant++;
                 }
 
@@ -76,8 +82,7 @@ public class Monitor {
                     this.queueManagment.wakeN(wakeThis);
                     break;
                 }
-            }
-            else{
+            } else {
                 //leave the monitor
                 this.mutex.release();
                 //go to sleep

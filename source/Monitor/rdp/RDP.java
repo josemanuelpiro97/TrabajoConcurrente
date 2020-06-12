@@ -1,28 +1,31 @@
 package Monitor.rdp;
 
 /**
- * @TODO hardcodear la red basica para para poder debaggear mas facil.
- * @TODO -Metodos a crear: -Disparar
- * -QuienSeSensibilizo(return vector)
- * -QuienQuiereDisparar
- * -Constructor
- * -ProximoEstado
- * -(faltan mas seguramente)
- * @TODO Implementar Test -> Seria util para dejar todo andando mientras se va avanzando. (Junit)
+ * @TODO ver si se hardcodea la red o se arma desde un archivo.
+ * @TODO agregar que en cada disparo se imprima y guarde en el archivo la transicion disparada
+ * @TODO Implementar el tiempo (Lo primero)
  */
 public class RDP {
     /**
      * Descripcion basica de la red
      */
-    String info;
+    private final String info;
     /**
      * Matriz de incidencia de la RdP
      */
-    int[][] matrixI;
+    private final int[][] matrixI;
     /**
      * Vector de marca inicial
      */
-    int[] MarkInit;
+    private int[] MarkInit;
+    /**
+     * Matriz para de invariantes de plaza
+     */
+    private final int[][] MatrixInvPlace;
+    /**
+     * Vector utilizado para el checkeo de invariantes de plaza
+     */
+    private final int[] VecInvPlaces;
 
     /**
      * Variables para tener registro de los tiempos (Proximamente)
@@ -32,10 +35,25 @@ public class RDP {
         info = "RdP de Test, sin tiempo";
 
         /* Matriz de incidencia de la red para test */
-        this.matrixI = new int[][]{{-1, 0, 0, 1}, {1, -1, 0, 0}, {0, 1, 0, -1}, {1, 0, -1, 0}, {0, 0, 1, -1}};
+        this.matrixI = new int[][]{
+                {-1, 0, 0, 1},
+                {1, -1, 0, 0},
+                {0, 1, 0, -1},
+                {1, 0, -1, 0},
+                {0, 0, 1, -1}};
 
         /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0 */
         this.MarkInit = new int[]{4, 0, 0, 0, 0};
+
+        /* Matriz de P invariantes */
+        this.MatrixInvPlace = new int[][]{
+                {1, 1, 1, 0, 0},
+                {1, 0, 0, 1, 1}
+        };
+
+        /* Numero de invariante de plaza */
+        this.VecInvPlaces = new int[]{4, 4};
+
     }
 
     /**
@@ -45,7 +63,7 @@ public class RDP {
      * de modificar el estado de la red. Si es posible el disparo, retorna un "true", caso contrario,
      * devolvera un "false".
      */
-    public boolean ShotT(int trans) {
+    public boolean ShotT(int trans) throws InvariantException {
 
         /* Verifico que la transicion exista */
         if (trans < 0 || trans > this.matrixI[0].length) {
@@ -61,6 +79,9 @@ public class RDP {
         } else {
             /* Actualizo la marca */
             this.MarkInit = nextState;
+
+            /* Chequeo los invariantes de plaza */
+            this.CheckInvariantPlace();
             return true;
         }
     }
@@ -121,14 +142,6 @@ public class RDP {
     }
 
     /**
-     * @return entero con el numero de transiciones
-     * @brief Metodo encargado de retornar el numero de transiciones que contiene la red de petri.
-     */
-    public int getNumTrans() {
-        return this.matrixI[0].length;
-    }
-
-    /**
      * @return vector de tipo booleano.
      * @brief Metodo encargado de devolver el vector de sensibilizado. En cada posicion del arreglo habra un True o
      * un False indicando si se encuentra sensibilizada la transicion o no.
@@ -142,6 +155,38 @@ public class RDP {
         return isSensi;
     }
 
+    /**
+     * @return True en caso de que se cumpla los invariantes, false, caso contrario.
+     * @brief Metodo utilizado para realizar el cheackeo de invariantes de plaza.
+     */
+    private void CheckInvariantPlace() throws InvariantException {
+
+        int[] res = new int[this.MatrixInvPlace.length];
+        for (int i = 0; i < this.MatrixInvPlace.length; i++) {
+            res[i] = this.Vector2Vector(this.MatrixInvPlace[i], this.MarkInit);
+            if (this.VecInvPlaces[i] != res[i]) {
+                throw new InvariantException(this.MarkInit, this.VecInvPlaces, res); //Si no se cumplen se lanza una excepcion
+            }
+        }
+    }
+
+    /**
+     * @param v1 vector 1
+     * @param v2 vector 2
+     * @return Resultado del producto punto entre los vectores.
+     * @brief Metodo utilizado para realizar el producto punto entre dos vectores.
+     */
+    private int Vector2Vector(int[] v1, int[] v2) {
+        if (v1.length != v2.length) {
+            /* Dimensiones incorrectas */
+            return -1;
+        }
+        int r = 0;
+        for (int i = 0; i < v1.length; i++) {
+            r += v1[i] * v2[i];
+        }
+        return r;
+    }
 
     /*=================================================================================
                          Metodos para la optencion de informacion de la red
@@ -163,6 +208,13 @@ public class RDP {
         return this.MarkInit.clone();
     }
 
+    /**
+     * @return entero con el numero de transiciones
+     * @brief Metodo encargado de retornar el numero de transiciones que contiene la red de petri.
+     */
+    public int getNumTrans() {
+        return this.matrixI[0].length;
+    }
 
 }
 
