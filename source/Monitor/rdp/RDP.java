@@ -103,6 +103,7 @@ public class RDP {
      * @brief: Metodo encargado de intentar disparar una transicion, hara los chequeos correspondientes y se encargara
      * de modificar el estado de la red. Si es posible el disparo, retorna un "true", caso contrario,
      * devolvera un "false".
+     * @TODO Posible fallo con el tiempo al actualizar los timestamp en vectorTime
      */
     public boolean ShotT(int trans) throws InvariantException {
 
@@ -283,6 +284,7 @@ public class RDP {
      * @return True si se encuentra en la ventana, false caso contrario.
      * @brief: Metodo encargado de certificar que la transicion se encuentra dentro de la ventana de tiempo para poder
      * ser disparada.
+     * @TODO Agregar en el informe la explicacion de como se implementaron las transiciones con tiempo
      */
     private boolean getSensi4temp(long time, int trans) {
         boolean valid = true;
@@ -293,9 +295,13 @@ public class RDP {
         if (valid && this.MatrixTime[1][trans] != 0) {
             /* verifico que se encuentre dentro de la ventana */
             valid = this.MatrixTime[1][trans] > (time - this.vectorTime[trans]);
+            if(!valid){
+                System.out.println("Se paso el beta, verificar");
+            }
         }
         return valid;
     }
+
     /*=================================================================================
                          Metodos para la optencion de informacion de la red
      ==================================================================================*/
