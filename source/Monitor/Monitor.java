@@ -31,7 +31,6 @@ public class Monitor {
     public Monitor() {
         this.rdp = new RDP();
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
-       // this.policy = new Policy();
         this.mutex = new Semaphore(1);
     }
 
@@ -61,8 +60,9 @@ public class Monitor {
                 //check if there is some transition for wake
                 boolean[] ask = new boolean[this.rdp.getNumTrans()];
                 int cant = 0;
+                ask = this.rdp.getSensiArray();
                 for (int i = 0; i < this.rdp.getNumTrans(); i++) {
-                    ask[i] = this.rdp.getSensiArray()[i] && this.queueManagment.whoSleepT()[i];
+                    ask[i] = ask[i] && this.queueManagment.whoSleepT()[i];
                     if (ask[i])
                         cant++;
                 }

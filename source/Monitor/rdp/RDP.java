@@ -17,7 +17,7 @@ public class RDP {
     /**
      * Vector de marca inicial
      */
-    private int[] MarkInit;
+    private int[] Mark;
     /**
      * Matriz para de invariantes de plaza
      */
@@ -47,7 +47,7 @@ public class RDP {
                 {0, 0, 1, -1}};
 
         /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0 */
-        this.MarkInit = new int[]{4, 0, 0, 0, 0};
+        this.Mark = new int[]{4, 0, 0, 0, 0};
 
         /* Matriz de P invariantes */
         this.MatrixInvPlace = new int[][]{
@@ -171,7 +171,7 @@ public class RDP {
 
         /* Sumamos el vector de marca actual */
         for (int i = 0; i < this.matrixI.length; i++) {
-            nextMark[i] += this.MarkInit[i];
+            nextMark[i] += this.Mark[i];
         }
 
         return nextMark;
@@ -232,9 +232,9 @@ public class RDP {
 
         int[] res = new int[this.MatrixInvPlace.length];
         for (int i = 0; i < this.MatrixInvPlace.length; i++) {
-            res[i] = this.Vector2Vector(this.MatrixInvPlace[i], this.MarkInit);
+            res[i] = this.Vector2Vector(this.MatrixInvPlace[i], this.Mark);
             if (this.VecInvPlaces[i] != res[i]) {
-                throw new InvariantException(this.MarkInit, this.VecInvPlaces, res); //Si no se cumplen se lanza una excepcion
+                throw new InvariantException(this.Mark, this.VecInvPlaces, res); //Si no se cumplen se lanza una excepcion
             }
         }
     }
@@ -318,8 +318,8 @@ public class RDP {
      * @return Devuelve una copia del vector de marcado
      * @brief Devuelve el vector de marcado.
      */
-    int[] getMarkInit() {
-        return this.MarkInit.clone();
+    int[] getMark() {
+        return this.Mark.clone();
     }
 
     /**

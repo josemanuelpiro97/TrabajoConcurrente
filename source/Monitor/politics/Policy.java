@@ -11,12 +11,24 @@ public class Policy {
     private final int CONFLIC1_2 = 1;
     private int matrixP1[][];
 
+    private final int CONFLIC2_1 = 4;
+    private final int CONFLIC2_2 = 5;
+    private int matrixP2[][];
+
     public Policy(int sizeT) {
+        //          P1          //
         //build identity matrix for P1
         this.matrixP1 = buildIdentity(sizeT);
         //change policy rows
-        int[] change = {CONFLIC1_1, CONFLIC1_2};
-        this.matrixP1 = this.changeRow(this.matrixP1, change);
+        int[] change1 = {CONFLIC1_1, CONFLIC1_2};
+        this.matrixP1 = this.changeRow(this.matrixP1, change1);
+
+        //          P2          //
+        //build identity matrix for P2
+        this.matrixP2 = buildIdentity(sizeT);
+        //change policy rows
+        int[] change2 = {CONFLIC2_1, CONFLIC2_2};
+        this.matrixP2 = this.changeRow(this.matrixP2, change2);
     }
 
     /**
@@ -25,6 +37,7 @@ public class Policy {
      * @return value of the transition to be shot
      */
     public int whoWake(int[] ask) {
+
         //check for conflict at t0, t1
         if (ask[CONFLIC1_1] == 1 && ask[CONFLIC1_2] == 1) {
             int t = this.applyPolitic(ask, this.matrixP1);
