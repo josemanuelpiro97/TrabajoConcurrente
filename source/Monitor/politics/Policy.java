@@ -1,6 +1,7 @@
 package Monitor.politics;
 
-import java.lang.Exception;
+
+import java.util.Random;
 
 public class Policy {
 
@@ -9,46 +10,48 @@ public class Policy {
      */
     private final int CONFLIC1_1 = 0;
     private final int CONFLIC1_2 = 1;
-    private int matrixP1[][];
+    private final int[] CLONFLICT1 = {CONFLIC1_1, CONFLIC1_2};
 
-    private final int CONFLIC2_1 = 4;
-    private final int CONFLIC2_2 = 5;
-    private int matrixP2[][];
+
+    private boolean stateC = false;
+    private int matrixP[][];
 
     public Policy(int sizeT) {
-        //          P1          //
-        //build identity matrix for P1
-        this.matrixP1 = buildIdentity(sizeT);
-        //change policy rows
-        int[] change1 = {CONFLIC1_1, CONFLIC1_2};
-        this.matrixP1 = this.changeRow(this.matrixP1, change1);
-
-        //          P2          //
-        //build identity matrix for P2
-        this.matrixP2 = buildIdentity(sizeT);
-        //change policy rows
-        int[] change2 = {CONFLIC2_1, CONFLIC2_2};
-        this.matrixP2 = this.changeRow(this.matrixP2, change2);
+        //build identity matrix
+        this.matrixP = buildIdentity(sizeT);
     }
 
     /**
-     * @brief find what policy to apply and apply it
      * @param ask sensitized transition vector
      * @return value of the transition to be shot
+     * @brief find what policy to apply and apply it
      */
     public int whoWake(int[] ask) {
-
-        //check for conflict at t0, t1
-        if (ask[CONFLIC1_1] == 1 && ask[CONFLIC1_2] == 1) {
-            int t = this.applyPolitic(ask, this.matrixP1);
-
-            int[] change = {0, 1};
-            this.matrixP1 = this.changeRow(this.matrixP1, change);
-
-            return t;
+        //apply random form
+        Random ran = new Random();
+        int lenght = this.matrixP[0].length;
+        int[] changes = new int[lenght];
+        for (int i = 0; i < lenght; i++) {
+            changes[i] = ran.nextInt(lenght);
         }
-        //revisar esto
-        else return 9999;
+        int[][] P = this.matrixP;
+        this.changeRow(P, changes);
+
+        //apply political changes
+        if(this.stateC) {
+            this.changeRow(P, this.CLONFLICT1);
+        }
+
+        //change state for P1
+        if(this.stateC)
+            this.stateC = false;
+        else
+            this.stateC = true;
+
+        //get transition to shot
+        int val = this.applyPolitic(ask, P);
+
+        return val;
     }
 
     /**
@@ -124,7 +127,6 @@ public class Policy {
                 index[i] += (P[i][j] * index[j]);
             }
         }
-
         //find the first element available
         int t = 9999;
         for (int i = 0; i < result.length; i++) {

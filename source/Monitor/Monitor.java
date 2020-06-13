@@ -1,6 +1,7 @@
 package Monitor;
 
 import Monitor.Queue.QueueManagment;
+import Monitor.politics.Policy;
 import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
 
@@ -22,7 +23,7 @@ public class Monitor {
     /**
      * Politics for taking decisions
      */
-   // private Policy policy;
+    private Policy policy;
     /**
      * Barrier of Monitor
      */
@@ -31,6 +32,7 @@ public class Monitor {
     public Monitor() {
         this.rdp = new RDP();
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
+        this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1);
     }
 
@@ -43,6 +45,22 @@ public class Monitor {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @brief convert boolean vector to int vector
+     * @param vec boolean vector to be convert
+     * @return int vector
+     */
+    private int[] convertBtoI(boolean[] vec){
+        int [] res = new int[vec.length];
+        for (int i =0 ; i< vec.length ; i++){
+            if(vec[i])
+                res[i] = 1;
+            else
+                res[i] = 0;
+        }
+        return res;
     }
 
     /**
@@ -73,8 +91,8 @@ public class Monitor {
                 }
                 //otherwise, I ask who to wake up from all possibilities and give my place.
                 else {
-                  //  int wakeThis = this.policy.whoWake(ask);
-                 //   this.queueManagment.wakeN(wakeThis);
+                    int wakeThis = this.policy.whoWake(this.convertBtoI(ask));
+                    this.queueManagment.wakeN(wakeThis);
                     break;
                 }
             } else {
