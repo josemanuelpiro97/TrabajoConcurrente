@@ -37,7 +37,7 @@ class RDPTest {
         try {
             RDP rdp1 = new RDP("Red de petri con tiempo");
             rdp1.ShotT(0);
-            Assertions.assertArrayEquals(new int[]{3, 1, 0, 1, 0}, rdp1.getMarkInit(),
+            Assertions.assertArrayEquals(new int[]{3, 1, 0, 1, 0}, rdp1.getMark(),
                     "La red no evoluciono como debia");
             Assertions.assertFalse(rdp1.ShotT(1), "La red se disparo y no debia");
             try {

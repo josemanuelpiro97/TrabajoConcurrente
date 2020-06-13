@@ -75,7 +75,7 @@ public class RDP {
                 {0, 0, 1, -1}};
 
         /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0 */
-        this.MarkInit = new int[]{4, 0, 0, 0, 0};
+        this.Mark = new int[]{4, 0, 0, 0, 0};
 
         /* Matriz de P invariantes */
         this.MatrixInvPlace = new int[][]{
@@ -136,7 +136,7 @@ public class RDP {
             /* Si es extendida por tiempo debo actualziar los tiempos */
             if (isTimeExtend()) {
                 boolean[] oldSensi = this.getSensiArray();
-                this.MarkInit = nextState;
+                this.Mark = nextState;
                 boolean[] newSensi = this.getSensiArray();
                 for (int i = 0; i < newSensi.length; i++) {
                     if (!oldSensi[i] && newSensi[i]) {
@@ -147,7 +147,7 @@ public class RDP {
                 }
             } else {
                 /* Actualizo la marca */
-                this.MarkInit = nextState;
+                this.Mark = nextState;
             }
             /* Chequeo los invariantes de plaza */
             this.CheckInvariantPlace();
