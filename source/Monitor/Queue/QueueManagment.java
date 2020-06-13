@@ -75,14 +75,31 @@ public class QueueManagment {
         return result;
     }
 
-    /*======================================================================================
-                                    Obetencion de informacion de colas
-    ========================================================================================*/
 
+    /*======================================================================================
+                                       Getters
+    ========================================================================================*/
+    /**
+     * @brief Semaphores getter
+     * @return All semaphores
+     */
     public Semaphore[] getSemaphores() {
         return semaphores;
     }
 
+    /**
+     * @brief Getter a specific semaphore length
+     * @param transitionN Transition number representing the tail of which we want the size
+     * @return Queue length specified
+     */
+    public int getQueueLength(int transitionN) {
+        return this.semaphores[transitionN].getQueueLength();
+    }
+
+    /**
+     * @brief Getter sleeping transitions vector
+     * @return
+     */
     public boolean[] whoSleepT() {
         return sleepT;
     }
