@@ -1,7 +1,6 @@
 package Monitor.rdp;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -16,14 +15,14 @@ class RDPTest {
             RDP rdp1 = new RDP();
 
             //chech initial mark
-            assertArrayEquals(new int[]{4, 0, 0, 0, 0}, rdp1.getMarkInit());
+            assertArrayEquals(new int[]{4, 0, 0, 0, 0}, rdp1.getMark());
 
             //check shots
             assertTrue(rdp1.ShotT(0));
-            Assertions.assertArrayEquals(new int[]{3, 1, 0, 1, 0}, rdp1.getMarkInit(),
+            Assertions.assertArrayEquals(new int[]{3, 1, 0, 1, 0}, rdp1.getMark(),
                     "La red no evoluciono como debia");
             Assertions.assertTrue(rdp1.ShotT(1));
-            Assertions.assertArrayEquals(new int[]{3, 0, 1, 1, 0}, rdp1.getMarkInit(),
+            Assertions.assertArrayEquals(new int[]{3, 0, 1, 1, 0}, rdp1.getMark(),
                     "La red no evoluciono como debia");
             Assertions.assertFalse(rdp1.ShotT(3), "Se disparo y no debia");
 
