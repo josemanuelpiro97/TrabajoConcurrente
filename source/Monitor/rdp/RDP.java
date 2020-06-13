@@ -26,10 +26,14 @@ public class RDP {
      * Vector utilizado para el checkeo de invariantes de plaza
      */
     private final int[] VecInvPlaces;
-
     /**
-     * Variables para tener registro de los tiempos (Proximamente)
+     * Matriz donde se almacenan los tiempos Alfa y Beta
      */
+    private int[][] MatrixTime;
+    /**
+     * Vector de stamptime para el sensibilizado de transiciones
+     */
+    private long[] vectorTime; //stamptime
 
     public RDP() {
         info = "RdP de Test, sin tiempo";
@@ -54,6 +58,43 @@ public class RDP {
         /* Numero de invariante de plaza */
         this.VecInvPlaces = new int[]{4, 4};
 
+        this.MatrixTime = null;
+
+
+    }
+
+    public RDP(String info) {
+        this.info = info;
+
+        /* Matriz de incidencia de la red para test */
+        this.matrixI = new int[][]{
+                {-1, 0, 0, 1},
+                {1, -1, 0, 0},
+                {0, 1, 0, -1},
+                {1, 0, -1, 0},
+                {0, 0, 1, -1}};
+
+        /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0 */
+        this.MarkInit = new int[]{4, 0, 0, 0, 0};
+
+        /* Matriz de P invariantes */
+        this.MatrixInvPlace = new int[][]{
+                {1, 1, 1, 0, 0},
+                {1, 0, 0, 1, 1}
+        };
+
+        /* Numero de invariante de plaza */
+        this.VecInvPlaces = new int[]{4, 4};
+
+        /* Ventana de tiempo de las trasiciones */
+        this.MatrixTime = new int[][]{
+                {0, 1000, 0, 0},
+                {0, 3000, 0, 0}
+        };
+
+        /* Vector donde se almacenan los timestamp */
+        this.vectorTime = new long[this.matrixI[0].length];
+
     }
 
     /**
@@ -65,21 +106,48 @@ public class RDP {
      */
     public boolean ShotT(int trans) throws InvariantException {
 
+        /* Almaceno el tiempo para las transciones temporizadas */
+        long timestamp = java.lang.System.currentTimeMillis();
+
         /* Verifico que la transicion exista */
         if (trans < 0 || trans > this.matrixI[0].length) {
-            //Ver si tirar una exepcion (q se debera crear) o hacer otra cosa
             return false;
         }
 
+        if (this.isTransTime(trans)) {
+            if (this.getSensi4temp(timestamp, trans)) {
+
+            } else {
+
+                /* El disparo no esta habilitado por tiempo */
+                return false;
+            }
+
+        }
+
+        /* Si es posible el disparo por tiempo chekeo la marca */
         int[] nextState = nextMark(trans);
 
         if (!validShot(nextState)) {
             /* tiro no valido */
             return false;
         } else {
-            /* Actualizo la marca */
-            this.Mark = nextState;
+            /* Si es extendida por tiempo debo actualziar los tiempos */
+            if (isTimeExtend()) {
+                boolean[] oldSensi = this.getSensiArray();
+                this.MarkInit = nextState;
+                boolean[] newSensi = this.getSensiArray();
+                for (int i = 0; i < newSensi.length; i++) {
+                    if (!oldSensi[i] && newSensi[i]) {
 
+                        /* actualizo el tiempo que hace q esta sensibilizada */
+                        this.vectorTime[i] = timestamp;
+                    }
+                }
+            } else {
+                /* Actualizo la marca */
+                this.MarkInit = nextState;
+            }
             /* Chequeo los invariantes de plaza */
             this.CheckInvariantPlace();
             return true;
@@ -188,6 +256,46 @@ public class RDP {
         return r;
     }
 
+    /**
+     * Metodo encargado de chequear que la trasicion depende del tiempo.
+     *
+     * @param trans numero de transicion a chequear.
+     * @return True en el caso que lo sea.
+     */
+    private boolean isTransTime(int trans) {
+        if(this.isTimeExtend()) {
+            return (this.MatrixTime[0][trans] != 0);
+        }
+        return false;
+    }
+
+    /**
+     * Metodo encargado de verificar si la red de petri es extendida en tiempo.
+     *
+     * @return True si lo es, false cas contrario.
+     */
+    private boolean isTimeExtend() {
+        return (this.MatrixTime != null);
+    }
+
+    /**
+     * @param time tiempo utilizado para calcular si se encuentra en al ventana de tiempo.
+     * @return True si se encuentra en la ventana, false caso contrario.
+     * @brief: Metodo encargado de certificar que la transicion se encuentra dentro de la ventana de tiempo para poder
+     * ser disparada.
+     */
+    private boolean getSensi4temp(long time, int trans) {
+        boolean valid = true;
+        if (this.MatrixTime[0][trans] != 0) {
+            valid = this.MatrixTime[0][trans] < (time - this.vectorTime[trans]);
+        }
+        /* Si es cero podemos decir q el beta es infinito, por lo tanto se cumple solo alfa */
+        if (valid && this.MatrixTime[1][trans] != 0) {
+            /* verifico que se encuentre dentro de la ventana */
+            valid = this.MatrixTime[1][trans] > (time - this.vectorTime[trans]);
+        }
+        return valid;
+    }
     /*=================================================================================
                          Metodos para la optencion de informacion de la red
      ==================================================================================*/

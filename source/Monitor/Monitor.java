@@ -1,6 +1,7 @@
 package Monitor;
 
 import Monitor.Queue.QueueManagment;
+import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
 
 import java.util.concurrent.Semaphore;
@@ -21,7 +22,7 @@ public class Monitor {
     /**
      * Politics for taking decisions
      */
-    private Policy policy;
+   // private Policy policy;
     /**
      * Barrier of Monitor
      */
@@ -30,7 +31,6 @@ public class Monitor {
     public Monitor() {
         this.rdp = new RDP();
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
-        //this.policy = new Policy(5);
         this.mutex = new Semaphore(1);
     }
 
@@ -49,7 +49,8 @@ public class Monitor {
      * @brief operate monitor tasks
      * @param transN [in] transition to shot
      */
-    public void operate(int transN) {
+    public void operate(int transN)throws InvariantException {
+
         boolean controlFlag = true;
 
         while (controlFlag) {
@@ -72,8 +73,8 @@ public class Monitor {
                 }
                 //otherwise, I ask who to wake up from all possibilities and give my place.
                 else {
-                    int wakeThis = this.policy.whoWake(ask);
-                    this.queueManagment.wakeN(wakeThis);
+                  //  int wakeThis = this.policy.whoWake(ask);
+                 //   this.queueManagment.wakeN(wakeThis);
                     break;
                 }
             } else {

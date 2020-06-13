@@ -36,7 +36,8 @@ public class Policy {
      * @param ask sensitized transition vector
      * @return value of the transition to be shot
      */
-    public ingit addt whoWake(int ask[]) {
+    public int whoWake(int[] ask) {
+
         //check for conflict at t0, t1
         if (ask[CONFLIC1_1] == 1 && ask[CONFLIC1_2] == 1) {
             int t = this.applyPolitic(ask, this.matrixP1);
