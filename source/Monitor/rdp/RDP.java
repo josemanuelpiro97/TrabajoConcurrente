@@ -29,7 +29,7 @@ public class RDP {
     /**
      * Matriz donde se almacenan los tiempos Alfa y Beta
      */
-    private int[][] MatrixTime;
+    private final int[][] MatrixTime;
     /**
      * Vector de stamptime para el sensibilizado de transiciones
      */
