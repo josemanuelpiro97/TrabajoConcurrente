@@ -120,7 +120,7 @@ public class Monitor {
 
                 //log
                 String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
-                this.log.write2(msj);
+                this.log.write2(msj2);
             }
         }
         if(!controlFlag)

@@ -1,0 +1,152 @@
+El hilo N: Thread-3 ingresa al monitor
+01592170651752 | Thread-3 | 3 |Disparo no valido 
+El hilo N: Thread-3 se jue a nimir
+
+El hilo N: Thread-2 ingresa al monitor
+01592170651754 | Thread-2 | 2 |Disparo no valido 
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-0 ingresa al monitor
+01592170651754 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 1 - 0 - 
+
+Se va a despertar el hilo:  2
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-2 ingresa al monitor
+01592170835522 | Thread-2 | 2 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 0 - 1 - 
+
+El hilo N: Thread-2 ingresa al monitor
+01592170835523 | Thread-2 | 2 |Disparo no valido 
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-1 ingresa al monitor
+01592170835524 | Thread-1 | 1 |Disparo exitoso  
+Marca actual: 3 - 0 - 1 - 0 - 1 - 
+
+Se va a despertar el hilo:  3
+El hilo N: Thread-3 se jue a nimir
+
+El hilo N: Thread-3 ingresa al monitor
+01592170973611 | Thread-3 | 3 |Disparo exitoso  
+Marca actual: 4 - 0 - 0 - 0 - 0 - 
+
+El hilo N: Thread-3 ingresa al monitor
+01592170973613 | Thread-3 | 3 |Disparo no valido 
+El hilo N: Thread-3 se jue a nimir
+
+El hilo N: Thread-0 ingresa al monitor
+01592170973614 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 1 - 0 - 
+
+Se va a despertar el hilo:  2
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-2 ingresa al monitor
+01592170973618 | Thread-2 | 2 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 0 - 1 - 
+
+El hilo N: Thread-1 ingresa al monitor
+01592170973620 | Thread-1 | 1 |Disparo exitoso  
+Marca actual: 3 - 0 - 1 - 0 - 1 - 
+
+Se va a despertar el hilo:  3
+El hilo N: Thread-3 se jue a nimir
+
+El hilo N: Thread-3 ingresa al monitor
+01592170973621 | Thread-3 | 3 |Disparo exitoso  
+Marca actual: 4 - 0 - 0 - 0 - 0 - 
+
+El hilo N: Thread-0 ingresa al monitor
+01592170973622 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 1 - 0 - 
+
+El hilo N: Thread-0 ingresa al monitor
+01592170973625 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 2 - 2 - 0 - 2 - 0 - 
+
+El hilo N: Thread-1 ingresa al monitor
+01592170973627 | Thread-1 | 1 |Disparo exitoso  
+Marca actual: 2 - 1 - 1 - 2 - 0 - 
+
+El hilo N: Thread-1 ingresa al monitor
+01592170973628 | Thread-1 | 1 |Disparo exitoso  
+Marca actual: 2 - 0 - 2 - 2 - 0 - 
+
+El hilo N: Thread-1 ingresa al monitor
+01592170974887 | Thread-1 | 1 |Disparo no valido 
+El hilo N: Thread-1 se jue a nimir
+
+El hilo N: Thread-2 ingresa al monitor
+01592171010314 | Thread-2 | 2 |Disparo no valido 
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-0 ingresa al monitor
+01592171012017 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 1 - 0 - 
+
+Se va a despertar el hilo:  1
+El hilo N: Thread-1 se jue a nimir
+
+El hilo N: Thread-1 ingresa al monitor
+01592171099037 | Thread-1 | 1 |Disparo exitoso  
+Marca actual: 3 - 0 - 1 - 1 - 0 - 
+
+Se va a despertar el hilo:  2
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-2 ingresa al monitor
+01592171099042 | Thread-2 | 2 |Disparo exitoso  
+Marca actual: 3 - 0 - 1 - 0 - 1 - 
+
+El hilo N: Thread-2 ingresa al monitor
+01592171099043 | Thread-2 | 2 |Disparo no valido 
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-3 ingresa al monitor
+01592171099044 | Thread-3 | 3 |Disparo exitoso  
+Marca actual: 4 - 0 - 0 - 0 - 0 - 
+
+El hilo N: Thread-3 ingresa al monitor
+01592171099046 | Thread-3 | 3 |Disparo no valido 
+El hilo N: Thread-3 se jue a nimir
+
+El hilo N: Thread-0 ingresa al monitor
+01592171099047 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 1 - 0 - 
+
+Se va a despertar el hilo:  2
+El hilo N: Thread-2 se jue a nimir
+
+El hilo N: Thread-2 ingresa al monitor
+01592171099049 | Thread-2 | 2 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 0 - 1 - 
+
+El hilo N: Thread-1 ingresa al monitor
+01592171099051 | Thread-1 | 1 |Disparo exitoso  
+Marca actual: 3 - 0 - 1 - 0 - 1 - 
+
+Se va a despertar el hilo:  3
+El hilo N: Thread-3 se jue a nimir
+
+El hilo N: Thread-3 ingresa al monitor
+01592171099053 | Thread-3 | 3 |Disparo exitoso  
+Marca actual: 4 - 0 - 0 - 0 - 0 - 
+
+El hilo N: Thread-3 ingresa al monitor
+01592171099054 | Thread-3 | 3 |Disparo no valido 
+El hilo N: Thread-3 se jue a nimir
+
+El hilo N: Thread-0 ingresa al monitor
+01592171099055 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 3 - 1 - 0 - 1 - 0 - 
+
+El hilo N: Thread-0 ingresa al monitor
+01592171099056 | Thread-0 | 0 |Disparo exitoso  
+Marca actual: 2 - 2 - 0 - 2 - 0 - 
+
+El hilo N: Thread-1 ingresa al monitor
+01592171099057 | Thread-1 | 1 |Disparo exitoso  
+Marca actual: 2 - 1 - 1 - 2 - 0 - 
+
