@@ -17,8 +17,9 @@ public class Task implements Runnable {
         for (int i = 0; i < FINAL; i++) {
             this.monitor.takeMonitor();
             try {
+                System.out.println("Entra el Hilo: " + Thread.currentThread().getName() +
+                        " con la transicion N: " + this.transitionN);
                 this.monitor.operate(this.transitionN);
-                System.out.print(i);
             }
             catch (Exception e){
                 e.printStackTrace();

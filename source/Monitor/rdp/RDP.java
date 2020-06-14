@@ -131,6 +131,7 @@ public class RDP {
 
         if (!validShot(nextState)) {
             /* tiro no valido */
+            System.out.println("Tiro de transicion " + trans + " no valido");
             return false;
         } else {
             /* Si es extendida por tiempo debo actualziar los tiempos */
@@ -147,6 +148,8 @@ public class RDP {
                 }
             } else {
                 /* Actualizo la marca */
+                System.out.println("Transicion N: " + trans + " disparada correctamente");
+                System.out.println();
                 this.Mark = nextState;
             }
             /* Chequeo los invariantes de plaza */
