@@ -124,10 +124,11 @@ public class Policy {
 
         //apply Politic
         int[] result = new int[sensitized.length];
+        int [] resultIn = new int[sensitized.length];
         for (int i = 0; i < sensitized.length; i++) {
             for (int j = 0; j < sensitized.length; j++) {
                 result[i] += (P[i][j] * sensitized[j]);
-                index[i] += (P[i][j] * index[j]);
+                resultIn[i] += (P[i][j] * index[j]);
             }
         }
         //find the first element available
@@ -136,6 +137,6 @@ public class Policy {
             if (result[i] == 1)
                 t = i;
         }
-        return index[t];
+        return resultIn[t];
     }
 }
