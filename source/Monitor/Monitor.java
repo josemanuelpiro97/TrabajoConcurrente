@@ -88,6 +88,7 @@ public class Monitor {
                 // if there's no one to wake up I'm leaving
                 if (cant == 0) {
                     controlFlag = false;
+
                 }
                 //otherwise, I ask who to wake up from all possibilities and give my place.
                 else {
@@ -102,5 +103,6 @@ public class Monitor {
                 this.queueManagment.sleepN(transN);
             }
         }
+        this.mutex.release();
     }
 }

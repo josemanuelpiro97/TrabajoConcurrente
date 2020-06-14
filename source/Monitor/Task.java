@@ -18,6 +18,7 @@ public class Task implements Runnable {
             this.monitor.takeMonitor();
             try {
                 this.monitor.operate(this.transitionN);
+                System.out.print(i);
             }
             catch (Exception e){
                 e.printStackTrace();
