@@ -31,19 +31,22 @@ public class Policy {
         Random ran = new Random();
         int lenght = this.matrixP[0].length;
         int[] changes = new int[lenght];
+        int backVal = 999;
         for (int i = 0; i < lenght; i++) {
             changes[i] = ran.nextInt(lenght);
+            while (changes[i] == backVal) changes[i] = ran.nextInt(lenght);
+            backVal = changes[i];
         }
         int[][] P = this.matrixP;
         this.changeRow(P, changes);
 
         //apply political changes
-        if(this.stateC) {
+        if (this.stateC) {
             this.changeRow(P, this.CLONFLICT1);
         }
 
         //change state for P1
-        if(this.stateC)
+        if (this.stateC)
             this.stateC = false;
         else
             this.stateC = true;

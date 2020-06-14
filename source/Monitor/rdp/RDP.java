@@ -136,7 +136,7 @@ public class RDP {
     /**
      * @param trans numero de transicion que se quiere disparar.
      * @return true para un disparo exitoso, false si fallo en el disparo.
-     * @brief: Metodo encargado de intentar disparar una transicion, hara los chequeos correspondientes y se encargara
+     * @brief Metodo encargado de intentar disparar una transicion, hara los chequeos correspondientes y se encargara
      * de modificar el estado de la red. Si es posible el disparo, retorna un "true", caso contrario,
      * devolvera un "false".
      * @TODO Posible fallo con el tiempo al actualizar los timestamp en vectorTime
@@ -186,8 +186,13 @@ public class RDP {
                 /* Actualizo la marca */
                 this.Mark = nextState;
 
-                this.log.write(trans, "Disparo exitoso");
-
+                //log
+                this.log.write(trans, "Disparo exitoso ");
+                StringBuilder msj = new StringBuilder();
+                for (int value : this.Mark) {
+                    msj.append(String.format("%d", value)).append(" - ");
+                }
+                this.log.write2( "Marca actual: "+ msj.toString() + "\n");
             }
             /* Chequeo los invariantes de plaza */
             this.CheckInvariantPlace();

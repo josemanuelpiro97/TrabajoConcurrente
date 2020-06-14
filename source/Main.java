@@ -11,14 +11,15 @@ import Monitor.Task;
 public class Main {
     public static void main (String[] arg){
         //build monitor
-        Monitor monitor = new Monitor();
-        //Log log = new Log();
+        Log log = new Log();
+        Monitor monitor = new Monitor(log);
+
 
         //build and start, tasks and threads
         Task[] tasks = new Task[4];
         Thread[] threads = new Thread[4];
         for (int i =0 ; i< 4 ; i++){
-            tasks[i] = new Task(i,monitor);
+            tasks[i] = new Task(i,monitor,log);
             threads[i] = new Thread(tasks[i]);
             threads[i].start();
         }

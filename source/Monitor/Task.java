@@ -1,12 +1,16 @@
 package Monitor;//Test Class of Monitor.Task
 
+import Monitor.Logger.Log;
+
 public class Task implements Runnable {
     private int transitionN;
     private Monitor monitor;
+    private Log log;
 
-    public Task( int transitionN, Monitor monitor) {
+    public Task( int transitionN, Monitor monitor,Log log) {
         this.transitionN = transitionN;
         this.monitor = monitor;
+        this.log = log;
     }
 
     @Override
@@ -17,8 +21,11 @@ public class Task implements Runnable {
         for (int i = 0; i < FINAL; i++) {
             this.monitor.takeMonitor();
             try {
-                System.out.println("Entra el Hilo: " + Thread.currentThread().getName() +
-                        " con la transicion N: " + this.transitionN);
+                //log
+                String msj = "El hilo N: " + Thread.currentThread().getName() + " ingresa al monitor" ;
+                this.log.write2(msj);
+
+                //operate
                 this.monitor.operate(this.transitionN);
             }
             catch (Exception e){

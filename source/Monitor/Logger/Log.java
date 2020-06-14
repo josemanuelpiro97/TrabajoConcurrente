@@ -19,7 +19,7 @@ public class Log {
 
     public Log() {
         this.name = "log.txt";
-        this.path = "/home/mlujan/IdeaProjects/TrabajoConcurrente";
+        this.path = "/home/jpiro/Documents/Concurrentess/TrabajoConcurrente/logs";
         this.archivo = new File(this.path, this.name);
         try {
             this.fw = new FileWriter(archivo, true);
@@ -34,6 +34,17 @@ public class Log {
         buffer = String.format("%014d | %-2s | %d |%s \n",time, Thread.currentThread().getName(), trans, msj);
         try{
             this.fw.write(buffer);
+            this.fw.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void write2(String msj) {
+        String buffer2;
+        buffer2 = String.format(msj + "\n");
+        try{
+            this.fw.write(buffer2);
             this.fw.flush();
         }catch (IOException e){
             e.printStackTrace();

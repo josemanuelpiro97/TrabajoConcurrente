@@ -34,8 +34,8 @@ public class Monitor {
      */
     private Log log;
 
-    public Monitor() {
-        this.log = new Log();
+    public Monitor(Log log) {
+        this.log = log;
         this.rdp = new RDP(this.log);
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
@@ -99,18 +99,29 @@ public class Monitor {
                 //otherwise, I ask who to wake up from all possibilities and give my place.
                 else {
                     int wakeThis = this.policy.whoWake(this.convertBtoI(ask));
-                    System.out.println("Se va a despertar el hilo:  " + wakeThis);
+
+                    //log
+                    String msj = "Se va a despertar el hilo:  " + wakeThis;
+                    this.log.write2(msj);
+
+                    //wake thread
                     this.queueManagment.wakeN(wakeThis);
                     break;
                 }
             } else {
-                System.out.println("El hilo N: " + Thread.currentThread().getName() + " se jue a nimir");
-                System.out.println();
+                //log
+                String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir" + "\n";
+                this.log.write2(msj);
+
                 //leave the monitor
                 this.mutex.release();
+
                 //go to sleep
                 this.queueManagment.sleepN(transN);
-                System.out.println("Se desperto el hilo " + Thread.currentThread().getName());
+
+                //log
+                String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
+                this.log.write2(msj);
             }
         }
         if(!controlFlag)
