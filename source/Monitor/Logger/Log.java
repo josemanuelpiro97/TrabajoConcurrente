@@ -18,9 +18,7 @@ public class Log {
     private FileWriter fw;
 
     public Log() {
-        this.name = "log.txt";
-        this.path = "/home/jpiro/Documents/Concurrentess/TrabajoConcurrente/logs";
-        this.archivo = new File(this.path, this.name);
+        this.archivo = new File("log.txt");
         try {
             this.fw = new FileWriter(archivo, true);
         } catch (IOException e) {

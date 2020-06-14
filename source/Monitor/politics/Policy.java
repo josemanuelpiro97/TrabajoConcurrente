@@ -136,6 +136,6 @@ public class Policy {
             if (result[i] == 1)
                 t = i;
         }
-        return t;
+        return index[t];
     }
 }
