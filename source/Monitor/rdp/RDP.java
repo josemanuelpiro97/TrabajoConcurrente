@@ -1,5 +1,7 @@
 package Monitor.rdp;
 
+import Monitor.Logger.Log;
+
 /**
  * @TODO ver si se hardcodea la red o se arma desde un archivo.
  * @TODO agregar que en cada disparo se imprima y guarde en el archivo la transicion disparada
@@ -34,7 +36,14 @@ public class RDP {
      * Vector de stamptime para el sensibilizado de transiciones
      */
     private long[] vectorTime; //stamptime
+    /**
+     * Objeto log utilizado para almacenar el disparo de las trasiciones en un txt
+     */
+    private Log log;
 
+    /**
+     * @brief Constructor solo utilizado para test, sin tiempo ni logger
+     */
     public RDP() {
         info = "RdP de Test, sin tiempo";
 
@@ -59,7 +68,34 @@ public class RDP {
         this.VecInvPlaces = new int[]{4, 4};
 
         this.MatrixTime = null;
+    }
 
+    public RDP(Log l) {
+        info = "RdP de Test, sin tiempo";
+
+        /* Matriz de incidencia de la red para test */
+        this.matrixI = new int[][]{
+                {-1, 0, 0, 1},
+                {1, -1, 0, 0},
+                {0, 1, 0, -1},
+                {1, 0, -1, 0},
+                {0, 0, 1, -1}};
+
+        /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0 */
+        this.Mark = new int[]{4, 0, 0, 0, 0};
+
+        /* Matriz de P invariantes */
+        this.MatrixInvPlace = new int[][]{
+                {1, 1, 1, 0, 0},
+                {1, 0, 0, 1, 1}
+        };
+
+        /* Numero de invariante de plaza */
+        this.VecInvPlaces = new int[]{4, 4};
+
+        this.MatrixTime = null;
+
+        this.log = l;
 
     }
 
@@ -119,7 +155,7 @@ public class RDP {
             if (this.getSensi4temp(timestamp, trans)) {
 
             } else {
-
+                this.log.write(trans, "No habilitada por tiempo");
                 /* El disparo no esta habilitado por tiempo */
                 return false;
             }
@@ -131,7 +167,7 @@ public class RDP {
 
         if (!validShot(nextState)) {
             /* tiro no valido */
-            System.out.println("Tiro de transicion " + trans + " no valido");
+            this.log.write(trans, "Disparo no valido");
             return false;
         } else {
             /* Si es extendida por tiempo debo actualziar los tiempos */
@@ -148,9 +184,10 @@ public class RDP {
                 }
             } else {
                 /* Actualizo la marca */
-                System.out.println("Transicion N: " + trans + " disparada correctamente");
-                System.out.println();
                 this.Mark = nextState;
+
+                this.log.write(trans, "Disparo exitoso");
+
             }
             /* Chequeo los invariantes de plaza */
             this.CheckInvariantPlace();
@@ -267,7 +304,7 @@ public class RDP {
      * @return True en el caso que lo sea.
      */
     private boolean isTransTime(int trans) {
-        if(this.isTimeExtend()) {
+        if (this.isTimeExtend()) {
             return (this.MatrixTime[0][trans] != 0);
         }
         return false;
@@ -298,7 +335,7 @@ public class RDP {
         if (valid && this.MatrixTime[1][trans] != 0) {
             /* verifico que se encuentre dentro de la ventana */
             valid = this.MatrixTime[1][trans] > (time - this.vectorTime[trans]);
-            if(!valid){
+            if (!valid) {
                 System.out.println("Se paso el beta, verificar");
             }
         }

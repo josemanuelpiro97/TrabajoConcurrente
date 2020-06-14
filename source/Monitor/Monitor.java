@@ -1,5 +1,6 @@
 package Monitor;
 
+import Monitor.Logger.Log;
 import Monitor.Queue.QueueManagment;
 import Monitor.politics.Policy;
 import Monitor.rdp.InvariantException;
@@ -28,9 +29,14 @@ public class Monitor {
      * Barrier of Monitor
      */
     private Semaphore mutex;
+    /**
+     * Log para llevar la informacion del programa
+     */
+    private Log log;
 
     public Monitor() {
-        this.rdp = new RDP();
+        this.log = new Log();
+        this.rdp = new RDP(this.log);
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1);
@@ -110,4 +116,15 @@ public class Monitor {
         if(!controlFlag)
             this.mutex.release();
     }
+
+    /**
+     * @brief Close log
+     */
+    public void closeLog(){
+        this.log.close();
+    }
+
+
+
+
 }

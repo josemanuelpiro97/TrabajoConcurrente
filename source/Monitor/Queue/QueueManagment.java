@@ -7,7 +7,7 @@ public class QueueManagment {
     /**
      * Array of semaphores that represent all transition.
      */
-    private Semaphore semaphores[];
+    private final Semaphore semaphores[];
     /**
      * Control array of semaphore array
      */

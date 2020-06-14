@@ -1,3 +1,4 @@
+import Monitor.Logger.Log;
 import Monitor.Monitor;
 import Monitor.Task;
 
@@ -11,6 +12,7 @@ public class Main {
     public static void main (String[] arg){
         //build monitor
         Monitor monitor = new Monitor();
+        //Log log = new Log();
 
         //build and start, tasks and threads
         Task[] tasks = new Task[4];
@@ -19,6 +21,14 @@ public class Main {
             tasks[i] = new Task(i,monitor);
             threads[i] = new Thread(tasks[i]);
             threads[i].start();
+        }
+
+        try {
+            Thread.sleep(10000);
+            monitor.closeLog();
+            System.exit(0);
+        }catch (InterruptedException e){
+            e.printStackTrace();
         }
     }
 }
