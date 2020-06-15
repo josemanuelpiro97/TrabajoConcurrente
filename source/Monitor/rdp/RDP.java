@@ -99,7 +99,7 @@ public class RDP {
 
     }
 
-    public RDP(String info) {
+    public RDP(String info, Log l) {
         this.info = info;
 
         /* Matriz de incidencia de la red para test */
@@ -124,12 +124,14 @@ public class RDP {
 
         /* Ventana de tiempo de las trasiciones */
         this.MatrixTime = new int[][]{
-                {0, 1000, 0, 0},
-                {0, 3000, 0, 0}
+                {0, 2000, 0, 0},
+                {0, 6000, 0, 0}
         };
 
         /* Vector donde se almacenan los timestamp */
-        this.vectorTime = new long[this.matrixI[0].length];
+        this.vectorTime = new long[]{-1,-1,-1,-1};
+
+        this.log = l;
 
     }
 
@@ -333,7 +335,7 @@ public class RDP {
      */
     private boolean getSensi4temp(long time, int trans) {
         boolean valid = true;
-        if (this.MatrixTime[0][trans] != 0) {
+        if (this.MatrixTime[0][trans] != 0 && this.vectorTime[trans] != -1) {
             valid = this.MatrixTime[0][trans] < (time - this.vectorTime[trans]);
         }
         /* Si es cero podemos decir q el beta es infinito, por lo tanto se cumple solo alfa */

@@ -5,7 +5,7 @@ import Monitor.Task;
 
 /**
  * @TODO Solo implementar la instancia de monitor.
- * @TODO implementar la clase Log para llevar el registro del programa
+ * @TODO Sacar la creacion del log desde Main y q lo cree el Monitor
  **/
 
 public class Main {
@@ -21,9 +21,10 @@ public class Main {
         for (int i = 0; i < 4; i++) {
             tasks[i] = new Task(i, monitor, log);
             threads[i] = new Thread(tasks[i]);
-            threads[i].start();
         }
-
+        for(int i = 0; i <4 ; i++){
+            threads[3-i].start();
+        }
 
         //   try {
         // Thread.sleep(10000);

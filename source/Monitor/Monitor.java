@@ -36,7 +36,8 @@ public class Monitor {
 
     public Monitor(Log log) {
         this.log = log;
-        this.rdp = new RDP(this.log);
+        //this.rdp = new RDP(this.log);
+        this.rdp = new RDP("Red con tiempo", this.log);
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1);
