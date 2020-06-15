@@ -4,8 +4,7 @@ import Monitor.Logger.Log;
 
 /**
  * @TODO ver si se hardcodea la red o se arma desde un archivo.
- * @TODO agregar que en cada disparo se imprima y guarde en el archivo la transicion disparada
- * @TODO Implementar el tiempo (Lo primero)
+ * @TODO Implementar tomar el tiempo para las transiciones (con tiempo) que arranquen sensibilizadas
  */
 public class RDP {
     /**
@@ -124,12 +123,12 @@ public class RDP {
 
         /* Ventana de tiempo de las trasiciones */
         this.MatrixTime = new int[][]{
-                {0, 2000, 0, 0},
-                {0, 6000, 0, 0}
+                {0, 1, 0, 0},
+                {0, 10000, 0, 0}
         };
 
         /* Vector donde se almacenan los timestamp */
-        this.vectorTime = new long[]{-1,-1,-1,-1};
+        this.vectorTime = new long[]{-1, -1, -1, -1};
 
         this.log = l;
 
@@ -194,7 +193,7 @@ public class RDP {
                 for (int value : this.Mark) {
                     msj.append(String.format("%d", value)).append(" - ");
                 }
-                this.log.write2( "Marca actual: "+ msj.toString() + "\n");
+                this.log.write2("Marca actual: " + msj.toString() + "\n");
             }
             /* Chequeo los invariantes de plaza */
             this.CheckInvariantPlace();
@@ -268,6 +267,26 @@ public class RDP {
             /* Simulo un disparo de la transicion con la marca actual para ver si el tiro es valido, de serlo, se seteara con true */
             isSensi[i] = this.validShot(this.nextMark(i));
         }
+        /**
+         * @TODO Fijate que podes poner un valor Booleano q reciba el metodo para contemplar o no la ventana de tiempo
+         */
+        if (this.isTimeExtend()) {
+            long time = java.lang.System.currentTimeMillis();
+            boolean[] isSensiTime = new boolean[this.matrixI[0].length];
+            for (int i = 0; i < matrixI[0].length; i++) {
+                if (this.isTransTime(i)) {
+                    isSensiTime[i] = this.getSensi4temp(time, i);
+                } else {
+                    isSensiTime[i] = true;
+                }
+
+            }
+            boolean[] res = new boolean[this.matrixI[0].length];
+            for (int i = 0; i < matrixI[0].length; i++) {
+                res[i] = isSensi[i] && isSensiTime[i];
+            }
+            return res;
+        }
         return isSensi;
     }
 
@@ -334,7 +353,7 @@ public class RDP {
      * @TODO Agregar en el informe la explicacion de como se implementaron las transiciones con tiempo
      */
     private boolean getSensi4temp(long time, int trans) {
-        boolean valid = true;
+        boolean valid = false;
         if (this.MatrixTime[0][trans] != 0 && this.vectorTime[trans] != -1) {
             valid = this.MatrixTime[0][trans] < (time - this.vectorTime[trans]);
         }
