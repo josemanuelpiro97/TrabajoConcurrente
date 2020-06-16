@@ -125,7 +125,7 @@ public class RDP {
         // Ventana de tiempo de las trasiciones
         this.MatrixTime = new int[][]{
                 {0, 1, 0, 0},
-                {0, 10000, 0, 0}
+                {0, 10000000, 0, 0}
         };
 
         // Vector donde se almacenan los timestamp

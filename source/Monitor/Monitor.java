@@ -34,6 +34,8 @@ public class Monitor {
      */
     private Log log;
 
+    private boolean controlFlag;
+
     public Monitor(Log log) {
         this.log = log;
         //this.rdp = new RDP(this.log);
@@ -41,14 +43,21 @@ public class Monitor {
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1);
+        this.controlFlag = true;
     }
 
     /**
      * @brief take the Monitor
      */
-    public void takeMonitor() {
+    public void takeMonitor(int transN) {
         try {
             this.mutex.acquire();
+
+            //log
+            String msj = "El hilo N: " + Thread.currentThread().getName() + " ingresa al monitor" ;
+            this.log.write2(msj);
+
+            this.operate(transN);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,9 +83,9 @@ public class Monitor {
      * @brief operate monitor tasks
      * @param transN [in] transition to shot
      */
-    public void operate(int transN)throws InvariantException {
+    private void operate(int transN)throws InvariantException {
 
-        boolean controlFlag = true;
+        this.controlFlag = true;
 
         while (controlFlag) {
             controlFlag = this.rdp.ShotT(transN);
@@ -106,6 +115,7 @@ public class Monitor {
 
                     //wake thread
                     this.queueManagment.wakeN(wakeThis);
+
                     break;
                 }
             } else {
@@ -123,8 +133,6 @@ public class Monitor {
                 String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
                 this.log.write2(msj2);
 
-                //set true flag
-                controlFlag = true;
             }
         }
         if(!controlFlag)

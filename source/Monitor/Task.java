@@ -19,14 +19,9 @@ public class Task implements Runnable {
         final int FINAL = 100;
 
         for (int i = 0; i < FINAL; i++) {
-            this.monitor.takeMonitor();
             try {
-                //log
-                String msj = "El hilo N: " + Thread.currentThread().getName() + " ingresa al monitor" ;
-                this.log.write2(msj);
-
                 //operate
-                this.monitor.operate(this.transitionN);
+                this.monitor.takeMonitor(this.transitionN);
             }
             catch (Exception e){
                 e.printStackTrace();
