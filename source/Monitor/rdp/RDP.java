@@ -41,13 +41,13 @@ public class RDP {
     private Log log;
 
 
-    /*
+    /**
      * @brief Constructor solo utilizado para test, sin tiempo ni logger
-
+    */
     public RDP() {
         info = "RdP de Test, sin tiempo";
 
-        /* Matriz de incidencia de la red para test
+        // Matriz de incidencia de la red para test
         this.matrixI = new int[][]{
                 {-1, 0, 0, 1},
                 {1, -1, 0, 0},
@@ -55,16 +55,16 @@ public class RDP {
                 {1, 0, -1, 0},
                 {0, 0, 1, -1}};
 
-        /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
+        // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
         this.Mark = new int[]{4, 0, 0, 0, 0};
 
-        Matriz de P invariantes
+        //Matriz de P invariantes
         this.MatrixInvPlace = new int[][]{
                 {1, 1, 1, 0, 0},
                 {1, 0, 0, 1, 1}
         };
 
-        /* Numero de invariante de plaza
+        // Numero de invariante de plaza
         this.VecInvPlaces = new int[]{4, 4};
 
         this.MatrixTime = null;
@@ -73,7 +73,7 @@ public class RDP {
     public RDP(Log l) {
         info = "RdP de Test, sin tiempo";
 
-        /* Matriz de incidencia de la red para test
+        // Matriz de incidencia de la red para test
         this.matrixI = new int[][]{
                 {-1, 0, 0, 1},
                 {1, -1, 0, 0},
@@ -81,16 +81,16 @@ public class RDP {
                 {1, 0, -1, 0},
                 {0, 0, 1, -1}};
 
-        /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
+        // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
         this.Mark = new int[]{4, 0, 0, 0, 0};
 
-        /* Matriz de P invariantes
+        // Matriz de P invariantes
         this.MatrixInvPlace = new int[][]{
                 {1, 1, 1, 0, 0},
                 {1, 0, 0, 1, 1}
         };
 
-        /* Numero de invariante de plaza
+        // Numero de invariante de plaza
         this.VecInvPlaces = new int[]{4, 4};
 
         this.MatrixTime = null;
@@ -98,11 +98,11 @@ public class RDP {
         this.log = l;
 
     }
-        */
+
     public RDP(String info, Log l) {
         this.info = info;
 
-        /* Matriz de incidencia de la red para test */
+        // Matriz de incidencia de la red para test
         this.matrixI = new int[][]{
                 {-1, 0, 0, 1},
                 {1, -1, 0, 0},
@@ -110,25 +110,25 @@ public class RDP {
                 {1, 0, -1, 0},
                 {0, 0, 1, -1}};
 
-        /* Vector de marcado incial, indica 4 tokens iniciales en la plaza p0 */
+        // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
         this.Mark = new int[]{4, 0, 0, 0, 0};
 
-        /* Matriz de P invariantes */
+        // Matriz de P invariantes
         this.MatrixInvPlace = new int[][]{
                 {1, 1, 1, 0, 0},
                 {1, 0, 0, 1, 1}
         };
 
-        /* Numero de invariante de plaza */
+        // Numero de invariante de plaza
         this.VecInvPlaces = new int[]{4, 4};
 
-        /* Ventana de tiempo de las trasiciones */
+        // Ventana de tiempo de las trasiciones
         this.MatrixTime = new int[][]{
                 {0, 1, 0, 0},
                 {0, 10000, 0, 0}
         };
 
-        /* Vector donde se almacenan los timestamp */
+        // Vector donde se almacenan los timestamp
         this.vectorTime = new long[]{-1, -1, -1, -1};
 
         this.log = l;
@@ -172,16 +172,16 @@ public class RDP {
 
         // if time type, update the transition time
         if (isTimeExtend()) {
-            boolean[] oldSensi = this.getSensiArray();
+            boolean[] oldSensi = this.getSensi4Mark();
             this.Mark = nextState;
-            boolean[] newSensi = this.getSensiArray();
+            boolean[] newSensi = this.getSensi4Mark();
             for (int i = 0; i < newSensi.length; i++) {
-                if (!oldSensi[i] && newSensi[i]) {
+                if ((!oldSensi[i] && newSensi[i]) && this.isTransTime(i)) {
                     // update time vector
                     this.vectorTime[i] = timestamp;
                 }
             }
-        // else, only update the mark
+            // else, only update the mark
         } else {
             //update mark
             this.Mark = nextState;
@@ -389,6 +389,19 @@ public class RDP {
     }
 
     /**
+     * @brief returns those sensitized only by the mark
+     * @return vector whit sensitized
+     */
+    private boolean[] getSensi4Mark() {
+        //check which transitions are sensitized by mark
+        boolean[] isSensi = new boolean[this.matrixI[0].length];
+        for (int i = 0; i < isSensi.length; i++) {
+            isSensi[i] = this.validShot(this.nextMark(i));
+        }
+        return isSensi;
+    }
+
+    /**
      * @return vector de tipo booleano.
      * @brief Metodo encargado de devolver el vector de sensibilizado. En cada posicion del arreglo habra un True o
      * un False indicando si se encuentra sensibilizada la transicion o no.
@@ -399,7 +412,6 @@ public class RDP {
         for (int i = 0; i < isSensi.length; i++) {
             isSensi[i] = this.validShot(this.nextMark(i));
         }
-
         if (this.isTimeExtend()) {
             //take time
             long time = java.lang.System.currentTimeMillis();

@@ -122,6 +122,9 @@ public class Monitor {
                 //log
                 String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
                 this.log.write2(msj2);
+
+                //set true flag
+                controlFlag = true;
             }
         }
         if(!controlFlag)
@@ -134,8 +137,5 @@ public class Monitor {
     public void closeLog(){
         this.log.close();
     }
-
-
-
 
 }

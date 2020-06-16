@@ -16,7 +16,7 @@ public class Task implements Runnable {
     @Override
     public void run() {
         //test variable
-        final int FINAL = 4;
+        final int FINAL = 100;
 
         for (int i = 0; i < FINAL; i++) {
             this.monitor.takeMonitor();

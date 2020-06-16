@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RDPTest {
 
+    /*
     @Tag("Disparos")
     @Test
     void ShotT() {
@@ -77,5 +78,5 @@ class RDPTest {
             e.printInfo();
         }
     }
-
+*/
 }

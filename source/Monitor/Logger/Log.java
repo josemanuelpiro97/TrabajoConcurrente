@@ -27,6 +27,7 @@ public class Log {
         String buffer;
         long time = java.lang.System.currentTimeMillis();
         buffer = String.format("%014d | %-2s | %d |%s \n",time, Thread.currentThread().getName(), trans, msj);
+        System.out.print(buffer);
         try{
             this.fw.write(buffer);
             this.fw.flush();
@@ -38,6 +39,7 @@ public class Log {
     public void write2(String msj) {
         String buffer2;
         buffer2 = String.format(msj + "\n");
+        System.out.print(buffer2);
         try{
             this.fw.write(buffer2);
             this.fw.flush();
