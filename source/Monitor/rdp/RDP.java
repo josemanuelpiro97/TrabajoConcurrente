@@ -145,23 +145,12 @@ public class RDP {
      * return true, in case that they not, return false.
      */
     public boolean ShotT(int trans) throws InvariantException {
-        //control flag
-        boolean valid = false;
-
         // take time of shot
         long timestamp = java.lang.System.currentTimeMillis();
 
         // check if the transition exist
         if (trans < 0 || trans > this.matrixI[0].length) {
             this.log.write(trans, "La transicion no existe");
-            return false;
-        }
-
-        // check if shooting is possible according to the mark
-        int[] nextState = nextMark(trans);// take possible next mark
-        if (!validShot(nextState)) {
-            //invalid shot
-            this.log.write(trans, "Disparo no valido debido a la marca");
             return false;
         }
 
@@ -173,6 +162,13 @@ public class RDP {
             }
         }
 
+        // check if shooting is possible according to the mark
+        int[] nextState = nextMark(trans);// take possible next mark
+        if (!validShot(nextState)) {
+            //invalid shot
+            this.log.write(trans, "Disparo no valido debido a la marca");
+            return false;
+        }
 
         // if time type, update the transition time
         if (isTimeExtend()) {
@@ -180,7 +176,7 @@ public class RDP {
             this.Mark = nextState;
             boolean[] newSensi = this.getSensiArray();
             for (int i = 0; i < newSensi.length; i++) {
-                if (!oldSensi[i] && (newSensi[i])) {
+                if (!oldSensi[i] && newSensi[i]) {
                     // update time vector
                     this.vectorTime[i] = timestamp;
                 }
@@ -189,17 +185,19 @@ public class RDP {
         } else {
             //update mark
             this.Mark = nextState;
-
-            //log
-            this.log.write(trans, "Disparo exitoso ");
-            StringBuilder msj = new StringBuilder();
-            for (int value : this.Mark) {
-                msj.append(String.format("%d", value)).append(" - ");
-            }
-            this.log.write2("Marca actual: " + msj.toString() + "\n");
         }
+
         // check invariant place
         this.CheckInvariantPlace();
+
+        //log
+        this.log.write(trans, "Disparo exitoso ");
+        StringBuilder msj = new StringBuilder();
+        for (int value : this.Mark) {
+            msj.append(String.format("%d", value)).append(" - ");
+        }
+        this.log.write2("Marca actual: " + msj.toString() + "\n");
+
         return true;
     }
 
@@ -283,12 +281,12 @@ public class RDP {
         if (isTransTime(trans) && wasSensitized(trans)) {
             //check if the elapsed time is in the allowed time window
             boolean supAlpha = (time - this.vectorTime[trans]) > this.MatrixTime[0][trans];
-            boolean supBeta = false;
+            boolean lowBeta = true;
             if (this.MatrixTime[1][trans] != 0) {
-                supBeta = (time - this.vectorTime[trans]) < this.MatrixTime[1][trans];
-                if (!supBeta) System.out.println("beta passed");
+                lowBeta = (time - this.vectorTime[trans]) < this.MatrixTime[1][trans];
+                if (!lowBeta) System.out.println("beta passed");
             }
-            valid = supAlpha && (!supBeta);
+            valid = supAlpha && lowBeta;
         }
         return valid;
     }
