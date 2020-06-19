@@ -12,13 +12,13 @@ public class Policy {
     private final int CONFLIC1_2 = 1;
     private final int[] CLONFLICT1 = {CONFLIC1_1, CONFLIC1_2};
 
+    private int sizeT;
 
     private boolean stateC = false;
-    private int matrixP[][];
+
 
     public Policy(int sizeT) {
-        //build identity matrix
-        this.matrixP = buildIdentity(sizeT);
+        this.sizeT = sizeT;
     }
 
     /**
@@ -27,9 +27,11 @@ public class Policy {
      * @brief find what policy to apply and apply it
      */
     public int whoWake(int[] ask) {
+        int[][] matrixP;
+        matrixP = buildIdentity(this.sizeT);
         //apply random form
         Random ran = new Random();
-        int lenght = this.matrixP[0].length;
+        int lenght = matrixP[0].length;
         int[] changes = new int[lenght];
         int backVal = 999;
         for (int i = 0; i < lenght; i++) {
@@ -37,14 +39,13 @@ public class Policy {
             while (changes[i] == backVal) changes[i] = ran.nextInt(lenght);
             backVal = changes[i];
         }
-        int[][] P = this.matrixP;
-        this.changeRow(P, changes);
+        int[][] P = matrixP.clone();
+        int[][] PChanged = this.changeRow(P, changes);
 
         //apply political changes
         if (this.stateC) {
-            this.changeRow(P, this.CLONFLICT1);
+            PChanged = this.changeRow(PChanged, this.CLONFLICT1);
         }
-
         //change state for P1
         if (this.stateC)
             this.stateC = false;
@@ -52,7 +53,8 @@ public class Policy {
             this.stateC = true;
 
         //get transition to shot
-        int val = this.applyPolitic(ask, P);
+        assert PChanged != null;
+        int val = this.applyPolitic(ask, PChanged);
 
         return val;
     }
