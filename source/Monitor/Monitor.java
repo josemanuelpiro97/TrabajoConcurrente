@@ -33,8 +33,15 @@ public class Monitor {
      * Log para llevar la informacion del programa
      */
     private Log log;
-
+    /**
+     * Flag control
+     */
     private boolean controlFlag;
+
+    /**
+     * count control
+     */
+    private int count = 0;
 
     public Monitor(Log log) {
         this.log = log;
