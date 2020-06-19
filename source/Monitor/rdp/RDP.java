@@ -182,6 +182,10 @@ public class RDP {
                     // update time vector
                     this.vectorTime[i] = timestamp;
                 }
+                else if ((oldSensi[i] && !newSensi[i]) && this.isTransTime(i)) {
+                    // update time vector
+                    this.vectorTime[i] = -1;
+                }
             }
             // else, only update the mark
         } else {
