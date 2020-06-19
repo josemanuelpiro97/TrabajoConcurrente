@@ -332,7 +332,8 @@ public class RDP {
      * @brief Devuelve el tiempo que resta hasta que la transicion se encuentre dentro de la ventana de tiempo
      */
     public long getWaitTime(int trans) {
-        if (!this.isTransTime(trans) && !this.wasSensitized(trans)) {
+        boolean val2 = !this.wasSensitized(trans);
+        if (!this.wasSensitized(trans)) {
             return -1;
         }
         long time = java.lang.System.currentTimeMillis();
