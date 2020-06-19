@@ -43,7 +43,7 @@ public class RDP {
 
     /**
      * @brief Constructor solo utilizado para test, sin tiempo ni logger
-    */
+     */
     public RDP() {
         info = "RdP de Test, sin tiempo";
 
@@ -322,6 +322,20 @@ public class RDP {
         return this.vectorTime[trans] != (-1);
     }
 
+    /**
+     * @param trans Numero de transicion
+     * @return tiempo restante (tipo long), -1 si no debe dormir.
+     * @brief Devuelve el tiempo que resta hasta que la transicion se encuentre dentro de la ventana de tiempo
+     */
+    public long getWaitTime(int trans) {
+        if (!this.isTransTime(trans) && !this.wasSensitized(trans)) {
+            return -1;
+        }
+        long time = java.lang.System.currentTimeMillis();
+        long timer = (this.MatrixTime[0][trans] + this.vectorTime[trans] - time);
+        return timer;
+    }
+
     /*=================================================================================
                                           utility methods
      ==================================================================================*/
@@ -391,8 +405,8 @@ public class RDP {
     }
 
     /**
-     * @brief returns those sensitized only by the mark
      * @return vector whit sensitized
+     * @brief returns those sensitized only by the mark
      */
     private boolean[] getSensi4Mark() {
         //check which transitions are sensitized by mark

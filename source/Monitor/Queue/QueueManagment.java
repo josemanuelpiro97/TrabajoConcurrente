@@ -12,6 +12,10 @@ public class QueueManagment {
      * Control array of semaphore array
      */
     private boolean sleepT[];
+    /**
+     * Control array for trans with time
+     */
+    private boolean autoWake[];
 
     /**
      * @param arraySize Numbre of transitions in the Petri net
@@ -20,10 +24,12 @@ public class QueueManagment {
     public QueueManagment(int arraySize) {
         this.semaphores = new Semaphore[arraySize];
         this.sleepT = new boolean[arraySize];
+        this.autoWake = new boolean[arraySize];
 
         for (int i = 0; i < arraySize; i++) {
             this.semaphores[i] = new Semaphore(0);
             this.sleepT[i] = false;
+            this.autoWake[i] = false;
         }
     }
 
@@ -32,16 +38,19 @@ public class QueueManagment {
      * @param index [in]
      * @brief put thread to sleep in its semaphore
      */
-    public void sleepN(int index) {
-        for (int i = 0; i < this.semaphores.length; i++) {
-            if (i == index)
-                try {
-                    this.sleepT[i] = true;
-                    this.semaphores[i].acquire();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    public boolean sleepN(int index, long time, boolean transTime) {
+        try {
+            if (transTime) {
+                this.autoWake[index] = true;
+                Thread.sleep(time);
+            } else {
+                this.sleepT[index] = true;
+                this.semaphores[index].acquire();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        return this.autoWake[index];
     }
 
     /**
@@ -49,15 +58,13 @@ public class QueueManagment {
      * @brief Wake thread of specific semaphore
      */
     public void wakeN(int index) {
-        for (int i = 0; i < this.semaphores.length; i++) {
-            if (i == index)
-                try {
-                    this.sleepT[i] = false;
-                    this.semaphores[i].release();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            this.sleepT[index] = false;
+            this.semaphores[index].release();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     /**
@@ -79,26 +86,27 @@ public class QueueManagment {
     /*======================================================================================
                                        Getters
     ========================================================================================*/
+
     /**
-     * @brief Semaphores getter
      * @return All semaphores
+     * @brief Semaphores getter
      */
     public Semaphore[] getSemaphores() {
         return semaphores;
     }
 
     /**
-     * @brief Getter a specific semaphore length
      * @param transitionN Transition number representing the tail of which we want the size
      * @return Queue length specified
+     * @brief Getter a specific semaphore length
      */
     public int getQueueLength(int transitionN) {
         return this.semaphores[transitionN].getQueueLength();
     }
 
     /**
-     * @brief Getter sleeping transitions vector
      * @return
+     * @brief Getter sleeping transitions vector
      */
     public boolean[] whoSleepT() {
         return sleepT;

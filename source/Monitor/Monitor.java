@@ -54,7 +54,7 @@ public class Monitor {
             this.mutex.acquire();
 
             //log
-            String msj = "El hilo N: " + Thread.currentThread().getName() + " ingresa al monitor" ;
+            String msj = "El hilo N: " + Thread.currentThread().getName() + " ingresa al monitor";
             this.log.write2(msj);
 
             this.operate(transN);
@@ -64,14 +64,14 @@ public class Monitor {
     }
 
     /**
-     * @brief convert boolean vector to int vector
      * @param vec boolean vector to be convert
      * @return int vector
+     * @brief convert boolean vector to int vector
      */
-    private int[] convertBtoI(boolean[] vec){
-        int [] res = new int[vec.length];
-        for (int i =0 ; i< vec.length ; i++){
-            if(vec[i])
+    private int[] convertBtoI(boolean[] vec) {
+        int[] res = new int[vec.length];
+        for (int i = 0; i < vec.length; i++) {
+            if (vec[i])
                 res[i] = 1;
             else
                 res[i] = 0;
@@ -80,69 +80,69 @@ public class Monitor {
     }
 
     /**
-     * @brief operate monitor tasks
      * @param transN [in] transition to shot
+     * @brief operate monitor tasks
      */
-    private void operate(int transN)throws InvariantException {
+    private void operate(int transN) throws InvariantException, InterruptedException {
+        boolean autoWakeUp;
+        do {
+            int cant = 0;
+            this.controlFlag = this.rdp.ShotT(transN);
 
-        this.controlFlag = true;
-
-        while (controlFlag) {
-            controlFlag = this.rdp.ShotT(transN);
-
-            if (controlFlag) {
-                //check if there is some transition for wake
-                boolean[] ask = new boolean[this.rdp.getNumTrans()];
-                int cant = 0;
-                ask = this.rdp.getSensiArray();
-                for (int i = 0; i < this.rdp.getNumTrans(); i++) {
-                    ask[i] = ask[i] && this.queueManagment.whoSleepT()[i];
-                    if (ask[i])
+            if (this.controlFlag) {
+                //if shot is true
+                boolean[] ask = this.rdp.getSensiArray();
+                for (int i = 0; i < ask.length; i++) {
+                    if (ask[i] && this.queueManagment.whoSleepT()[i]) {
                         cant++;
+                    }
                 }
+                if (cant != 0) {
 
-                // if there's no one to wake up I'm leaving
-                if (cant == 0) {
-                    controlFlag = false;
-                }
-                //otherwise, I ask who to wake up from all possibilities and give my place.
-                else {
-                    int wakeThis = this.policy.whoWake(this.convertBtoI(ask));
+                    //pregunto a quien levantar
+                    int wakeThread = this.policy.whoWake(this.convertBtoI(ask));
 
                     //log
-                    String msj = "Se va a despertar el hilo:  " + wakeThis;
+                    String msj = "Se va a despertar el hilo:  " + wakeThread;
                     this.log.write2(msj);
 
-                    //wake thread
-                    this.queueManagment.wakeN(wakeThis);
-
-                    break;
+                    //wake
+                    this.queueManagment.wakeN(wakeThread);
+                    return;
+                } else {
+                    this.controlFlag = false;
                 }
             } else {
+
                 //log
                 String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir" + "\n";
                 this.log.write2(msj);
 
-                //leave the monitor
                 this.mutex.release();
+                long timeSleep = this.rdp.getWaitTime(transN);
+                if (timeSleep != -1) {
+                    autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
+                } else {
+                    autoWakeUp = this.queueManagment.sleepN(transN, 0, false);
+                }
 
-                //go to sleep
-                this.queueManagment.sleepN(transN);
+                if (autoWakeUp) this.mutex.acquire(); //Si se desperto solo vuelve a competir por el mutex
 
                 //log
                 String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
                 this.log.write2(msj2);
 
             }
-        }
-        if(!controlFlag)
-            this.mutex.release();
+
+        } while (this.controlFlag);
+
+        this.mutex.release();
     }
 
     /**
      * @brief Close log
      */
-    public void closeLog(){
+    public void closeLog() {
         this.log.close();
     }
 

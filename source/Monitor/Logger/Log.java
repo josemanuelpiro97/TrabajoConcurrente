@@ -10,8 +10,6 @@ import java.io.BufferedWriter;
 public class Log {
 
     private File archivo;
-    private String name;
-    private String path;
     private FileWriter fw;
 
     public Log() {
