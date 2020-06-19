@@ -100,7 +100,8 @@ public class Monitor {
                 //if shot is true
                 boolean[] ask = this.rdp.getSensiArray();
                 for (int i = 0; i < ask.length; i++) {
-                    if (ask[i] && this.queueManagment.whoSleepT()[i]) {
+                    ask[i] = ask[i] && this.queueManagment.whoSleepT()[i];
+                    if (ask[i]) {
                         cant++;
                     }
                 }
