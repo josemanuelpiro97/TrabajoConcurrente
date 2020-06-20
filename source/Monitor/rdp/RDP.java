@@ -4,7 +4,6 @@ import Monitor.Logger.Log;
 
 /**
  * @TODO ver si se hardcodea la red o se arma desde un archivo.
- * @TODO Implementar tomar el tiempo para las transiciones (con tiempo) que arranquen sensibilizadas
  */
 public class RDP {
     /**
@@ -30,7 +29,7 @@ public class RDP {
     /**
      * Matriz donde se almacenan los tiempos Alfa y Beta
      */
-    private final int[][] MatrixTime;
+    private final long[][] MatrixTime;
     /**
      * Vector de stamptime para el sensibilizado de transiciones
      */
@@ -123,7 +122,7 @@ public class RDP {
         this.VecInvPlaces = new int[]{1, 1};
 
         // Ventana de tiempo de las trasiciones
-        this.MatrixTime = new int[][]{
+        this.MatrixTime = new long[][]{
 
                 {0, 1000, 0, 0},
                 {0, 10000000, 0, 0}
@@ -285,14 +284,11 @@ public class RDP {
     private boolean getSensi4temp(long time, int trans) {
         boolean valid = false;
         if (isTransTime(trans) && wasSensitized(trans)) {
-            //check if the elapsed time is in the allowed time window
-            boolean supAlpha = (time - this.vectorTime[trans]) > this.MatrixTime[0][trans];
-            boolean lowBeta = true;
-            if (this.MatrixTime[1][trans] != 0) {
-                lowBeta = (time - this.vectorTime[trans]) < this.MatrixTime[1][trans];
-                if (!lowBeta) System.out.println("beta passed");
+            valid = true;
+            valid = this.MatrixTime[0][trans] < (time - this.vectorTime[trans]);
+            if(valid && this.MatrixTime[1][trans] != 0){
+                valid = this.MatrixTime[1][trans] > (time - this.vectorTime[trans]);
             }
-            valid = supAlpha && lowBeta;
         }
         return valid;
     }
@@ -323,7 +319,7 @@ public class RDP {
      * @brief check if the transition was sensitized
      */
     private boolean wasSensitized(int trans) {
-        return this.vectorTime[trans] != (-1);
+        return (this.vectorTime[trans] != -1);
     }
 
     /**
@@ -332,13 +328,20 @@ public class RDP {
      * @brief Devuelve el tiempo que resta hasta que la transicion se encuentre dentro de la ventana de tiempo
      */
     public long getWaitTime(int trans) {
-        boolean val2 = !this.wasSensitized(trans);
-        if (!this.wasSensitized(trans)) {
+        long time = java.lang.System.currentTimeMillis();
+
+        if (this.wasSensitized(trans) && this.isTransTime(trans)) {
+            //Tiempo que lleva sensi
+            long timer = (time - this.vectorTime[trans]);
+            if(timer < this.MatrixTime[0][trans]) {
+                //Si es menor devuelvo el valor q debe esperar
+                return (this.MatrixTime[0][trans] - timer);
+            }else{
+                return 0;
+            }
+        }else{
             return -1;
         }
-        long time = java.lang.System.currentTimeMillis();
-        long timer = (this.MatrixTime[0][trans] + this.vectorTime[trans] - time);
-        return timer;
     }
 
     /*=================================================================================

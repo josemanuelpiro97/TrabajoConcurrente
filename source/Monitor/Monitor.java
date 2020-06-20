@@ -9,8 +9,8 @@ import Monitor.rdp.RDP;
 import java.util.concurrent.Semaphore;
 
 /**
- * @TODO Hacer fucking todo bitch
- * @TODO Agregar documentacion de cada cosa q se agregue
+ * NOTA: El hilo 1 al despertarse no le da el tiempo para disparar debido a que es el unico q esta activo, le faltan 1 a 2 milisegundos para disparar.
+ *       Si le agrego 100 milisegundos al tiempo q tiene q dormir funciona correctamente, creo q cuando se agregen mas hilos y mayor complejidad de la red esto se corrige.
  */
 public class Monitor {
     /**
@@ -38,10 +38,6 @@ public class Monitor {
      */
     private boolean controlFlag;
 
-    /**
-     * count control
-     */
-    private int count = 0;
 
     public Monitor(Log log) {
         this.log = log;
@@ -49,25 +45,8 @@ public class Monitor {
         this.rdp = new RDP("Red con tiempo", this.log);
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
-        this.mutex = new Semaphore(1);
+        this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO
         this.controlFlag = true;
-    }
-
-    /**
-     * @brief take the Monitor
-     */
-    public void takeMonitor(int transN) {
-        try {
-            this.mutex.acquire();
-
-            //log
-            String msj = "El hilo N: " + Thread.currentThread().getName() + " ingresa al monitor";
-            this.log.write2(msj);
-
-            this.operate(transN);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -90,9 +69,13 @@ public class Monitor {
      * @param transN [in] transition to shot
      * @brief operate monitor tasks
      */
-    private void operate(int transN) throws InvariantException, InterruptedException {
+    public void operate(int transN) throws InvariantException, InterruptedException {
+        this.mutex.acquire();
         boolean autoWakeUp;
+        long timeSleep;
+
         do {
+
             int cant = 0;
             this.controlFlag = this.rdp.ShotT(transN);
 
@@ -122,27 +105,37 @@ public class Monitor {
                 }
             } else {
 
-                //log
-                String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir" + "\n";
-                this.log.write2(msj);
-
-                this.mutex.release();
-                long timeSleep = this.rdp.getWaitTime(transN);
+                timeSleep = this.rdp.getWaitTime(transN);
                 if (timeSleep != -1) {
-                    //log
-                    String msj2 = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir: " + timeSleep
-                            +" [mili]" + "\n";
-                    this.log.write2(msj2);
+                    if (timeSleep == 0) {
+                        //Se sensibilizo
+                        this.controlFlag = true; //Lo seteo para q intente disparar de nuevo, no se libero el semaforo
 
-                    autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
+                        continue;
+                    } else {
+
+                        this.mutex.release(); //Lo libero porq me voy a dormir por un tiempo
+
+                        //log
+                        String msj2 = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir: " + timeSleep
+                                + " [mili]" + "\n";
+                        this.log.write2(msj2);
+
+                        autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
+                    }
                 } else {
+
+                    this.mutex.release(); //Me voy a dormir a las colas normales
+                    //log
+                    String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir" + "\n";
+                    this.log.write2(msj);
                     autoWakeUp = this.queueManagment.sleepN(transN, 0, false);
                 }
 
-                if (autoWakeUp){
+                if (autoWakeUp) {
                     this.mutex.acquire(); //Si se desperto solo vuelve a competir por el mutex
-                    //this.controlFlag = true;
                 }
+                this.controlFlag = true; //Cuando se adquiere, se setea en true para intentar disparar
 
                 //log
                 String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
