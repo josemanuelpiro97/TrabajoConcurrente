@@ -111,7 +111,7 @@ public class RDP {
                 {0, 0, 1, -1}};
 
         // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
-        this.Mark = new int[]{4, 0, 0, 0, 0};
+        this.Mark = new int[]{1, 0, 0, 0, 0};
 
         // Matriz de P invariantes
         this.MatrixInvPlace = new int[][]{
@@ -120,7 +120,7 @@ public class RDP {
         };
 
         // Numero de invariante de plaza
-        this.VecInvPlaces = new int[]{4, 4};
+        this.VecInvPlaces = new int[]{1, 1};
 
         // Ventana de tiempo de las trasiciones
         this.MatrixTime = new int[][]{
@@ -413,7 +413,7 @@ public class RDP {
      * @return vector whit sensitized
      * @brief returns those sensitized only by the mark
      */
-    private boolean[] getSensi4Mark() {
+    public boolean[] getSensi4Mark() {
         //check which transitions are sensitized by mark
         boolean[] isSensi = new boolean[this.matrixI[0].length];
         for (int i = 0; i < isSensi.length; i++) {
@@ -433,6 +433,7 @@ public class RDP {
         for (int i = 0; i < isSensi.length; i++) {
             isSensi[i] = this.validShot(this.nextMark(i));
         }
+
         if (this.isTimeExtend()) {
             //take time
             long time = java.lang.System.currentTimeMillis();

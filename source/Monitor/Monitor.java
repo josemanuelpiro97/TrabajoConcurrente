@@ -98,7 +98,7 @@ public class Monitor {
 
             if (this.controlFlag) {
                 //if shot is true
-                boolean[] ask = this.rdp.getSensiArray();
+                boolean[] ask = this.rdp.getSensi4Mark();
                 for (int i = 0; i < ask.length; i++) {
                     ask[i] = ask[i] && this.queueManagment.whoSleepT()[i];
                     if (ask[i]) {
@@ -129,12 +129,20 @@ public class Monitor {
                 this.mutex.release();
                 long timeSleep = this.rdp.getWaitTime(transN);
                 if (timeSleep != -1) {
+                    //log
+                    String msj2 = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir: " + timeSleep
+                            +" [mili]" + "\n";
+                    this.log.write2(msj2);
+
                     autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
                 } else {
                     autoWakeUp = this.queueManagment.sleepN(transN, 0, false);
                 }
 
-                if (autoWakeUp) this.mutex.acquire(); //Si se desperto solo vuelve a competir por el mutex
+                if (autoWakeUp){
+                    this.mutex.acquire(); //Si se desperto solo vuelve a competir por el mutex
+                    //this.controlFlag = true;
+                }
 
                 //log
                 String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();

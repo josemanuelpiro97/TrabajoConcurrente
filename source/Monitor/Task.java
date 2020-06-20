@@ -16,13 +16,13 @@ public class Task implements Runnable {
     @Override
     public void run() {
         //test variable
-        final int FINAL = 10000;
+        final int FINAL = 100;
 
         for (int i = 0; i < FINAL; i++) {
             try {
                 //operate
                 this.monitor.takeMonitor(this.transitionN);
-
+                Thread.sleep(100);
             }
             catch (Exception e){
                 e.printStackTrace();
