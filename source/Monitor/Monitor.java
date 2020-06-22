@@ -127,7 +127,7 @@ public class Monitor {
 
                     this.mutex.release(); //Me voy a dormir a las colas normales
                     //log
-                    String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir" + "\n";
+                    String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir cola comun" + "\n";
                     this.log.write2(msj);
                     autoWakeUp = this.queueManagment.sleepN(transN, 0, false);
                 }

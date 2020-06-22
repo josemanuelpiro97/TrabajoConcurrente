@@ -124,8 +124,8 @@ public class RDP {
         // Ventana de tiempo de las trasiciones
         this.MatrixTime = new long[][]{
 
-                {0, 1000, 0, 0},
-                {0, 10000000, 0, 0}
+                {0, 1000, 2000, 0},
+                {0, 10000000, 10000000, 0}
 
         };
 

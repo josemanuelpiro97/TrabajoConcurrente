@@ -45,6 +45,7 @@ public class QueueManagment {
                 Thread.sleep(time);
             } else {
                 this.sleepT[index] = true;
+                this.autoWake[index] = false;
                 this.semaphores[index].acquire();
             }
         } catch (InterruptedException e) {
