@@ -41,7 +41,7 @@ public class RDP {
 
 
     /**
-     * @brief Constructor solo utilizado para test, sin tiempo ni logger
+     * @brief Constructor solo utilizado para test, sin tiempo ni logger, la dejo por los TEST
      */
     public RDP() {
         info = "RdP de Test, sin tiempo";
@@ -69,6 +69,9 @@ public class RDP {
         this.MatrixTime = null;
     }
 
+    /**
+     * @brief Constructor solo utilizado para test, con logger, la dejo por los TEST
+     */
     public RDP(Log l) {
         info = "RdP de Test, sin tiempo";
 
@@ -98,39 +101,65 @@ public class RDP {
 
     }
 
+    /**
+     * Red de trabajo final
+     * @param info Nombre de la red
+     * @param l logger
+     */
     public RDP(String info, Log l) {
         this.info = info;
 
-        // Matriz de incidencia de la red para test
+        // Matriz de incidencia
         this.matrixI = new int[][]{
-                {-1, 0, 0, 1},
-                {1, -1, 0, 0},
-                {0, 1, 0, -1},
-                {1, 0, -1, 0},
-                {0, 0, 1, -1}};
+                {0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 2, 2},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0},
+                {0, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, -1, -1, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -2, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -2},
+                {-1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
+                {0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0},
+                {0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0},
+                {0, 0, 0, -1, -1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0},
+        };
 
         // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
-        this.Mark = new int[]{1, 0, 0, 0, 0};
+        this.Mark = new int[]{0, 0, 0, 8, 8, 4, 4, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0};
 
         // Matriz de P invariantes
         this.MatrixInvPlace = new int[][]{
-                {1, 1, 1, 0, 0},
-                {1, 0, 0, 1, 1}
+                {0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
         };
 
         // Numero de invariante de plaza
-        this.VecInvPlaces = new int[]{1, 1};
+        this.VecInvPlaces = new int[]{8, 8, 4, 4, 1, 1, 1, 1};
 
         // Ventana de tiempo de las trasiciones
         this.MatrixTime = new long[][]{
-
-                {0, 1000, 2000, 0},
-                {0, 10000000, 10000000, 0}
-
+                //Setear los tiempos
+                {2000, 0, 0, 0, 0, 1000, 1000, 1500, 1500, 0, 0, 0, 0, 1000, 1000, 4000, 4000},
+                {1000000, 0, 0, 0, 0, 1000000, 1000000, 1000000, 0, 0, 0, 0, 1000000, 1000000, 1000000, 1000000}
+                //ProcesarT2Px + FinalizarT2Px > FinalizarT1Px
         };
 
         // Vector donde se almacenan los timestamp
-        this.vectorTime = new long[]{-1, -1, -1, -1};
+        this.vectorTime = new long[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
         this.log = l;
 
@@ -180,8 +209,7 @@ public class RDP {
                 if ((!oldSensi[i] && newSensi[i]) && this.isTransTime(i)) {
                     // update time vector
                     this.vectorTime[i] = timestamp;
-                }
-                else if ((oldSensi[i] && !newSensi[i]) && this.isTransTime(i)) {
+                } else if ((oldSensi[i] && !newSensi[i]) && this.isTransTime(i)) {
                     // update time vector
                     this.vectorTime[i] = -1;
                 }
@@ -286,7 +314,7 @@ public class RDP {
         if (isTransTime(trans) && wasSensitized(trans)) {
             valid = true;
             valid = this.MatrixTime[0][trans] < (time - this.vectorTime[trans]);
-            if(valid && this.MatrixTime[1][trans] != 0){
+            if (valid && this.MatrixTime[1][trans] != 0) {
                 valid = this.MatrixTime[1][trans] > (time - this.vectorTime[trans]);
             }
         }
@@ -333,13 +361,13 @@ public class RDP {
         if (this.wasSensitized(trans) && this.isTransTime(trans)) {
             //Tiempo que lleva sensi
             long timer = (time - this.vectorTime[trans]);
-            if(timer < this.MatrixTime[0][trans]) {
+            if (timer < this.MatrixTime[0][trans]) {
                 //Si es menor devuelvo el valor q debe esperar
                 return (this.MatrixTime[0][trans] - timer);
-            }else{
+            } else {
                 return 0;
             }
-        }else{
+        } else {
             return -1;
         }
     }

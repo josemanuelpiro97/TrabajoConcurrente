@@ -3,6 +3,9 @@ package Monitor.politics;
 
 import java.util.Random;
 
+/**
+ * @TODO adaptar la politica al trabajo
+ */
 public class Policy {
 
     /**

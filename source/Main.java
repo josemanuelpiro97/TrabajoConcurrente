@@ -16,14 +16,12 @@ public class Main {
 
 
         //build and start, tasks and threads
-        Task[] tasks = new Task[4];
-        Thread[] threads = new Thread[4];
-        for (int i = 0; i < 4; i++) {
+        Task[] tasks = new Task[17];
+        Thread[] threads = new Thread[17];
+        for (int i = 0; i < 17; i++) {
             tasks[i] = new Task(i, monitor, log);
             threads[i] = new Thread(tasks[i]);
-        }
-        for(int i = 0; i <4 ; i++){
-            threads[3-i].start();
+            threads[i].start();
         }
 
         //   try {
