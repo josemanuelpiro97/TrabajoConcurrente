@@ -5,14 +5,20 @@ import java.util.Random;
 
 /**
  * @TODO adaptar la politica al trabajo
+ * Conflictos: 1. AsignarP1 y Asignar P2 (t1,t2)
+ *             2. FinalizarT1P1 y ProcesarT2P1 (t5, t13)
+ *             3. P1M1 y P1M2 (t9, t10)
+ *             4. FinalizarT1P2 y ProcesarT2P2 (t6, t14)
+ *             5. P2M1 y P2M2 (t11 y t12)
+ * @TODO       SOLAMENTE CON RANDOM ESTO FUNCIONA, NO HAY Q RESOLVER CONFLICTOS, TODAS LAS TRANSICIONES TIENEN LA MISMA PRIORIDAD
  */
 public class Policy {
 
     /**
-     * policy that resolves conflict in t0 and t1
+     * policy that resolves conflict in AsignarP1 and AsignarP2
      */
-    private final int CONFLIC1_1 = 0;
-    private final int CONFLIC1_2 = 1;
+    private final int CONFLIC1_1 = 1;
+    private final int CONFLIC1_2 = 2;
     private final int[] CLONFLICT1 = {CONFLIC1_1, CONFLIC1_2};
     /**
      * state for policy 1

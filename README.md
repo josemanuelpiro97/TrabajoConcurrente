@@ -1,8 +1,9 @@
 # Trabajo Concurrente
 >Proyecto dirigido a la confeccion de un Monitor de concurrencia basado en redes de petri. 
 
-#### Caracteristicas del Monitor: @TO-DO
-
+#### Caracteristicas del Monitor:
+>Monitor utilizado para el manejo y sincronizacion de hilos con el fin de evolucionar la red de petri que se le asiga
+>con sus respectivas politicas.
 #### Descripcion y funcionamiento. 
 
 ## Modulo de RDP
