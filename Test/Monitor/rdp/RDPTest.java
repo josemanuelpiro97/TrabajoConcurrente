@@ -1,14 +1,9 @@
 package Monitor.rdp;
 
-import Monitor.Logger.Log;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class RDPTest {
-
+/*
     @Tag("Disparos")
     @Test
     void ShotT() {
@@ -118,4 +113,6 @@ class RDPTest {
             e.printInfo();
         }
     }
+
+ */
 }

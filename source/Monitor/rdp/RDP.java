@@ -231,6 +231,10 @@ public class RDP {
         }
         this.log.write2("Marca actual: " + msj.toString() + "\n");
 
+        //registro si se completo una tarea
+        if(trans == 9 || trans == 10 || trans == 11 || trans == 12 )
+            this.log.write2("SE COMPLETO UNA TAREA"+ "\n");
+
         return true;
     }
 

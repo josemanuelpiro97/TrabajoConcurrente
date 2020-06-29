@@ -61,7 +61,7 @@ public class Policy {
             while (changes[i] == backVal) changes[i] = ran.nextInt((matrixP[0].length));
             backVal = changes[i];
         }
-        return matrixP;
+        return changeRow(matrixP,changes);
     }
 
     //---------------------------------------------------------
