@@ -367,7 +367,7 @@ public class RDP {
             long timer = (time - this.vectorTime[trans]);
             if (timer < this.MatrixTime[0][trans]) {
                 //Si es menor devuelvo el valor q debe esperar
-                return (this.MatrixTime[0][trans] - timer) + 1; //Milisegundo necesario para dormir un alfa mayor a la ventana
+                return (this.MatrixTime[0][trans] - timer) + 2; //Milisegundo necesario para dormir un alfa mayor a la ventana
             } else {
                 return 0;
             }
