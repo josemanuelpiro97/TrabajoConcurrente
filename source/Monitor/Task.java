@@ -1,11 +1,12 @@
 package Monitor;//Test Class of Monitor.Task
 
+import Monitor.rdp.InvariantException;
+
 public class Task implements Runnable {
 
     private int transitionN;
     private Monitor monitor;
     private int disparosTotales;
-    public static int tareasRealizadas;
 
     public Task( int transitionN, Monitor monitor, int cant) {
         this.transitionN = transitionN;
@@ -24,7 +25,11 @@ public class Task implements Runnable {
                 Thread.sleep(100);
             }
             catch (Exception e){
-                e.printStackTrace();
+                if (e instanceof InvariantException){
+                    ((InvariantException) e).printInfo();
+                }else {
+                    e.printStackTrace();
+                }
             }
         }
     }

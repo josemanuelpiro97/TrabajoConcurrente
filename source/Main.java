@@ -20,7 +20,7 @@ public class Main {
         Thread[] threads = new Thread[17];
         for (int i = 0; i < 17; i++) {
             if (i == 0) {
-                tasks[i] = new Task(i, monitor, 10);
+                tasks[i] = new Task(i, monitor, 100);
                 threads[i] = new Thread(tasks[i]);
                 threads[i].start();
             }else {
@@ -30,19 +30,6 @@ public class Main {
             }
         }
 
-        try {
-            threads[0].join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            Thread.sleep(10000);
-            monitor.closeLog();
-            System.exit(0);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
 
