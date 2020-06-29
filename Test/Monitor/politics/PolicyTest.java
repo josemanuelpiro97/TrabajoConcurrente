@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PolicyTest {
+    /*
     @Test
     void whoWake() {
         //-------------------------------------------
@@ -221,7 +222,7 @@ class PolicyTest {
      * @param matrix matrix to sum
      * @return all sum
      * @brief sum all ij in the matrix
-     */
+     *
     private int allSum(int[][] matrix) {
         int aux = 0;
         int a = matrix.length;
@@ -232,6 +233,6 @@ class PolicyTest {
         }
         return aux;
     }
-
+*/
 
 }

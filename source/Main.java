@@ -19,19 +19,31 @@ public class Main {
         Task[] tasks = new Task[17];
         Thread[] threads = new Thread[17];
         for (int i = 0; i < 17; i++) {
-            tasks[i] = new Task(i, monitor, log);
-            threads[i] = new Thread(tasks[i]);
-            threads[i].start();
+            if (i == 0) {
+                tasks[i] = new Task(i, monitor, 10);
+                threads[i] = new Thread(tasks[i]);
+                threads[i].start();
+            }else {
+                tasks[i] = new Task(i, monitor, 0);
+                threads[i] = new Thread(tasks[i]);
+                threads[i].start();
+            }
         }
 
-        //   try {
-        // Thread.sleep(10000);
-        //  monitor.closeLog();
-        //System.exit(0);
-        // }catch (InterruptedException e){
-        //    e.printStackTrace();
+        try {
+            threads[0].join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Thread.sleep(10000);
+            monitor.closeLog();
+            System.exit(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
-
 
 
