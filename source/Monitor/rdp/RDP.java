@@ -39,7 +39,6 @@ public class RDP {
      */
     private Log log;
 
-
     /**
      * @brief Constructor solo utilizado para test, sin tiempo ni logger, la dejo por los TEST
      */
@@ -103,8 +102,9 @@ public class RDP {
 
     /**
      * Red de trabajo final
+     *
      * @param info Nombre de la red
-     * @param l logger
+     * @param l    logger
      */
     public RDP(String info, Log l) {
         this.info = info;
@@ -153,7 +153,7 @@ public class RDP {
         // Ventana de tiempo de las trasiciones
         this.MatrixTime = new long[][]{
                 //Setear los tiempos
-                {2000, 0, 0, 0, 0, 1000, 1000, 1500, 1500, 0, 0, 0, 0, 1000, 1000, 4000, 4000},
+                {500, 0, 0, 0, 0, 200, 200, 350, 350, 0, 0, 0, 0, 200, 200, 500, 500},
                 {1000000, 0, 0, 0, 0, 1000000, 1000000, 1000000, 0, 0, 0, 0, 1000000, 1000000, 1000000, 1000000}
                 //ProcesarT2Px + FinalizarT2Px > FinalizarT1Px
         };
@@ -363,7 +363,7 @@ public class RDP {
             long timer = (time - this.vectorTime[trans]);
             if (timer < this.MatrixTime[0][trans]) {
                 //Si es menor devuelvo el valor q debe esperar
-                return (this.MatrixTime[0][trans] - timer);
+                return (this.MatrixTime[0][trans] - timer) + 1; //Milisegundo necesario para dormir un alfa mayor a la ventana
             } else {
                 return 0;
             }
@@ -491,4 +491,5 @@ public class RDP {
     }
 
 }
+
 
