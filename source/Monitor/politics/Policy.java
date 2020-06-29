@@ -13,18 +13,6 @@ import java.util.Random;
  * @TODO       SOLAMENTE CON RANDOM ESTO FUNCIONA, NO HAY Q RESOLVER CONFLICTOS, TODAS LAS TRANSICIONES TIENEN LA MISMA PRIORIDAD
  */
 public class Policy {
-
-    /**
-     * policy that resolves conflict in AsignarP1 and AsignarP2
-     */
-    private final int CONFLIC1_1 = 1;
-    private final int CONFLIC1_2 = 2;
-    private final int[] CLONFLICT1 = {CONFLIC1_1, CONFLIC1_2};
-    /**
-     * state for policy 1
-     */
-    private boolean stateC = false;
-
     /**
      * number of transition in the RDP
      */
@@ -44,14 +32,11 @@ public class Policy {
      * @brief find what policy to apply and apply it
      */
     public int whoWake(int[] ask) {
-        int[][] P = new int[this.sizeT][];
+        int[][] P;
 
-        //check for same know conflict, if there is not, apply random policy
-        if (ask[this.CONFLIC1_1] == 1 && ask[this.CONFLIC1_2] == 1) {
-            P = this.conflictPolicy_1();
-        } else {
-            P = this.randomPolicy();
-        }
+        //apply random policy
+        P = this.randomPolicy();
+
 
         //get transition to shot
         int val = this.applyPolitic(ask, P);
@@ -88,27 +73,6 @@ public class Policy {
         }
         return matrixP;
     }
-
-    /**
-     * @return P1 policy matrix
-     * @brief generate a P1 policy matrix
-     */
-    public int[][] conflictPolicy_1() {
-        int[][] matrixP;
-        matrixP = buildIdentity(this.sizeT);
-
-        int[][] PChanged = new int[this.sizeT][];
-        if (this.stateC) {
-            PChanged = this.changeRow(matrixP, this.CLONFLICT1);
-        } else {
-            PChanged = matrixP;
-        }
-        //change state for P1
-        this.stateC = !this.stateC;
-
-        return PChanged;
-    }
-
 
     //---------------------------------------------------------
     //                  TOOLS
