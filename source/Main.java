@@ -1,6 +1,7 @@
 import Monitor.Logger.Log;
 import Monitor.Monitor;
 import Monitor.Task;
+import com.google.*;
 
 
 /**
@@ -20,7 +21,7 @@ public class Main {
         Thread[] threads = new Thread[17];
         for (int i = 0; i < 17; i++) {
             if (i == 0) {
-                tasks[i] = new Task(i, monitor, 100);
+                tasks[i] = new Task(i, monitor, 10000);
                 threads[i] = new Thread(tasks[i]);
                 threads[i].start();
             }else {
