@@ -21,27 +21,15 @@ public class Log {
         }
     }
 
-    public void write(int trans, String msj) {
+    public synchronized void write(String msj) {
         String buffer;
         long time = java.lang.System.currentTimeMillis();
-        buffer = String.format("%014d | %-2s | %d |%s \n",time, Thread.currentThread().getName(), trans, msj);
-        System.out.print(java.lang.System.currentTimeMillis()+ " --> " + buffer);
-        try{
+        buffer = String.format("%014d | %3d | %-2s |%s\n", time, Thread.currentThread().getId(), Thread.currentThread().getName(), msj);
+        try {
             this.fw.write(buffer);
+            System.out.print(buffer);
             this.fw.flush();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void write2(String msj) {
-        String buffer2;
-        buffer2 = String.format(msj + "\n");
-        System.out.print(java.lang.System.currentTimeMillis()+ " --> " +buffer2);
-        try{
-            this.fw.write(buffer2);
-            this.fw.flush();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

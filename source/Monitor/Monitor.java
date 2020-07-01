@@ -5,6 +5,7 @@ import Monitor.Queue.QueueManagment;
 import Monitor.politics.Policy;
 import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
+import Monitor.rdp.ShotException;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -43,26 +44,22 @@ public class Monitor {
     private boolean controlFlag;
 
 
-<<<<<<< HEAD
-    public Monitor(Log log) throws FileNotFoundException {
-        this.log = log;
+    public Monitor() throws FileNotFoundException {
+        this.log = new Log();
 
         ///////////////////////////////////////////////////////////////////////
-        String path = "Parameterizer.json";
+        //String path = "PetriTest.json";
+        String path = "TpFinal.json";
         BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
         Gson gson = new Gson();
-        this.rdp = gson.fromJson(bufferedReader,RDP.class);
+        this.rdp = gson.fromJson(bufferedReader, RDP.class);
+
         //set initial time for initial sensitized transitions
         this.rdp.setTimeSens();
         this.rdp.setLog(log);
         ////////////////////////////////////////////////////////////////////////
 
-=======
-    public Monitor() {
-        this.log = new Log();
-        this.rdp = new RDP("TP final Concurrente 2020", this.log);
->>>>>>> 76ee292354762539c01b138ba44e934670ca86de
-        this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
+        this.queueManagment = new QueueManagment(this.rdp.getNumTrans(),log);
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO
         this.controlFlag = true;
@@ -88,7 +85,7 @@ public class Monitor {
      * @param transN [in] transition to shot
      * @brief operate monitor tasks
      */
-    public void operate(int transN) throws InvariantException, InterruptedException {
+    public void operate(int transN) throws InvariantException, InterruptedException, ShotException{
         this.mutex.acquire();
         boolean autoWakeUp;
         long timeSleep;
@@ -112,10 +109,6 @@ public class Monitor {
                     //pregunto a quien levantar
                     int wakeThread = this.policy.whoWake(this.convertBtoI(ask));
 
-                    //log
-                    String msj = "Se va a despertar el hilo:  " + wakeThread;
-                    this.log.write2(msj);
-
                     //wake
                     this.queueManagment.wakeN(wakeThread);
                     return;
@@ -135,19 +128,12 @@ public class Monitor {
 
                         this.mutex.release(); //Lo libero porq me voy a dormir por un tiempo
 
-                        //log
-                        String msj2 = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir: " + timeSleep
-                                + " [mili]" + "\n";
-                        this.log.write2(msj2);
-
                         autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
                     }
                 } else {
 
                     this.mutex.release(); //Me voy a dormir a las colas normales
-                    //log
-                    String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir cola comun" + "\n";
-                    this.log.write2(msj);
+
                     autoWakeUp = this.queueManagment.sleepN(transN, 0, false);
                 }
 
@@ -156,9 +142,6 @@ public class Monitor {
                 }
                 this.controlFlag = true; //Cuando se adquiere, se setea en true para intentar disparar
 
-                //log
-                String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
-                this.log.write2(msj2);
 
             }
 

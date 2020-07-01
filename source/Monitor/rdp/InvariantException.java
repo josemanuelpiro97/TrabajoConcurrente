@@ -35,15 +35,15 @@ public class InvariantException extends Exception {
     public void printInfo() {
         System.out.println("Se produjo una violacion de invarantes en el estado: ");
         for (int i : this.mark) {
-            System.out.print(String.format("%5d", i));
+            System.out.print(String.format("%4d", i));
         }
         System.out.println("\nEl numero de invariante que se debia cumplir era: ");
         for (int i : this.invariantes) {
-            System.out.print(String.format("%5d", i));
+            System.out.print(String.format("%4d", i));
         }
         System.out.println("\nY fue: ");
         for (int i : this.resultado) {
-            System.out.print(String.format("%5d", i));
+            System.out.print(String.format("%4d", i));
         }
     }
 }

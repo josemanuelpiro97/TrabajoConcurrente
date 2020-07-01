@@ -11,25 +11,17 @@ import java.io.FileNotFoundException;
  * @TODO Sacar la creacion del log desde Main y q lo cree el Monitor
  **/
 public class Main {
-<<<<<<< HEAD
     public static void main(String[] arg) throws FileNotFoundException {
-        //build monitor
-
-        Log log = new Log();
-        Monitor monitor = new Monitor(log);
-=======
-    public static void main(String[] arg) {
->>>>>>> 76ee292354762539c01b138ba44e934670ca86de
-
-        //build monitor
+        //build Monitor
         Monitor monitor = new Monitor();
 
         //build and start, tasks and threads
+
         Task[] tasks = new Task[15];
         Thread[] threads = new Thread[15];
         for (int i = 0; i < 13; i++) {
             if (i == 0) {
-                tasks[i] = new Task(new int[]{i}, monitor, 100);
+                tasks[i] = new Task(new int[]{i}, monitor, 10);
                 threads[i] = new Thread(tasks[i]);
                 threads[i].start();
             } else if (i == 7) {
@@ -56,6 +48,26 @@ public class Main {
         tasks[14] = new Task(new int[]{16}, monitor, 0);
         threads[14] = new Thread(tasks[14]);
         threads[14].start();
+
+
+        //build and start, tasks and threads
+        /*
+        Task[] tasks = new Task[4];
+        Thread[] threads = new Thread[4];
+        for (int i =0 ; i< 4 ; i++){
+            tasks[i] = new Task(new int[]{i},monitor,0);
+            threads[i] = new Thread(tasks[i]);
+            threads[i].start();
+        }
+
+        try{
+            Thread.sleep(5000);
+            monitor.closeLog();
+            System.exit(0);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+         */
     }
 }
 
