@@ -14,7 +14,7 @@ import java.util.concurrent.Semaphore;
 
 /**
  * NOTA: El hilo 1 al despertarse no le da el tiempo para disparar debido a que es el unico q esta activo, le faltan 1 a 2 milisegundos para disparar.
- *       Si le agrego 100 milisegundos al tiempo q tiene q dormir funciona correctamente, creo q cuando se agregen mas hilos y mayor complejidad de la red esto se corrige.
+ * Si le agrego 100 milisegundos al tiempo q tiene q dormir funciona correctamente, creo q cuando se agregen mas hilos y mayor complejidad de la red esto se corrige.
  */
 public class Monitor {
     /**
@@ -43,6 +43,7 @@ public class Monitor {
     private boolean controlFlag;
 
 
+<<<<<<< HEAD
     public Monitor(Log log) throws FileNotFoundException {
         this.log = log;
 
@@ -56,6 +57,11 @@ public class Monitor {
         this.rdp.setLog(log);
         ////////////////////////////////////////////////////////////////////////
 
+=======
+    public Monitor() {
+        this.log = new Log();
+        this.rdp = new RDP("TP final Concurrente 2020", this.log);
+>>>>>>> 76ee292354762539c01b138ba44e934670ca86de
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO
