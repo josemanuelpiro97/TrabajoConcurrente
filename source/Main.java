@@ -1,7 +1,9 @@
 import Monitor.Logger.Log;
 import Monitor.Monitor;
 import Monitor.Task;
-import com.google.*;
+
+
+import java.io.FileNotFoundException;
 
 
 /**
@@ -10,8 +12,9 @@ import com.google.*;
  **/
 
 public class Main {
-    public static void main(String[] arg) {
+    public static void main(String[] arg) throws FileNotFoundException {
         //build monitor
+
         Log log = new Log();
         Monitor monitor = new Monitor(log);
 
@@ -21,7 +24,7 @@ public class Main {
         Thread[] threads = new Thread[17];
         for (int i = 0; i < 17; i++) {
             if (i == 0) {
-                tasks[i] = new Task(i, monitor, 10000);
+                tasks[i] = new Task(i, monitor, 100);
                 threads[i] = new Thread(tasks[i]);
                 threads[i].start();
             }else {

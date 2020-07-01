@@ -5,7 +5,11 @@ import Monitor.Queue.QueueManagment;
 import Monitor.politics.Policy;
 import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -39,10 +43,19 @@ public class Monitor {
     private boolean controlFlag;
 
 
-    public Monitor(Log log) {
+    public Monitor(Log log) throws FileNotFoundException {
         this.log = log;
-        //this.rdp = new RDP(this.log);
-        this.rdp = new RDP("TP final Concurrente 2020", this.log);
+
+        ///////////////////////////////////////////////////////////////////////
+        String path = "Parameterizer.json";
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+        Gson gson = new Gson();
+        this.rdp = gson.fromJson(bufferedReader,RDP.class);
+        //set initial time for initial sensitized transitions
+        this.rdp.setTimeSens();
+        this.rdp.setLog(log);
+        ////////////////////////////////////////////////////////////////////////
+
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO

@@ -2,9 +2,6 @@ package Monitor.rdp;
 
 import Monitor.Logger.Log;
 
-/**
- * @TODO ver si se hardcodea la red o se arma desde un archivo.
- */
 public class RDP {
     /**
      * Descripcion basica de la red
@@ -17,19 +14,19 @@ public class RDP {
     /**
      * Vector de marca inicial
      */
-    private int[] Mark;
+    private int[] mark;
     /**
      * Matriz para de invariantes de plaza
      */
-    private final int[][] MatrixInvPlace;
+    private final int[][] matrixInvPlace;
     /**
      * Vector utilizado para el checkeo de invariantes de plaza
      */
-    private final int[] VecInvPlaces;
+    private final int[] vecInvPlaces;
     /**
      * Matriz donde se almacenan los tiempos Alfa y Beta
      */
-    private final long[][] MatrixTime;
+    private final long[][] matrixTime;
     /**
      * Vector de stamptime para el sensibilizado de transiciones
      */
@@ -39,133 +36,33 @@ public class RDP {
      */
     private Log log;
 
-    /**
-     * @brief Constructor solo utilizado para test, sin tiempo ni logger, la dejo por los TEST
-     */
-    public RDP() {
-        info = "RdP de Test, sin tiempo";
-
-        // Matriz de incidencia de la red para test
-        this.matrixI = new int[][]{
-                {-1, 0, 0, 1},
-                {1, -1, 0, 0},
-                {0, 1, 0, -1},
-                {1, 0, -1, 0},
-                {0, 0, 1, -1}};
-
-        // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
-        this.Mark = new int[]{4, 0, 0, 0, 0};
-
-        //Matriz de P invariantes
-        this.MatrixInvPlace = new int[][]{
-                {1, 1, 1, 0, 0},
-                {1, 0, 0, 1, 1}
-        };
-
-        // Numero de invariante de plaza
-        this.VecInvPlaces = new int[]{4, 4};
-
-        this.MatrixTime = null;
-    }
 
     /**
-     * @brief Constructor solo utilizado para test, con logger, la dejo por los TEST
+     * @brief constructor for json file
+     * @param matrixI Matriz de incidencia
+     * @param mark Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
+     * @param matrixInvPlace Matriz de P invariantes
+     * @param vecInvPlaces Numero de invariante de plaza
+     * @param matrixTime Ventana de tiempo de las trasiciones
+     * @param vectorTime Vector donde se almacenan los timestamp
+     * @param info
      */
-    public RDP(Log l) {
-        info = "RdP de Test, sin tiempo";
-
-        // Matriz de incidencia de la red para test
-        this.matrixI = new int[][]{
-                {-1, 0, 0, 1},
-                {1, -1, 0, 0},
-                {0, 1, 0, -1},
-                {1, 0, -1, 0},
-                {0, 0, 1, -1}};
-
-        // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
-        this.Mark = new int[]{4, 0, 0, 0, 0};
-
-        // Matriz de P invariantes
-        this.MatrixInvPlace = new int[][]{
-                {1, 1, 1, 0, 0},
-                {1, 0, 0, 1, 1}
-        };
-
-        // Numero de invariante de plaza
-        this.VecInvPlaces = new int[]{4, 4};
-
-        this.MatrixTime = null;
-
-        this.log = l;
-
-    }
-
-    /**
-     * Red de trabajo final
-     *
-     * @param info Nombre de la red
-     * @param l    logger
-     */
-    public RDP(String info, Log l) {
+    public RDP(int[][] matrixI,int[] mark,int[][] matrixInvPlace, int[] vecInvPlaces, long[][] matrixTime, long[] vectorTime, String info){
+        this.matrixI = matrixI;
+        this.mark = mark;
+        this.matrixInvPlace = matrixInvPlace;
+        this.vecInvPlaces = vecInvPlaces;
+        this.matrixTime = matrixTime;
+        this.vectorTime = vectorTime;
         this.info = info;
+    }
 
-        // Matriz de incidencia
-        this.matrixI = new int[][]{
-                {0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 2, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 2},
-                {0, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 1, 0, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, -1, -1, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -2, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, -2},
-                {-1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
-                {0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0},
-                {0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0},
-                {0, 0, 0, -1, -1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1, 0, 0},
-        };
-
-        // Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
-        this.Mark = new int[]{0, 0, 0, 8, 8, 4, 4, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0};
-
-        // Matriz de P invariantes
-        this.MatrixInvPlace = new int[][]{
-                {0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
-        };
-
-        // Numero de invariante de plaza
-        this.VecInvPlaces = new int[]{8, 8, 4, 4, 1, 1, 1, 1};
-
-        // Ventana de tiempo de las trasiciones
-        this.MatrixTime = new long[][]{
-                //Setear los tiempos
-                {500, 0, 0, 0, 0, 200, 200, 350, 350, 0, 0, 0, 0, 200, 200, 500, 500},
-                {1000000, 0, 0, 0, 0, 1000000, 1000000, 1000000, 1000000, 0, 0, 0, 0, 1000000, 1000000, 1000000, 1000000}
-                //ProcesarT2Px + FinalizarT2Px > FinalizarT1Px
-        };
-
-        // Vector donde se almacenan los timestamp
-        this.vectorTime = new long[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-
+    /**
+     * @brief setter of log
+     * @param l log to set
+     */
+    public void setLog(Log l){
         this.log = l;
-
-        //set initial time for initial sensitized transitions
-        this.setTimeSens();
-
     }
 
     /**
@@ -203,7 +100,7 @@ public class RDP {
         // if time type, update the transition time
         if (isTimeExtend()) {
             boolean[] oldSensi = this.getSensi4Mark();
-            this.Mark = nextState;
+            this.mark = nextState;
             boolean[] newSensi = this.getSensi4Mark();
             for (int i = 0; i < newSensi.length; i++) {
                 if ((!oldSensi[i] && newSensi[i]) && this.isTransTime(i)) {
@@ -217,7 +114,7 @@ public class RDP {
             // else, only update the mark
         } else {
             //update mark
-            this.Mark = nextState;
+            this.mark = nextState;
         }
 
         // check invariant place
@@ -226,7 +123,7 @@ public class RDP {
         //log
         this.log.write(trans, "Disparo exitoso ");
         StringBuilder msj = new StringBuilder();
-        for (int value : this.Mark) {
+        for (int value : this.mark) {
             msj.append(String.format("%d", value)).append(" - ");
         }
         this.log.write2("Marca actual: " + msj.toString() + "\n");
@@ -254,7 +151,7 @@ public class RDP {
 
         /* Sumamos el vector de marca actual */
         for (int i = 0; i < this.matrixI.length; i++) {
-            nextMark[i] += this.Mark[i];
+            nextMark[i] += this.mark[i];
         }
 
         return nextMark;
@@ -282,11 +179,11 @@ public class RDP {
      */
     private void CheckInvariantPlace() throws InvariantException {
 
-        int[] res = new int[this.MatrixInvPlace.length];
-        for (int i = 0; i < this.MatrixInvPlace.length; i++) {
-            res[i] = this.Vector2Vector(this.MatrixInvPlace[i], this.Mark);
-            if (this.VecInvPlaces[i] != res[i]) {
-                throw new InvariantException(this.Mark, this.VecInvPlaces, res); //Si no se cumplen se lanza una excepcion
+        int[] res = new int[this.matrixInvPlace.length];
+        for (int i = 0; i < this.matrixInvPlace.length; i++) {
+            res[i] = this.Vector2Vector(this.matrixInvPlace[i], this.mark);
+            if (this.vecInvPlaces[i] != res[i]) {
+                throw new InvariantException(this.mark, this.vecInvPlaces, res); //Si no se cumplen se lanza una excepcion
             }
         }
     }
@@ -299,11 +196,13 @@ public class RDP {
     /**
      * @brief Update the sensitized time
      */
-    private void setTimeSens() {
+    public void setTimeSens() {
+        long time = java.lang.System.currentTimeMillis();
         for (int i = 0; i < this.vectorTime.length; i++) {
             //if is sensitized and is time transition, update timeSencibilized
+
             if (this.validShot(this.nextMark(i)) && isTransTime(i)) {
-                this.vectorTime[i] = java.lang.System.currentTimeMillis();
+                this.vectorTime[i] = time;
             }
         }
     }
@@ -317,9 +216,9 @@ public class RDP {
         boolean valid = false;
         if (isTransTime(trans) && wasSensitized(trans)) {
             valid = true;
-            valid = this.MatrixTime[0][trans] < (time - this.vectorTime[trans]);
-            if (valid && this.MatrixTime[1][trans] != 0) {
-                valid = this.MatrixTime[1][trans] > (time - this.vectorTime[trans]);
+            valid = this.matrixTime[0][trans] < (time - this.vectorTime[trans]);
+            if (valid && this.matrixTime[1][trans] != 0) {
+                valid = this.matrixTime[1][trans] > (time - this.vectorTime[trans]);
             }
         }
         return valid;
@@ -330,7 +229,7 @@ public class RDP {
      * @brief check if the Petri net is time extend
      */
     private boolean isTimeExtend() {
-        return (this.MatrixTime != null);
+        return (this.matrixTime != null);
     }
 
     /**
@@ -340,7 +239,7 @@ public class RDP {
      */
     private boolean isTransTime(int trans) {
         if (this.isTimeExtend()) {
-            return (this.MatrixTime[0][trans] != 0);
+            return (this.matrixTime[0][trans] != 0);
         }
         return false;
     }
@@ -365,9 +264,9 @@ public class RDP {
         if (this.wasSensitized(trans) && this.isTransTime(trans)) {
             //Tiempo que lleva sensi
             long timer = (time - this.vectorTime[trans]);
-            if (timer < this.MatrixTime[0][trans]) {
+            if (timer < this.matrixTime[0][trans]) {
                 //Si es menor devuelvo el valor q debe esperar
-                return (this.MatrixTime[0][trans] - timer) + 1; //Milisegundo necesario para dormir un alfa mayor a la ventana
+                return (this.matrixTime[0][trans] - timer) + 1; //Milisegundo necesario para dormir un alfa mayor a la ventana
             } else {
                 return 0;
             }
@@ -433,7 +332,7 @@ public class RDP {
      * @brief Devuelve el vector de marcado.
      */
     public int[] getMark() {
-        return this.Mark.clone();
+        return this.mark.clone();
     }
 
     /**
