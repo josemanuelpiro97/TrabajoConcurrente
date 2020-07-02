@@ -58,18 +58,8 @@ public class Monitor {
     public Monitor() throws FileNotFoundException {
         this.log = new Log();
 
-<<<<<<< HEAD
-        //-------------------------------------------------------------------------
-        //Gson constructor
-        String path = "Parameterizer.json";
-=======
-    public Monitor() throws FileNotFoundException {
-        this.log = new Log();
-
         ///////////////////////////////////////////////////////////////////////
-        //String path = "PetriTest.json";
         String path = "TpFinal.json";
->>>>>>> fa8737384d54f12078ab67189dece685aed730a3
         BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
         Gson gson = new Gson();
         this.rdp = gson.fromJson(bufferedReader, RDP.class);
@@ -78,12 +68,7 @@ public class Monitor {
         this.rdp.setTimeSens();
         this.rdp.setLog(log);
         //-------------------------------------------------------------------------
-
-<<<<<<< HEAD
-        this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
-=======
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans(),log);
->>>>>>> fa8737384d54f12078ab67189dece685aed730a3
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO
         this.controlFlag = true;
@@ -121,17 +106,11 @@ public class Monitor {
                 }
 
                 if (cant != 0) {
-
                     //ask for who wake
                     int wakeThread = this.policy.whoWake(this.convertBtoI(ask));
-
-<<<<<<< HEAD
                     //log
                     String msj = "Se va a despertar el hilo que dispara:  " + wakeThread;
                     this.log.write2(msj);
-
-=======
->>>>>>> fa8737384d54f12078ab67189dece685aed730a3
                     //wake
                     this.queueManagment.wakeN(wakeThread);
                     return;

@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 //                                                      MAIN CLASS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Main {
-<<<<<<< HEAD
 
     public static void main(String[] arg) throws FileNotFoundException {
         final int FIRST_TRANSITION = 0;
@@ -16,7 +15,7 @@ public class Main {
 
         final int NUMBER_OF_THREADS = 15;
         final int NUMBER_OF_TASKS_TYPE = 15;
-        final int NUMBER_OF_TASKS = 100;
+        final int NUMBER_OF_TASKS = 10;
         final int INFINITE_TASK_NUMBER = 0;
 
 
@@ -32,19 +31,6 @@ public class Main {
         for (int i = FIRST_TRANSITION; i < 13; i++) {
             if (i == FIRST_TRANSITION) {
                 tasks[i] = new Task(new int[]{i}, monitor, NUMBER_OF_TASKS);
-=======
-    public static void main(String[] arg) throws FileNotFoundException {
-        //build Monitor
-        Monitor monitor = new Monitor();
-
-        //build and start, tasks and threads
-
-        Task[] tasks = new Task[15];
-        Thread[] threads = new Thread[15];
-        for (int i = 0; i < 13; i++) {
-            if (i == 0) {
-                tasks[i] = new Task(new int[]{i}, monitor, 10);
->>>>>>> fa8737384d54f12078ab67189dece685aed730a3
                 threads[i] = new Thread(tasks[i]);
                 threads[i].start();
             } else if (i == 7) {
