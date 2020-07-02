@@ -3,11 +3,20 @@ package Monitor.politics;
 import java.util.Random;
 
 public class Policy {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                      VARIABLES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//              Private Variables
+//****************************************************
     /**
      * number of transition in the RDP
      */
-    private int sizeT;
+    private final int sizeT;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                     CONSTRUCTORS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * @param sizeT number of transitions of the Petri net
      * @brief class constructor
@@ -16,6 +25,9 @@ public class Policy {
         this.sizeT = sizeT;
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                    PUBLIC METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * @param ask sensitized transition vector
      * @return value of the transition to be shot
@@ -32,16 +44,17 @@ public class Policy {
         int val = this.applyPolitic(ask, P);
         return val;
     }
-
-//---------------------------------------------------------
-//                      POLICY
-//---------------------------------------------------------
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                   PRIVATE METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//                   Tools
+//****************************************************
     /**
      * @return matrix of random policy
      * @brief generate a random policy
      */
-    public int[][] randomPolicy() {
+    private int[][] randomPolicy() {
         int[][] matrixP;
         matrixP = buildIdentity(this.sizeT);
 
@@ -64,17 +77,13 @@ public class Policy {
         return changeRow(matrixP,changes);
     }
 
-    //---------------------------------------------------------
-    //                  TOOLS
-    //---------------------------------------------------------
-
     /**
      * @param sensitized vector whit sensitized transitions
      * @param P          politic matrix
      * @return value of the transition to shoot
      * @brief apply the policy to get the transition to shoot
      */
-    public int applyPolitic(int[] sensitized, int[][] P) {
+    private int applyPolitic(int[] sensitized, int[][] P) {
         //check arguments
         if (sensitized.length != P[0].length)
             throw new IllegalArgumentException("Illegal Argument");
@@ -103,7 +112,6 @@ public class Policy {
         }
         // if not find someone return know error value
         return t;
-
     }
 
     /**
@@ -111,7 +119,7 @@ public class Policy {
      * @return Identity matrix
      * @brief build a sizeT-dimension Identity matrix
      */
-    public int[][] buildIdentity(int sizeT) {
+    private int[][] buildIdentity(int sizeT) {
         //build identity matrix
         int matrixI[][] = new int[sizeT][sizeT];
 
@@ -159,6 +167,5 @@ public class Policy {
             }
         }
         return matrixI;
-
     }
 }

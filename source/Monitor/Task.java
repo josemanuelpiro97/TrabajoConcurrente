@@ -1,19 +1,44 @@
-package Monitor;//Test Class of Monitor.Task
+package Monitor;
 
 import Monitor.rdp.InvariantException;
 
 public class Task implements Runnable {
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                      VARIABLES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//              Private Variables
+//****************************************************
     private final Monitor monitor;
     private final int disparosTotales;
     private final int[] secuencia;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                     CONSTRUCTORS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @brief class constructor
+     * @param sec sequence to shot
+     * @param monitor monitor object
+     * @param cant number of shots
+     */
     public Task(int[] sec, Monitor monitor, int cant) {
         this.secuencia = sec;
         this.monitor = monitor;
         this.disparosTotales = cant;
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                    PUBLIC METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//                  Runnable method
+//****************************************************
+
+    /**
+     * @// TODO: 2/7/20 revisar bien el tema de que el hilo duerma eso al salir, porque si bajamos los tiempos eso es mucho
+     */
     @Override
     public void run() {
         int i = 0;

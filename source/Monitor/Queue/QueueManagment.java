@@ -3,7 +3,12 @@ package Monitor.Queue;
 import java.util.concurrent.Semaphore;
 
 public class QueueManagment {
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                      VARIABLES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//              Private Variables
+//****************************************************
     /**
      * Array of semaphores that represent all transition.
      */
@@ -17,6 +22,9 @@ public class QueueManagment {
      */
     private boolean autoWake[];
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                     CONSTRUCTORS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * @param arraySize Numbre of transitions in the Petri net
      * @brief QueueManagment constructor
@@ -33,7 +41,9 @@ public class QueueManagment {
         }
     }
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                    PUBLIC METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * @param index [in]
      * @brief put thread to sleep in its semaphore
@@ -73,21 +83,18 @@ public class QueueManagment {
      * @return Array whit sensitive thread that are sleep
      * @brief Check which thread are sleep
      */
-    public boolean[] isSleep(boolean[] sensitizedT) {
+    public boolean[] whoAreSleep(boolean[] sensitizedT) {
         boolean result[] = new boolean[sensitizedT.length];
 
         for (int i = 0; i < sensitizedT.length; i++) {
             result[i] = this.sleepT[i] && sensitizedT[i];
         }
-
         return result;
     }
-
 
     /*======================================================================================
                                        Getters
     ========================================================================================*/
-
     /**
      * @return All semaphores
      * @brief Semaphores getter
@@ -109,7 +116,7 @@ public class QueueManagment {
      * @return
      * @brief Getter sleeping transitions vector
      */
-    public boolean[] whoSleepT() {
+    public boolean[] whoSleepVector() {
         return sleepT;
     }
 }

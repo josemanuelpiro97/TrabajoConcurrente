@@ -6,7 +6,6 @@ import Monitor.politics.Policy;
 import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
 import com.google.gson.Gson;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,6 +16,12 @@ import java.util.concurrent.Semaphore;
  * Si le agrego 100 milisegundos al tiempo q tiene q dormir funciona correctamente, creo q cuando se agregen mas hilos y mayor complejidad de la red esto se corrige.
  */
 public class Monitor {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                      VARIABLES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//              Private Variables
+//****************************************************
     /**
      * Petri Net to monitorize
      */
@@ -42,12 +47,18 @@ public class Monitor {
      */
     private boolean controlFlag;
 
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                     CONSTRUCTORS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @brief class consructor
+     * @throws FileNotFoundException exeption produced by Gson constructor
+     */
     public Monitor() throws FileNotFoundException {
         this.log = new Log();
 
-        ///////////////////////////////////////////////////////////////////////
+        //-------------------------------------------------------------------------
+        //Gson constructor
         String path = "Parameterizer.json";
         BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
         Gson gson = new Gson();
@@ -55,33 +66,21 @@ public class Monitor {
         //set initial time for initial sensitized transitions
         this.rdp.setTimeSens();
         this.rdp.setLog(log);
-        ////////////////////////////////////////////////////////////////////////
+        //-------------------------------------------------------------------------
 
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO
         this.controlFlag = true;
     }
-
-    /**
-     * @param vec boolean vector to be convert
-     * @return int vector
-     * @brief convert boolean vector to int vector
-     */
-    private int[] convertBtoI(boolean[] vec) {
-        int[] res = new int[vec.length];
-        for (int i = 0; i < vec.length; i++) {
-            if (vec[i])
-                res[i] = 1;
-            else
-                res[i] = 0;
-        }
-        return res;
-    }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                    PUBLIC METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * @param transN [in] transition to shot
      * @brief operate monitor tasks
+     * @// TODO: 2/7/20 revisar el log sobre quien se va a despertar, porque ahora no es lo mismo el hilo q la trans que dspara
+     * @// TODO: 2/7/20 en la parte del tiempo que debe dormir si es una transicion de tiempo, no seria mas prolijo pregutar si es trantime?
      */
     public void operate(int transN) throws InvariantException, InterruptedException {
         this.mutex.acquire();
@@ -89,26 +88,30 @@ public class Monitor {
         long timeSleep;
 
         do {
-
+            //try shoot
             int cant = 0;
             this.controlFlag = this.rdp.ShotT(transN);
 
+            //if shot attempt is true
             if (this.controlFlag) {
-                //if shot is true
+                //check for mark sensi
                 boolean[] ask = this.rdp.getSensi4Mark();
+                //check for marck and queue sensi
+                ask =this.queueManagment.whoAreSleep(ask);
+                //check if same value is true
                 for (int i = 0; i < ask.length; i++) {
-                    ask[i] = ask[i] && this.queueManagment.whoSleepT()[i];
                     if (ask[i]) {
                         cant++;
                     }
                 }
+
                 if (cant != 0) {
 
-                    //pregunto a quien levantar
+                    //ask for who wake
                     int wakeThread = this.policy.whoWake(this.convertBtoI(ask));
 
                     //log
-                    String msj = "Se va a despertar el hilo:  " + wakeThread;
+                    String msj = "Se va a despertar el hilo que dispara:  " + wakeThread;
                     this.log.write2(msj);
 
                     //wake
@@ -118,7 +121,6 @@ public class Monitor {
                     this.controlFlag = false;
                 }
             } else {
-
                 timeSleep = this.rdp.getWaitTime(transN);
                 if (timeSleep != -1) {
                     if (timeSleep == 0) {
@@ -168,5 +170,29 @@ public class Monitor {
     public void closeLog() {
         this.log.close();
     }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                   PRIVATE METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//                   Tools
+//****************************************************
+    /**
+     * @param vec boolean vector to be convert
+     * @return int vector
+     * @brief convert boolean vector to int vector
+     */
+    private int[] convertBtoI(boolean[] vec) {
+        int[] res = new int[vec.length];
+        for (int i = 0; i < vec.length; i++) {
+            if (vec[i])
+                res[i] = 1;
+            else
+                res[i] = 0;
+        }
+        return res;
+    }
+
+
 
 }

@@ -1,17 +1,33 @@
 package Monitor.Logger;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.management.ThreadInfo;
-import java.io.File;
-import java.io.BufferedWriter;
 
 
 public class Log {
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                      VARIABLES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//              Private Variables
+//****************************************************
+    /**
+     * file to write
+     */
     private File archivo;
+    /**
+     * object used to write a file
+     */
     private FileWriter fw;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                     CONSTRUCTORS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @brief class constructor
+     */
     public Log() {
         this.archivo = new File("log.txt");
         try {
@@ -20,7 +36,16 @@ public class Log {
             e.printStackTrace();
         }
     }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                    PUBLIC METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @brief write a specific message in specific format in the log file
+     * @param trans number of transition that correspond this text log
+     * @param msj specific message
+     * @TODO la hora debe ser tomada al momento de queres escribir, no al momento de escribir
+     */
     public void write(int trans, String msj) {
         String buffer;
         long time = java.lang.System.currentTimeMillis();
@@ -34,6 +59,10 @@ public class Log {
         }
     }
 
+    /**
+     * @brief write a specific message in the log file
+     * @param msj specific message
+     */
     public void write2(String msj) {
         String buffer2;
         buffer2 = String.format(msj + "\n");
@@ -46,6 +75,9 @@ public class Log {
         }
     }
 
+    /**
+     * @brief close this log file
+     */
     public void close() {
         try {
             this.fw.close();
