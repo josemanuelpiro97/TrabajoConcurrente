@@ -79,9 +79,6 @@ public class Monitor {
     /**
      * @param transN [in] transition to shot
      * @brief operate monitor tasks
-     * @// TODO: 2/7/20 revisar el log sobre quien se va a despertar, porque ahora no es lo mismo el hilo q la trans que dspara
-     * @// TODO: 2/7/20 en la parte del tiempo que debe dormir si es una transicion de tiempo, no seria mas prolijo pregutar si es trantime?
-     * @// TODO: 2/7/20 revisar si no se puede funcionaliza un poco el metrodo, es demasiado largo y engorroso de leer
      */
     public void operate(int transN) throws InvariantException, InterruptedException, ShotException{
         this.mutex.acquire();
@@ -109,9 +106,6 @@ public class Monitor {
                 if (cant != 0) {
                     //ask for who wake
                     int wakeThread = this.policy.whoWake(this.convertBtoI(ask));
-                    //log
-                    String msj = "Se va a despertar el hilo que dispara:  " + wakeThread;
-                    this.log.write2(msj);
                     //wake
                     this.queueManagment.wakeN(wakeThread);
                     return;
@@ -143,8 +137,6 @@ public class Monitor {
                     this.mutex.acquire(); //Si se desperto solo vuelve a competir por el mutex
                 }
                 this.controlFlag = true; //Cuando se adquiere, se setea en true para intentar disparar
-
-
             }
 
         } while (this.controlFlag);

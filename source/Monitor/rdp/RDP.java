@@ -86,7 +86,7 @@ public class RDP {
         if (this.isTransTime(trans)) {
             if (!this.getSensi4temp(timestamp, trans)) {
                 //log
-                this.log.write(String.format(" Shot: | %d | %b | %s",trans, false, getStringMark()));
+                this.log.write(String.format(" Shot: | %d | %b | %s",trans, false, getStringMark()),timestamp);
                 return false;
             }
         }
@@ -95,7 +95,7 @@ public class RDP {
         int[] nextState = nextMark(trans);// take possible next mark
         if (!validShot(nextState)) {
             //invalid shot
-            this.log.write(String.format(" Shot: | %d | %b | %s",trans,false, getStringMark()));
+            this.log.write(String.format(" Shot: | %d | %b | %s",trans,false, getStringMark()),timestamp);
             return false;
         }
 
@@ -123,7 +123,7 @@ public class RDP {
         this.CheckInvariantPlace();
 
         //log
-        this.log.write(String.format(" Shot: | %d | %b | %s", trans, true, getStringMark()));
+        this.log.write(String.format(" Shot: | %d | %b | %s", trans, true, getStringMark()),timestamp);
         return true;
     }
 
