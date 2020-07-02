@@ -57,6 +57,7 @@ public class RDP {
         this.info = info;
     }
 
+
     /**
      * @brief setter of log
      * @param l log to set
@@ -259,18 +260,14 @@ public class RDP {
      * @brief Devuelve el tiempo que resta hasta que la transicion se encuentre dentro de la ventana de tiempo
      */
     public long getWaitTime(int trans) {
-        long time = java.lang.System.currentTimeMillis();
+        long time = System.currentTimeMillis();
 
         if (this.wasSensitized(trans) && this.isTransTime(trans)) {
             //Tiempo que lleva sensi
             long timer = (time - this.vectorTime[trans]);
             if (timer < this.matrixTime[0][trans]) {
                 //Si es menor devuelvo el valor q debe esperar
-<<<<<<< HEAD
-                return (this.matrixTime[0][trans] - timer) + 1; //Milisegundo necesario para dormir un alfa mayor a la ventana
-=======
-                return (this.MatrixTime[0][trans] - timer) + 2; //Milisegundo necesario para dormir un alfa mayor a la ventana
->>>>>>> 76ee292354762539c01b138ba44e934670ca86de
+                return (this.matrixTime[0][trans] - timer) + 2; //Milisegundo necesario para dormir un alfa mayor a la ventana
             } else {
                 return 0;
             }

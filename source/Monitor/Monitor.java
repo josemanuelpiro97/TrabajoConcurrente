@@ -43,9 +43,9 @@ public class Monitor {
     private boolean controlFlag;
 
 
-<<<<<<< HEAD
-    public Monitor(Log log) throws FileNotFoundException {
-        this.log = log;
+
+    public Monitor() throws FileNotFoundException {
+        this.log = new Log();
 
         ///////////////////////////////////////////////////////////////////////
         String path = "Parameterizer.json";
@@ -57,11 +57,6 @@ public class Monitor {
         this.rdp.setLog(log);
         ////////////////////////////////////////////////////////////////////////
 
-=======
-    public Monitor() {
-        this.log = new Log();
-        this.rdp = new RDP("TP final Concurrente 2020", this.log);
->>>>>>> 76ee292354762539c01b138ba44e934670ca86de
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO

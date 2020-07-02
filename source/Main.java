@@ -11,15 +11,8 @@ import java.io.FileNotFoundException;
  * @TODO Sacar la creacion del log desde Main y q lo cree el Monitor
  **/
 public class Main {
-<<<<<<< HEAD
-    public static void main(String[] arg) throws FileNotFoundException {
-        //build monitor
 
-        Log log = new Log();
-        Monitor monitor = new Monitor(log);
-=======
-    public static void main(String[] arg) {
->>>>>>> 76ee292354762539c01b138ba44e934670ca86de
+    public static void main(String[] arg) throws FileNotFoundException {
 
         //build monitor
         Monitor monitor = new Monitor();
