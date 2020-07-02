@@ -3,7 +3,7 @@ package Monitor.rdp;
 
 public class ShotException extends Exception{
     /**
-     * Numero de transicion que genero la interrupcion
+     * Number of transition that generate the error
      */
     private int trans;
 
@@ -13,7 +13,7 @@ public class ShotException extends Exception{
     }
 
     /**
-     * Informa el error
+     * report error info
      */
     public void printInfo(){
         System.out.print(String.format("Anda al archivo bro, transicion %4d no existe", this.trans));

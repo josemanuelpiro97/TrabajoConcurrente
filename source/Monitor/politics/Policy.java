@@ -44,6 +44,7 @@ public class Policy {
         int val = this.applyPolitic(ask, P);
         return val;
     }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                   PRIVATE METHODS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,7 +143,7 @@ public class Policy {
      * @return the matrix modified
      * @brief change the rows that specify in changeC param
      */
-    public int[][] changeRow(int[][] matrixI, int[] changeR) {
+    private int[][] changeRow(int[][] matrixI, int[] changeR) {
         //size must be par
         if (changeR.length % 2 != 0)
             return null;

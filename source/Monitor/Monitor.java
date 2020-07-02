@@ -40,7 +40,7 @@ public class Monitor {
      */
     private Semaphore mutex;
     /**
-     * Log para llevar la informacion del programa
+     * program log
      */
     private Log log;
     /**
@@ -81,6 +81,7 @@ public class Monitor {
      * @brief operate monitor tasks
      * @// TODO: 2/7/20 revisar el log sobre quien se va a despertar, porque ahora no es lo mismo el hilo q la trans que dspara
      * @// TODO: 2/7/20 en la parte del tiempo que debe dormir si es una transicion de tiempo, no seria mas prolijo pregutar si es trantime?
+     * @// TODO: 2/7/20 revisar si no se puede funcionaliza un poco el metrodo, es demasiado largo y engorroso de leer
      */
     public void operate(int transN) throws InvariantException, InterruptedException, ShotException{
         this.mutex.acquire();
@@ -179,7 +180,5 @@ public class Monitor {
         }
         return res;
     }
-
-
 
 }

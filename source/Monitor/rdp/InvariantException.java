@@ -1,26 +1,24 @@
 package Monitor.rdp;
 
 /**
- * Excepcion que se genera al no cumplir con los invariantes de plaza (Ver si se agregan los de transiciones aca)
+ * places invariant exception
  */
 public class InvariantException extends Exception {
     /**
-     * Marca al momento de producirse la exepcion
+     * mark in the moment that throw exception
      */
     private int[] mark;
     /**
-     * Vector de invariantes de plaza, valor que se debe cumplir.
+     * places invariant correct
      */
     private int[] invariantes;
     /**
-     * Vector de resultado en el chequeo de los invariantes.
+     * result vector in the invariant check
      */
     private int[] resultado;
 
     /**
-     * Generada con informacion de estado en el momento de generarse la excepcion
-     *
-     * @param mark marcado al momento de la excepcion
+     * @param mark mark in the moment that throw exception
      */
     InvariantException(int[] mark, int[] invariantes, int[] res) {
         super();
@@ -30,7 +28,7 @@ public class InvariantException extends Exception {
     }
 
     /**
-     * Imprime el estado de la red y el numero de transicion al momento de la excepcion
+     * print the Petri net state
      */
     public void printInfo() {
         System.out.println("Se produjo una violacion de invarantes en el estado: ");

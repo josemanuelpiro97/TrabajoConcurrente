@@ -3,49 +3,57 @@ package Monitor.rdp;
 import Monitor.Logger.Log;
 
 public class RDP {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                      VARIABLES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//****************************************************
+//              Private Variables
+//****************************************************
     /**
-     * Descripcion basica de la red
+     * net description
      */
     private final String info;
     /**
-     * Matriz de incidencia de la RdP
+     * incidence matrix of Petri net
      */
     private final int[][] matrixI;
     /**
-     * Vector de marca inicial
+     * initial mark of Petri net
      */
     private int[] mark;
     /**
-     * Matriz para de invariantes de plaza
+     * matrix of places invariant
      */
     private final int[][] matrixInvPlace;
     /**
-     * Vector utilizado para el checkeo de invariantes de plaza
+     * vector used for check places invariant
      */
     private final int[] vecInvPlaces;
     /**
-     * Matriz donde se almacenan los tiempos Alfa y Beta
+     * time matrix
      */
     private final long[][] matrixTime;
     /**
-     * Vector de stamptime para el sensibilizado de transiciones
+     * stamptime vector
      */
     private long[] vectorTime;
     /**
-     * Objeto log utilizado para almacenar el disparo de las trasiciones en un txt
+     * log object
      */
     private Log log;
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                     CONSTRUCTORS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * @param matrixI        Matriz de incidencia
-     * @param mark           Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
-     * @param matrixInvPlace Matriz de P invariantes
-     * @param vecInvPlaces   Numero de invariante de plaza
-     * @param matrixTime     Ventana de tiempo de las trasiciones
-     * @param vectorTime     Vector donde se almacenan los timestamp
-     * @param info
-     * @brief constructor for json file
+     * @param matrixI        incidence matrix of Petri net
+     * @param mark           initial mark of Petri net
+     * @param matrixInvPlace matrix of places invariant
+     * @param vecInvPlaces   vector used for check places invariant
+     * @param matrixTime     time matrix
+     * @param vectorTime     stamptime vector
+     * @param info           info
+     * @brief class constructor, only used whit json file
      */
     public RDP(int[][] matrixI, int[] mark, int[][] matrixInvPlace, int[] vecInvPlaces, long[][] matrixTime, long[] vectorTime, String info) {
         this.matrixI = matrixI;
@@ -56,16 +64,9 @@ public class RDP {
         this.vectorTime = vectorTime;
         this.info = info;
     }
-
-
-    /**
-     * @param l log to set
-     * @brief setter of log
-     */
-    public void setLog(Log l) {
-        this.log = l;
-    }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                    PUBLIC METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * @param trans number of transition to shoot
      * @return true in case that the transition was shoot, false in other case.
@@ -126,32 +127,114 @@ public class RDP {
         return true;
     }
 
+//****************************************************
+//                  Getters
+//****************************************************
+
     /**
-     * @param trans numero de transicion a disparar.
-     * @return vector de tipo entero con la nueva marca
-     * @brief: Metodo encargado de calcular la proxima marca que se obtendra al disparar la transicion deseada.
+     * @return a copy of mark Vector
+     * @brief get a copy of mark vector
+     */
+    public int[] getMark() {
+        return this.mark.clone();
+    }
+
+    /**
+     * @return number of transitions
+     * @brief get total number of transition in the Petri net
+     */
+    public int getNumTrans() {
+        return this.matrixI[0].length;
+    }
+
+    /**
+     * @return vector whit sensitized
+     * @brief returns those sensitized only by the mark
+     */
+    public boolean[] getSensi4Mark() {
+        //check which transitions are sensitized by mark
+        boolean[] isSensi = new boolean[this.matrixI[0].length];
+        for (int i = 0; i < isSensi.length; i++) {
+            isSensi[i] = this.validShot(this.nextMark(i));
+        }
+        return isSensi;
+    }
+
+//****************************************************
+//                  Setters
+//****************************************************
+    /**
+     * @param l log to set
+     * @brief setter of log
+     */
+    public void setLog(Log l) {
+        this.log = l;
+    }
+
+//****************************************************
+//                  Time methods
+//****************************************************
+    /**
+     * @brief Update the sensitized time
+     */
+    public void setTimeSens() {
+        long time = java.lang.System.currentTimeMillis();
+        for (int i = 0; i < this.vectorTime.length; i++) {
+            //if is sensitized and is time transition, update timeSencibilized
+            if (this.validShot(this.nextMark(i)) && isTransTime(i)) {
+                this.vectorTime[i] = time;
+            }
+        }
+    }
+
+    /**
+     * @param trans number of transition
+     * @return time left (long type), -1 if should not sleep.
+     * @brief method that calculate the time left to that the transition be in the window time
+     */
+    public long getWaitTime(int trans) {
+        long time = System.currentTimeMillis();
+
+        if (this.wasSensitized(trans) && this.isTransTime(trans)) {
+            //time that was sensitized
+            long timer = (time - this.vectorTime[trans]);
+            if (timer < this.matrixTime[0][trans]) {
+                return (this.matrixTime[0][trans] - timer) + 2; // time necessary to get entry to the window
+            } else {
+                return 0;
+            }
+        } else {
+            return -1;
+        }
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                   PRIVATE METHODS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @param trans number of transition to shot
+     * @return new mark
+     * @brief: calculate a new mark given a specific transition number to shot
      */
     private int[] nextMark(int trans) {
-
-        /* Creo el vector de disparo */
+        // build shot vector
         int[] VecShot = new int[this.matrixI[0].length];
         VecShot[trans] = 1;
 
-        /* Multiplico el vector de disparo por la matriz de incidencia de la red */
+        // product between incidence matrix and shot vector
         int[] nextMark = this.multMatrix2Vector(this.matrixI, VecShot);
 
-        /* Sumamos el vector de marca actual */
+        // sum between current mark and previous result
         for (int i = 0; i < this.matrixI.length; i++) {
             nextMark[i] += this.mark[i];
         }
-
         return nextMark;
     }
 
     /**
-     * @param mark vector de proximo marcado
-     * @return True en caso de que sea valido, false, si hay un elemento negativo.
-     * @brief Metodo encargado de validar el proximo marcado.
+     * @param mark next mark vector
+     * @return True in case that next mark ara correct, false in case that some value are negative.
+     * @brief method that calculate if the next mark are correct.
      */
     private boolean validShot(int[] mark) {
 
@@ -163,10 +246,9 @@ public class RDP {
         return true;
     }
 
-
     /**
-     * @return True en caso de que se cumpla los invariantes, false, caso contrario.
-     * @brief Metodo utilizado para realizar el cheackeo de invariantes de plaza.
+     * @return True in case that places invariant are correct, false in other case
+     * @brief check places invariants.
      */
     private void CheckInvariantPlace() throws InvariantException {
 
@@ -174,30 +256,14 @@ public class RDP {
         for (int i = 0; i < this.matrixInvPlace.length; i++) {
             res[i] = this.Vector2Vector(this.matrixInvPlace[i], this.mark);
             if (this.vecInvPlaces[i] != res[i]) {
-                throw new InvariantException(this.mark, this.vecInvPlaces, res); //Si no se cumplen se lanza una excepcion
+                throw new InvariantException(this.mark, this.vecInvPlaces, res);
             }
         }
     }
 
-
-    /*=================================================================================
-                                          Time methods
-     ==================================================================================*/
-
-    /**
-     * @brief Update the sensitized time
-     */
-    public void setTimeSens() {
-        long time = java.lang.System.currentTimeMillis();
-        for (int i = 0; i < this.vectorTime.length; i++) {
-            //if is sensitized and is time transition, update timeSencibilized
-
-            if (this.validShot(this.nextMark(i)) && isTransTime(i)) {
-                this.vectorTime[i] = time;
-            }
-        }
-    }
-
+//****************************************************
+//                  Time methods
+//****************************************************
     /**
      * @param time time of the question
      * @return true if the transition is within the time parameters, else in other case
@@ -206,7 +272,6 @@ public class RDP {
     private boolean getSensi4temp(long time, int trans) {
         boolean valid = false;
         if (isTransTime(trans) && wasSensitized(trans)) {
-            valid = true;
             valid = this.matrixTime[0][trans] < (time - this.vectorTime[trans]);
             if (valid && this.matrixTime[1][trans] != 0) {
                 valid = this.matrixTime[1][trans] > (time - this.vectorTime[trans]);
@@ -244,41 +309,19 @@ public class RDP {
         return (this.vectorTime[trans] != -1);
     }
 
-    /**
-     * @param trans Numero de transicion
-     * @return tiempo restante (tipo long), -1 si no debe dormir.
-     * @brief Devuelve el tiempo que resta hasta que la transicion se encuentre dentro de la ventana de tiempo
-     */
-    public long getWaitTime(int trans) {
-        long time = System.currentTimeMillis();
 
-        if (this.wasSensitized(trans) && this.isTransTime(trans)) {
-            //Tiempo que lleva sensi
-            long timer = (time - this.vectorTime[trans]);
-            if (timer < this.matrixTime[0][trans]) {
-                //Si es menor devuelvo el valor q debe esperar
-                return (this.matrixTime[0][trans] - timer) + 2; //Milisegundo necesario para dormir un alfa mayor a la ventana
-            } else {
-                return 0;
-            }
-        } else {
-            return -1;
-        }
-    }
-
-    /*=================================================================================
-                                          utility methods
-     ==================================================================================*/
-
+//****************************************************
+//                   Tools
+//****************************************************
     /**
      * @param v1 vector 1
      * @param v2 vector 2
-     * @return Resultado del producto punto entre los vectores.
-     * @brief Metodo utilizado para realizar el producto punto entre dos vectores.
+     * @return result of vector product.
+     * @brief method that calculate vector multiplication.
      */
     private int Vector2Vector(int[] v1, int[] v2) {
         if (v1.length != v2.length) {
-            /* Dimensiones incorrectas */
+            // wrong dimension
             return -1;
         }
         int r = 0;
@@ -289,10 +332,10 @@ public class RDP {
     }
 
     /**
-     * @param matrix matriz de enteros
-     * @param vector vector de enteros
-     * @return vector de enteros resultante de la multiplicacion.
-     * @brief: Metodo encargado de multiplicar una matriz con el vector, ambos pasado como parametro.
+     * @param matrix int matrix
+     * @param vector int vecor
+     * @return result of product.
+     * @brief: method that calculate multiplication between matrix and vector.
      */
     private int[] multMatrix2Vector(int[][] matrix, int[] vector) {
 
@@ -306,87 +349,9 @@ public class RDP {
         return res;
     }
 
-    /*=================================================================================
-                                        Get net information
-     ==================================================================================*/
-
     /**
-     * @return Devuelve una copia de la matriz de incidencia
-     * @brief Metodo creado solo para los tests
-     */
-    public int[][] getMatrixI() {
-        return this.matrixI.clone();
-    }
-
-    /**
-     * @return Devuelve una copia del vector de marcado
-     * @brief Devuelve el vector de marcado.
-     */
-    public int[] getMark() {
-        return this.mark.clone();
-    }
-
-    /**
-     * @return entero con el numero de transiciones
-     * @brief Metodo encargado de retornar el numero de transiciones que contiene la red de petri.
-     */
-    public int getNumTrans() {
-        return this.matrixI[0].length;
-    }
-
-    /**
-     * @return vector whit sensitized
-     * @brief returns those sensitized only by the mark
-     */
-    public boolean[] getSensi4Mark() {
-        //check which transitions are sensitized by mark
-        boolean[] isSensi = new boolean[this.matrixI[0].length];
-        for (int i = 0; i < isSensi.length; i++) {
-            isSensi[i] = this.validShot(this.nextMark(i));
-        }
-        return isSensi;
-    }
-
-    /**
-     * @return vector de tipo booleano.
-     * @brief Metodo encargado de devolver el vector de sensibilizado. En cada posicion del arreglo habra un True o
-     * un False indicando si se encuentra sensibilizada la transicion o no.
-     */
-    public boolean[] getSensiArray() {
-        //check which transitions are sensitized by mark
-        boolean[] isSensi = new boolean[this.matrixI[0].length];
-        for (int i = 0; i < isSensi.length; i++) {
-            isSensi[i] = this.validShot(this.nextMark(i));
-        }
-
-        if (this.isTimeExtend()) {
-            //take time
-            long time = java.lang.System.currentTimeMillis();
-
-            //check which transitions are time sensitized
-            boolean[] isSensiTime = new boolean[this.matrixI[0].length];
-            for (int i = 0; i < matrixI[0].length; i++) {
-                if (this.isTransTime(i)) {
-                    isSensiTime[i] = this.getSensi4temp(time, i);
-                } else {
-                    isSensiTime[i] = true;
-                }
-            }
-
-            //check which transitions are sensitized by mark and time
-            boolean[] res = new boolean[this.matrixI[0].length];
-            for (int i = 0; i < matrixI[0].length; i++) {
-                res[i] = isSensi[i] && isSensiTime[i];
-            }
-
-            return res;
-        }
-        return isSensi;
-    }
-
-    /**
-     * @return vector de marcado
-     * @brief Devuelve la marca actual como String
+     * @return mark vector
+     * @brief current mark converted to string
      */
     private String getStringMark() {
         String buffer = "[";

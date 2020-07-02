@@ -16,7 +16,6 @@ public class Task implements Runnable {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                     CONSTRUCTORS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * @brief class constructor
      * @param sec sequence to shot
@@ -35,7 +34,6 @@ public class Task implements Runnable {
 //****************************************************
 //                  Runnable method
 //****************************************************
-
     /**
      * @// TODO: 2/7/20 revisar bien el tema de que el hilo duerma eso al salir, porque si bajamos los tiempos eso es mucho
      */
