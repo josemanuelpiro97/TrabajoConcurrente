@@ -1,5 +1,7 @@
 package Monitor.Queue;
 
+import Monitor.Logger.Log;
+
 import java.util.concurrent.Semaphore;
 
 public class QueueManagment {
@@ -21,6 +23,10 @@ public class QueueManagment {
      * Control array for trans with time
      */
     private boolean autoWake[];
+    /**
+     * Logger
+     */
+    private Log log;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                     CONSTRUCTORS
@@ -29,7 +35,8 @@ public class QueueManagment {
      * @param arraySize Numbre of transitions in the Petri net
      * @brief QueueManagment constructor
      */
-    public QueueManagment(int arraySize) {
+    public QueueManagment(int arraySize, Log l) {
+        this.log = l;
         this.semaphores = new Semaphore[arraySize];
         this.sleepT = new boolean[arraySize];
         this.autoWake = new boolean[arraySize];
@@ -51,12 +58,16 @@ public class QueueManagment {
     public boolean sleepN(int index, long time, boolean transTime) {
         try {
             if (transTime) {
+                this.log.write(String.format(" AutoSleep | t:%d |", time));
                 this.autoWake[index] = true;
                 Thread.sleep(time);
+                this.log.write(String.format(" AutoWakeUp | %d |", index));
             } else {
+                this.log.write(String.format(" AddQueue | c:%d |", index));
                 this.sleepT[index] = true;
                 this.autoWake[index] = false;
                 this.semaphores[index].acquire();
+                this.log.write(String.format(" WakeUp | c:%d |", index));
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

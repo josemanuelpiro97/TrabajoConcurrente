@@ -5,6 +5,7 @@ import Monitor.Queue.QueueManagment;
 import Monitor.politics.Policy;
 import Monitor.rdp.InvariantException;
 import Monitor.rdp.RDP;
+import Monitor.rdp.ShotException;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -57,18 +58,32 @@ public class Monitor {
     public Monitor() throws FileNotFoundException {
         this.log = new Log();
 
+<<<<<<< HEAD
         //-------------------------------------------------------------------------
         //Gson constructor
         String path = "Parameterizer.json";
+=======
+    public Monitor() throws FileNotFoundException {
+        this.log = new Log();
+
+        ///////////////////////////////////////////////////////////////////////
+        //String path = "PetriTest.json";
+        String path = "TpFinal.json";
+>>>>>>> fa8737384d54f12078ab67189dece685aed730a3
         BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
         Gson gson = new Gson();
-        this.rdp = gson.fromJson(bufferedReader,RDP.class);
+        this.rdp = gson.fromJson(bufferedReader, RDP.class);
+
         //set initial time for initial sensitized transitions
         this.rdp.setTimeSens();
         this.rdp.setLog(log);
         //-------------------------------------------------------------------------
 
+<<<<<<< HEAD
         this.queueManagment = new QueueManagment(this.rdp.getNumTrans());
+=======
+        this.queueManagment = new QueueManagment(this.rdp.getNumTrans(),log);
+>>>>>>> fa8737384d54f12078ab67189dece685aed730a3
         this.policy = new Policy(this.rdp.getNumTrans());
         this.mutex = new Semaphore(1, true); //Semaforo de tipo FIFO
         this.controlFlag = true;
@@ -82,7 +97,7 @@ public class Monitor {
      * @// TODO: 2/7/20 revisar el log sobre quien se va a despertar, porque ahora no es lo mismo el hilo q la trans que dspara
      * @// TODO: 2/7/20 en la parte del tiempo que debe dormir si es una transicion de tiempo, no seria mas prolijo pregutar si es trantime?
      */
-    public void operate(int transN) throws InvariantException, InterruptedException {
+    public void operate(int transN) throws InvariantException, InterruptedException, ShotException{
         this.mutex.acquire();
         boolean autoWakeUp;
         long timeSleep;
@@ -110,10 +125,13 @@ public class Monitor {
                     //ask for who wake
                     int wakeThread = this.policy.whoWake(this.convertBtoI(ask));
 
+<<<<<<< HEAD
                     //log
                     String msj = "Se va a despertar el hilo que dispara:  " + wakeThread;
                     this.log.write2(msj);
 
+=======
+>>>>>>> fa8737384d54f12078ab67189dece685aed730a3
                     //wake
                     this.queueManagment.wakeN(wakeThread);
                     return;
@@ -132,19 +150,12 @@ public class Monitor {
 
                         this.mutex.release(); //Lo libero porq me voy a dormir por un tiempo
 
-                        //log
-                        String msj2 = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir: " + timeSleep
-                                + " [mili]" + "\n";
-                        this.log.write2(msj2);
-
                         autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
                     }
                 } else {
 
                     this.mutex.release(); //Me voy a dormir a las colas normales
-                    //log
-                    String msj = "El hilo N: " + Thread.currentThread().getName() + " se jue a nimir cola comun" + "\n";
-                    this.log.write2(msj);
+
                     autoWakeUp = this.queueManagment.sleepN(transN, 0, false);
                 }
 
@@ -153,9 +164,6 @@ public class Monitor {
                 }
                 this.controlFlag = true; //Cuando se adquiere, se setea en true para intentar disparar
 
-                //log
-                String msj2 = "Se desperto el hilo " + Thread.currentThread().getName();
-                this.log.write2(msj2);
 
             }
 

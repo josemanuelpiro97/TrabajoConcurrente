@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 //                                                      MAIN CLASS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Main {
+<<<<<<< HEAD
 
     public static void main(String[] arg) throws FileNotFoundException {
         final int FIRST_TRANSITION = 0;
@@ -31,6 +32,19 @@ public class Main {
         for (int i = FIRST_TRANSITION; i < 13; i++) {
             if (i == FIRST_TRANSITION) {
                 tasks[i] = new Task(new int[]{i}, monitor, NUMBER_OF_TASKS);
+=======
+    public static void main(String[] arg) throws FileNotFoundException {
+        //build Monitor
+        Monitor monitor = new Monitor();
+
+        //build and start, tasks and threads
+
+        Task[] tasks = new Task[15];
+        Thread[] threads = new Thread[15];
+        for (int i = 0; i < 13; i++) {
+            if (i == 0) {
+                tasks[i] = new Task(new int[]{i}, monitor, 10);
+>>>>>>> fa8737384d54f12078ab67189dece685aed730a3
                 threads[i] = new Thread(tasks[i]);
                 threads[i].start();
             } else if (i == 7) {
@@ -57,6 +71,26 @@ public class Main {
         tasks[14] = new Task(new int[]{16}, monitor, INFINITE_TASK_NUMBER);
         threads[14] = new Thread(tasks[14]);
         threads[14].start();
+
+
+        //build and start, tasks and threads
+        /*
+        Task[] tasks = new Task[4];
+        Thread[] threads = new Thread[4];
+        for (int i =0 ; i< 4 ; i++){
+            tasks[i] = new Task(new int[]{i},monitor,0);
+            threads[i] = new Thread(tasks[i]);
+            threads[i].start();
+        }
+
+        try{
+            Thread.sleep(5000);
+            monitor.closeLog();
+            System.exit(0);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+         */
     }
 }
 

@@ -40,6 +40,7 @@ public class Log {
 //                                                    PUBLIC METHODS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
     /**
      * @brief write a specific message in specific format in the log file
      * @param trans number of transition that correspond this text log
@@ -47,13 +48,17 @@ public class Log {
      * @TODO la hora debe ser tomada al momento de queres escribir, no al momento de escribir
      */
     public void write(int trans, String msj) {
+=======
+    public synchronized void write(String msj) {
+>>>>>>> fa8737384d54f12078ab67189dece685aed730a3
         String buffer;
         long time = java.lang.System.currentTimeMillis();
-        buffer = String.format("%014d | %-2s | %d |%s \n",time, Thread.currentThread().getName(), trans, msj);
-        System.out.print(java.lang.System.currentTimeMillis()+ " --> " + buffer);
-        try{
+        buffer = String.format("%014d | %3d | %-2s |%s\n", time, Thread.currentThread().getId(), Thread.currentThread().getName(), msj);
+        try {
             this.fw.write(buffer);
+            System.out.print(buffer);
             this.fw.flush();
+<<<<<<< HEAD
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -71,6 +76,9 @@ public class Log {
             this.fw.write(buffer2);
             this.fw.flush();
         }catch (IOException e){
+=======
+        } catch (IOException e) {
+>>>>>>> fa8737384d54f12078ab67189dece685aed730a3
             e.printStackTrace();
         }
     }

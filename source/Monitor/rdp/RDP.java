@@ -30,7 +30,7 @@ public class RDP {
     /**
      * Vector de stamptime para el sensibilizado de transiciones
      */
-    private long[] vectorTime; //stamptime
+    private long[] vectorTime;
     /**
      * Objeto log utilizado para almacenar el disparo de las trasiciones en un txt
      */
@@ -38,16 +38,16 @@ public class RDP {
 
 
     /**
-     * @brief constructor for json file
-     * @param matrixI Matriz de incidencia
-     * @param mark Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
+     * @param matrixI        Matriz de incidencia
+     * @param mark           Vector de marcado incial, indica 4 tokens iniciales en la plaza p0
      * @param matrixInvPlace Matriz de P invariantes
-     * @param vecInvPlaces Numero de invariante de plaza
-     * @param matrixTime Ventana de tiempo de las trasiciones
-     * @param vectorTime Vector donde se almacenan los timestamp
+     * @param vecInvPlaces   Numero de invariante de plaza
+     * @param matrixTime     Ventana de tiempo de las trasiciones
+     * @param vectorTime     Vector donde se almacenan los timestamp
      * @param info
+     * @brief constructor for json file
      */
-    public RDP(int[][] matrixI,int[] mark,int[][] matrixInvPlace, int[] vecInvPlaces, long[][] matrixTime, long[] vectorTime, String info){
+    public RDP(int[][] matrixI, int[] mark, int[][] matrixInvPlace, int[] vecInvPlaces, long[][] matrixTime, long[] vectorTime, String info) {
         this.matrixI = matrixI;
         this.mark = mark;
         this.matrixInvPlace = matrixInvPlace;
@@ -59,10 +59,10 @@ public class RDP {
 
 
     /**
-     * @brief setter of log
      * @param l log to set
+     * @brief setter of log
      */
-    public void setLog(Log l){
+    public void setLog(Log l) {
         this.log = l;
     }
 
@@ -72,20 +72,20 @@ public class RDP {
      * @brief this method tries to shoot the transition, in case that they can, the information will be updated and
      * return true, in case that they not, return false.
      */
-    public boolean ShotT(int trans) throws InvariantException {
+    public boolean ShotT(int trans) throws InvariantException, ShotException {
         // take time of shot
         long timestamp = java.lang.System.currentTimeMillis();
 
         // check if the transition exist
         if (trans < 0 || trans > this.matrixI[0].length) {
-            this.log.write(trans, "La transicion no existe");
-            return false;
+            throw new ShotException(trans);
         }
 
         //check if shooting is possible according to the time
         if (this.isTransTime(trans)) {
             if (!this.getSensi4temp(timestamp, trans)) {
-                this.log.write(trans, "Disparo no valido debido al tiempo");
+                //log
+                this.log.write(String.format(" Shot: | %d | %b | %s",trans, false, getStringMark()));
                 return false;
             }
         }
@@ -94,7 +94,7 @@ public class RDP {
         int[] nextState = nextMark(trans);// take possible next mark
         if (!validShot(nextState)) {
             //invalid shot
-            this.log.write(trans, "Disparo no valido debido a la marca");
+            this.log.write(String.format(" Shot: | %d | %b | %s",trans,false, getStringMark()));
             return false;
         }
 
@@ -122,17 +122,7 @@ public class RDP {
         this.CheckInvariantPlace();
 
         //log
-        this.log.write(trans, "Disparo exitoso ");
-        StringBuilder msj = new StringBuilder();
-        for (int value : this.mark) {
-            msj.append(String.format("%d", value)).append(" - ");
-        }
-        this.log.write2("Marca actual: " + msj.toString() + "\n");
-
-        //registro si se completo una tarea
-        if(trans == 9 || trans == 10 || trans == 11 || trans == 12 )
-            this.log.write2("SE COMPLETO UNA TAREA"+ "\n");
-
+        this.log.write(String.format(" Shot: | %d | %b | %s", trans, true, getStringMark()));
         return true;
     }
 
@@ -394,6 +384,18 @@ public class RDP {
         return isSensi;
     }
 
+    /**
+     * @return vector de marcado
+     * @brief Devuelve la marca actual como String
+     */
+    private String getStringMark() {
+        String buffer = "[";
+        for(int i : this.mark){
+            buffer += i +" ";
+        }
+        buffer += "]";
+        return buffer;
+    }
 }
 
 
