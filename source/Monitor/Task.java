@@ -35,7 +35,7 @@ public class Task implements Runnable {
 //                  Runnable method
 //****************************************************
     /**
-     * @// TODO: 2/7/20 revisar bien el tema de que el hilo duerma eso al salir, porque si bajamos los tiempos eso es mucho
+     * @TODO: 2/7/20 revisar bien el tema de que el hilo duerma eso al salir, porque si bajamos los tiempos eso es mucho
      */
     @Override
     public void run() {

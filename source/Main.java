@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String[] arg) throws FileNotFoundException {
-        final int LAST_TRANSITION = 16;
+        final int LAST_TRANSITION = 15;
 
         final int NUMBER_OF_THREADS = 15;
         final int NUMBER_OF_TASKS_TYPE = 15;
@@ -28,7 +28,7 @@ public class Main {
         final int VACIADO_1 = 15;
         final int VACIADO_2 = 16;
 
-        final int[] REGULAR_TRANSITIONS = {1,2,3,4,5,6,9,10,11,12};
+        final int[] REGULAR_TRANSITIONS = {1, 2, 3, 4, 5, 6, 9, 10, 11, 12};
 
         //****************************************************
         //build monitor

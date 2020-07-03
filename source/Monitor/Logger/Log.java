@@ -45,7 +45,7 @@ public class Log {
      */
     public synchronized void write(String msj, long time) {
         String buffer;
-        buffer = String.format("%014d | %3d | %-2s |%s\n", time, Thread.currentThread().getId(), Thread.currentThread().getName(), msj);
+        buffer = String.format("%014d | %1d | %-2s |%s\n", time, Thread.currentThread().getId(), Thread.currentThread().getName(), msj);
         try {
             this.fw.write(buffer);
             System.out.print(buffer);
