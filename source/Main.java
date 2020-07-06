@@ -13,7 +13,7 @@ public class Main {
 
         final int NUMBER_OF_THREADS = 15;
         final int NUMBER_OF_TASKS_TYPE = 15;
-        final int NUMBER_OF_TASKS = 10;
+        final int NUMBER_OF_TASKS = 1000;
         final int INFINITE_TASK_NUMBER = 0;
         //------------------------------------------------
         //specials transitions
