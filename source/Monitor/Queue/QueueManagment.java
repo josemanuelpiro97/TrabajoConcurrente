@@ -2,7 +2,10 @@ package Monitor.Queue;
 
 import Monitor.Logger.Log;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 public class QueueManagment {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,16 +61,16 @@ public class QueueManagment {
     public boolean sleepN(int index, long time, boolean transTime) {
         try {
             if (transTime) {
-                this.log.write(String.format(" AutoSleep | t:%d |", time),java.lang.System.currentTimeMillis());
+                this.log.write(String.format(" AutoSleep | t:%d |", time),java.lang.System.nanoTime());
                 this.autoWake[index] = true;
-                Thread.sleep(time);
-                this.log.write(String.format(" AutoWakeUp | %d |", index),java.lang.System.currentTimeMillis());
+                TimeUnit.NANOSECONDS.sleep(time);
+                this.log.write(String.format(" AutoWakeUp | %d |", index),java.lang.System.nanoTime());
             } else {
-                this.log.write(String.format(" AddQueue | c:%d |", index),java.lang.System.currentTimeMillis());
+                this.log.write(String.format(" AddQueue | c:%d |", index),java.lang.System.nanoTime());
                 this.sleepT[index] = true;
                 this.autoWake[index] = false;
                 this.semaphores[index].acquire();
-                this.log.write(String.format(" WakeUp | c:%d |", index),java.lang.System.currentTimeMillis());
+                this.log.write(String.format(" WakeUp | c:%d |", index),java.lang.System.nanoTime());
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

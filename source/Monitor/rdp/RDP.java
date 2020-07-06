@@ -75,7 +75,7 @@ public class RDP {
      */
     public boolean ShotT(int trans) throws InvariantException, ShotException {
         // take time of shot
-        long timestamp = java.lang.System.currentTimeMillis();
+        long timestamp = java.lang.System.nanoTime();
 
         // check if the transition exist
         if (trans < 0 || trans > this.matrixI[0].length) {
@@ -178,7 +178,7 @@ public class RDP {
      * @brief Update the sensitized time
      */
     public void setTimeSens() {
-        long time = java.lang.System.currentTimeMillis();
+        long time = java.lang.System.nanoTime();
         for (int i = 0; i < this.vectorTime.length; i++) {
             //if is sensitized and is time transition, update timeSencibilized
             if (this.validShot(this.nextMark(i)) && isTransTime(i)) {
@@ -193,13 +193,13 @@ public class RDP {
      * @brief method that calculate the time left to that the transition be in the window time
      */
     public long getWaitTime(int trans) {
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
 
         if (this.wasSensitized(trans) && this.isTransTime(trans)) {
             //time that was sensitized
             long timer = (time - this.vectorTime[trans]);
             if (timer < this.matrixTime[0][trans]) {
-                return (this.matrixTime[0][trans] - timer) + 2; // time necessary to get entry to the window
+                return (this.matrixTime[0][trans] - timer); // time necessary to get entry to the window
             } else {
                 return 0;
             }
@@ -272,9 +272,13 @@ public class RDP {
     private boolean getSensi4temp(long time, int trans) {
         boolean valid = false;
         if (isTransTime(trans) && wasSensitized(trans)) {
+            //check if alpha passed
             valid = this.matrixTime[0][trans] < (time - this.vectorTime[trans]);
             if (valid && this.matrixTime[1][trans] != 0) {
+                //check if alpha passed
                 valid = this.matrixTime[1][trans] > (time - this.vectorTime[trans]);
+                if(!valid)
+                    System.out.println("se paso la wea");
             }
         }
         return valid;

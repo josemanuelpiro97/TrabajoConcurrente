@@ -2,6 +2,8 @@ package Monitor;
 
 import Monitor.rdp.InvariantException;
 
+import java.util.concurrent.TimeUnit;
+
 public class Task implements Runnable {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                      VARIABLES
@@ -52,7 +54,7 @@ public class Task implements Runnable {
                     }
                 }
                 i++;
-                Thread.sleep(100);
+                TimeUnit.NANOSECONDS.sleep(100000000);
             } catch (Exception e) {
                 if (e instanceof InvariantException) {
                     ((InvariantException) e).printInfo();
