@@ -6,6 +6,7 @@ public class RDP {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                      VARIABLES
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //****************************************************
 //              Private Variables
 //****************************************************
@@ -123,7 +124,7 @@ public class RDP {
         this.CheckInvariantPlace();
 
         //log
-        this.log.write(String.format(" Shot: | %d | %b | %s", trans, true, getStringMark()),timestamp);
+        this.log.write(String.format(" Shot: | %d | %b | %s | %s |", trans, true, getStringMark(), getStringSensi()),timestamp);
         return true;
     }
 
@@ -364,6 +365,24 @@ public class RDP {
         }
         buffer += "]";
         return buffer;
+    }
+
+    /**
+     * @brief New string sensitized vector
+     * @return
+     */
+    private String getStringSensi(){
+        boolean[] nuevo = this.getSensi4Mark();
+        String sensi = "[";
+        for(boolean i: nuevo){
+            if(i){
+                sensi = sensi +"1 ";
+            }else{
+                sensi = sensi +"0 ";
+            }
+        }
+        sensi = sensi + "]";
+        return sensi;
     }
 }
 

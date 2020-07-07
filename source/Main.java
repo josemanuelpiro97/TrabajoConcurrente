@@ -15,6 +15,7 @@ public class Main {
         final int NUMBER_OF_TASKS_TYPE = 15;
         final int NUMBER_OF_TASKS = 1000;
         final int INFINITE_TASK_NUMBER = 0;
+
         //------------------------------------------------
         //specials transitions
         final int FIRST_TRANSITION = 0;
@@ -43,16 +44,19 @@ public class Main {
         tasks[FIRST_TRANSITION] = new Task(new int[]{FIRST_TRANSITION}, monitor, NUMBER_OF_TASKS);
         threads[FIRST_TRANSITION] = new Thread(tasks[FIRST_TRANSITION],"Actival-R");
         threads[FIRST_TRANSITION].start();
+
         //----------------------------------------------------------
         //Procesadar T2P1 y FinalizarT2P1
         tasks[1] = new Task(new int[]{TRANS_DOUBLE_1_2, TRANS_DOUBLE_1_1}, monitor, INFINITE_TASK_NUMBER);
         threads[1] = new Thread(tasks[1], "Proc-fin-21");
         threads[1].start();
+
         //----------------------------------------------------------
         //Procesar T2P2 y Finaliar T2P2
         tasks[2] = new Task(new int[]{TRANS_DOUBLE_2_2, TRANS_DOUBLE_2_1}, monitor, INFINITE_TASK_NUMBER);
         threads[2] = new Thread(tasks[2], "Proc-fin-22");
         threads[2].start();
+
         //----------------------------------------------------------
         //Vaciado 1
         tasks[3] = new Task(new int[]{VACIADO_1}, monitor, INFINITE_TASK_NUMBER);
