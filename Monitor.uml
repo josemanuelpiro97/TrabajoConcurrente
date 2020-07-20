@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Monitor.Task</OriginalElement>
+  <nodes>
+    <node x="285.0" y="0.0">java.lang.FunctionalInterface</node>
+    <node x="505.0" y="755.0">Monitor.rdp.ShotException</node>
+    <node x="0.0" y="629.0">Monitor.Monitor</node>
+    <node x="309.0" y="206.0">Monitor.Task</node>
+    <node x="702.0" y="629.0">Monitor.politics.Policy</node>
+    <node x="293.0" y="733.0">Monitor.rdp.InvariantException</node>
+    <node x="0.0" y="905.0">Monitor.Logger.Log</node>
+    <node x="0.0" y="0.0">Monitor.rdp.RDP</node>
+    <node x="329.0" y="102.0">java.lang.Runnable</node>
+    <node x="402.0" y="629.0">java.lang.Exception</node>
+    <node x="530.0" y="0.0">Monitor.Queue.QueueManagment</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Monitor.rdp.ShotException" target="java.lang.Exception">
+      <point x="0.0" y="-38.5" />
+      <point x="581.0" y="708.0" />
+      <point x="526.5" y="708.0" />
+      <point x="41.5" y="27.0" />
+    </edge>
+    <edge source="java.lang.Runnable" target="java.lang.FunctionalInterface">
+      <point x="0.0" y="-27.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="Monitor.rdp.InvariantException" target="java.lang.Exception">
+      <point x="0.0" y="-60.5" />
+      <point x="389.0" y="708.0" />
+      <point x="443.5" y="708.0" />
+      <point x="-41.5" y="27.0" />
+    </edge>
+    <edge source="Monitor.Task" target="java.lang.Runnable">
+      <point x="0.0" y="-60.5" />
+      <point x="0.0" y="27.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.2070021881838076" x="275.4561089418512" y="487.85264334667255" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
