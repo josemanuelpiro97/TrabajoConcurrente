@@ -104,7 +104,6 @@ public class Monitor {
                 for (int i = 0; i < ask.length; i++) {
                     if (ask[i]) {
                         cant++;
-                        System.out.println("esta disp " + i);
                     }
                 }
 
