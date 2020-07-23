@@ -87,7 +87,7 @@ public class RDP {
         if (this.isTransTime(trans)) {
             if (!this.getSensi4temp(timestamp, trans)) {
                 //log
-                this.log.write(String.format(" Shot: | %d | %b | %s",trans, false, getStringMark()),timestamp);
+                this.log.write(String.format(" Shot: | T%d | %b | %s",trans, false, getStringMark()),timestamp);
                 return false;
             }
         }
@@ -96,7 +96,7 @@ public class RDP {
         int[] nextState = nextMark(trans);// take possible next mark
         if (!validShot(nextState)) {
             //invalid shot
-            this.log.write(String.format(" Shot: | %d | %b | %s",trans,false, getStringMark()),timestamp);
+            this.log.write(String.format(" Shot: | T%d | %b | %s",trans,false, getStringMark()),timestamp);
             return false;
         }
 
@@ -124,7 +124,7 @@ public class RDP {
         this.CheckInvariantPlace();
 
         //log
-        this.log.write(String.format(" Shot: | %d | %b | %s | %s |", trans, true, getStringMark(), getStringSensi()),timestamp);
+        this.log.write(String.format(" Shot: | T%d | %b | %s | %s |", trans, true, getStringMark(), getStringSensi()),timestamp);
         return true;
     }
 
@@ -279,7 +279,7 @@ public class RDP {
                 //check if alpha passed
                 valid = this.matrixTime[1][trans] > (time - this.vectorTime[trans]);
                 if(!valid)
-                    System.out.println("se paso la wea");
+                    System.out.println("over time");
             }
         }
         return valid;
