@@ -50,7 +50,6 @@ public class Task implements Runnable {
                     r++;
                     if (r == this.secuencia.length) {
                         r = 0;
-                        System.exit(0);
                     }
                 }
                 i++;
