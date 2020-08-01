@@ -53,7 +53,7 @@ for i in range (0,len(shotListAnalized)):
 
 print()
 print()
-print("INVARIANT MATRIX --------------------------> ",matrix[0])
+print("INCIDENCE MATRIX --------------------------> ",matrix[0])
 for i in range (1,len(matrix)):
     print("                                             ",matrix[i])
 print()
@@ -68,7 +68,14 @@ for i in range(0,len(matrix)):
     for j in range (0,len(matrix[i])):
         result[i] += matrix[i][j] * shotVector[j]  
     result[i] += m_0[i]
-
+print()
+print()
+print('------------------------------------------------------------------------------------------------------------')
+print('------------------------------------------------------------------------------------------------------------')
+print('[After multiplying the matrix by the trigger vector,]')
+print('[and having added the result to the initial mark,]')
+print('[we are left with:]')
+print()
 print("RESULT ------------------------------------> ",result)
 print()
 print()
