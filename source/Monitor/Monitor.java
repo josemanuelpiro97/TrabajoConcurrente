@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.concurrent.Semaphore;
 
+
 /**
  * NOTA: El hilo 1 al despertarse no le da el tiempo para disparar debido a que es el unico q esta activo, le faltan 1 a 2 milisegundos para disparar.
  * Si le agrego 100 milisegundos al tiempo q tiene q dormir funciona correctamente, creo q cuando se agregen mas hilos y mayor complejidad de la red esto se corrige.
@@ -119,17 +120,9 @@ public class Monitor {
             } else {
                 timeSleep = this.rdp.getWaitTime(transN);
                 if (timeSleep != -1) {
-                    if (timeSleep == 0) {
-                        //Se sensibilizo
-                        this.controlFlag = true; //Lo seteo para q intente disparar de nuevo, no se libero el semaforo
+                    this.mutex.release(); //Lo libero porq me voy a dormir por un tiempo
+                    autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
 
-                        continue;
-                    } else {
-
-                        this.mutex.release(); //Lo libero porq me voy a dormir por un tiempo
-
-                        autoWakeUp = this.queueManagment.sleepN(transN, timeSleep, true);
-                    }
                 } else {
 
                     this.mutex.release(); //Me voy a dormir a las colas normales
