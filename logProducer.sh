@@ -36,7 +36,25 @@ echo '--' ;
 echo '---' ;
 echo '----> SHOT LIST ANALYZER' ;
 echo '' ;
+echo '======================================='
 set -o xtrace ;
 python3 Analizador.py > shotListAnalized.txt;
+set +o xtrace ;
+echo '======================================='
+echo '-' ;
+echo '--' ;
+echo '---' ;
+echo '----> result in shotListAnalized.txt' ;
 fi
-
+read -p "DO YOU WANT TEST THE RESULT? (y/n): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+echo '-' ;
+echo '--' ;
+echo '---' ;
+echo '----> TEST RESULT' ;
+echo '' ;
+echo '======================================='
+python3 TesterResult.py
+fi
