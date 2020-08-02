@@ -30,7 +30,7 @@ public class Log {
      * @brief class constructor
      */
     public Log() {
-        this.archivo = new File("log.txt");
+        this.archivo = new File("results/log.txt");
         try {
             this.fw = new FileWriter(archivo, true);
         } catch (IOException e) {
