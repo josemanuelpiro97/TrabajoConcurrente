@@ -16,7 +16,7 @@ cat ../results/log.txt | sort -k1 | grep true > ../results/trueShots.txt
 
 # last marck
 rows=$(cat ../results/trueShots.txt | grep -c -E '.')
-cat ../results/trueShots.txt | awk -F "|" '{print $7}' | sed -n ${rows}p > ../results/lastMarck.txt
+cat ../results/trueShots.txt | awk -F "|" '{print $7}' | sed -n ${rows}p > ../results/lastMark.txt
 
 
 set +o xtrace
@@ -74,6 +74,8 @@ echo '---' ;
 echo '----> STATISTICS' ;
 echo ''
 echo 'processor balance:'
+
+#processor
 echo "                  --> Processor-1 times: $(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T1 )') "
 echo "                  --> Processor-2 times: $(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T2 )') "
 

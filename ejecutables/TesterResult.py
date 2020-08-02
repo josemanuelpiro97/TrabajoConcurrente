@@ -21,8 +21,8 @@ def plusVal(index, vector):
     return vector 
 
 # get the needed files
-f = open ('../results/lastMarck.txt','r')
-lastMarck = f.read()
+f = open ('../results/lastMark.txt','r')
+lastMark = f.read()
 f.close() 
 
 f = open ('../results/shotListAnalized.txt','r')
@@ -80,7 +80,7 @@ print("RESULT ------------------------------------> ",result)
 print()
 print()
 
-print("FINAL MARK--------------------------------->",lastMarck)
+print("FINAL MARK--------------------------------->",lastMark)
 print()
 print('============================================================================================================')
 print('============================================================================================================')

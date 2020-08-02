@@ -34,6 +34,7 @@ def matcher(match):
 loop=1000
 for i in range(0,loop):
     text_log = re.sub(regex1,lambda m: matcher(match=m),text_log,count=1)
+
     
 print(text_log)
 print('=====================================================')
