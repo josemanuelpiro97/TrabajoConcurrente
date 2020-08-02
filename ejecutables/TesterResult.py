@@ -21,16 +21,16 @@ def plusVal(index, vector):
     return vector 
 
 # get the needed files
-f = open ('lastMarck.txt','r')
+f = open ('../results/lastMarck.txt','r')
 lastMarck = f.read()
 f.close() 
 
-f = open ('shotListAnalized.txt','r')
+f = open ('../results/shotListAnalized.txt','r')
 shotListAnalized = f.read()
 f.close() 
 
 #build invariant matrix
-with open('TpFinal.json') as json_file:
+with open('../TpFinal.json') as json_file:
     data = json.load(json_file)
     matrix = data['matrixI']
     m_0 = data['mark']

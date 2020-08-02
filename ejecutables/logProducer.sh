@@ -9,14 +9,14 @@ echo '========================================'
 echo '     ==============================     '
 echo '          ====================          '
 #set -o xtrace
-cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2}' | tr '\n' ',' > shotList.txt
+cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2}' | tr '\n' ',' > ../results/shotList.txt
 
 # shots true list
-cat log.txt | sort -k1 | grep true > trueShots.txt
+cat ../results/log.txt | sort -k1 | grep true > ../results/trueShots.txt
 
 # last marck
-rows=$(cat trueShots.txt | grep -c -E '.')
-cat trueShots.txt | awk -F "|" '{print $7}' | sed -n ${rows}p > lastMarck.txt
+rows=$(cat ../results/trueShots.txt | grep -c -E '.')
+cat ../results/trueShots.txt | awk -F "|" '{print $7}' | sed -n ${rows}p > ../results/lastMarck.txt
 
 
 set +o xtrace
@@ -40,13 +40,13 @@ echo '----> SHOT LIST ANALYZER' ;
 echo '' ;
 echo '======================================='
 set -o xtrace ;
-python3 Analizador.py > shotListAnalized.txt;
+python3 Analizador.py > ../results/shotListAnalized.txt;
 set +o xtrace ;
 echo '======================================='
 echo '-' ;
 echo '--' ;
 echo '---' ;
-echo '----> result in shotListAnalized.txt' ;
+echo '----> result in ../results/shotListAnalized.txt' ;
 fi
 
 # correct behavior tester
@@ -74,16 +74,16 @@ echo '---' ;
 echo '----> STATISTICS' ;
 echo ''
 echo 'processor balance:'
-echo "                  --> Processor-1 times: $(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T1 )') "
-echo "                  --> Processor-2 times: $(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T2 )') "
+echo "                  --> Processor-1 times: $(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T1 )') "
+echo "                  --> Processor-2 times: $(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T2 )') "
 
 echo 'memory balance:'
 #memory1
-t9=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T9 )')
-t11=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T11 )')
+t9=$(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T9 )')
+t11=$(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T11 )')
 echo "                --> memory-1 times: $((t9 + t11))"
 #memory2 
-t10=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T10 )')
-t12=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T12 )')
+t10=$(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T10 )')
+t12=$(cat ../results/log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T12 )')
 echo "                --> memory-2 times: $((t10 + t12))"
 fi
