@@ -27,6 +27,8 @@ echo '------------------> "shotList": a one-line text containing the shots fired
 echo '------------------> "trueShots": text log that contains only be true-shots log '
 echo ''
 echo ''
+
+#shot analizer
 read -p "DO YOU WANT ANALIZE THE SHOT LIST? (y/n): " -n 1 -r
 echo   
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -46,6 +48,8 @@ echo '--' ;
 echo '---' ;
 echo '----> result in shotListAnalized.txt' ;
 fi
+
+# correct behavior tester
 read -p "DO YOU WANT TEST THE RESULT? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -57,4 +61,29 @@ echo '----> TEST RESULT' ;
 echo '' ;
 echo '======================================='
 python3 TesterResult.py
+fi
+
+# statistics
+read -p "DO YOU WANT SEE THE STATISTICS? (y/n): " -n 1 -r
+echo   
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+echo '-' ;
+echo '--' ;
+echo '---' ;
+echo '----> STATISTICS' ;
+echo ''
+echo 'processor balance:'
+echo "                  --> Processor-1 times: $(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T1 )') "
+echo "                  --> Processor-2 times: $(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T2 )') "
+
+echo 'memory balance:'
+#memory1
+t9=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T9 )')
+t11=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T11 )')
+echo "                --> memory-1 times: $((t9 + t11))"
+#memory2 
+t10=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T10 )')
+t12=$(cat log.txt | sort -k1 | grep true | awk -F "|" '{print $5}' | grep -E -o 'T[0-9]{1,2} ' | grep -c -E '(T12 )')
+echo "                --> memory-2 times: $((t10 + t12))"
 fi
