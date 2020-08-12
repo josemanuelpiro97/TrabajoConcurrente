@@ -3,44 +3,42 @@
   <ID>JAVA</ID>
   <OriginalElement>Monitor.Task</OriginalElement>
   <nodes>
-    <node x="0.0" y="571.0">java.lang.FunctionalInterface</node>
-    <node x="433.0" y="136.0">Monitor.rdp.ShotException</node>
-    <node x="744.0" y="949.0">Monitor.Monitor</node>
-    <node x="193.0" y="1230.0">Monitor.Task</node>
-    <node x="679.0" y="514.5">Monitor.politics.Policy</node>
-    <node x="221.0" y="114.0">Monitor.rdp.InvariantException</node>
-    <node x="853.1666666666667" y="114.0">Monitor.Logger.Log</node>
-    <node x="419.0" y="305.0">Monitor.rdp.RDP</node>
-    <node x="44.0" y="1037.5">java.lang.Runnable</node>
-    <node x="332.34868421052636" y="0.0">java.lang.Exception</node>
-    <node x="921.0" y="481.0">Monitor.Queue.QueueManagment</node>
+    <node x="304.0" y="0.0">java.lang.FunctionalInterface</node>
+    <node x="323.0" y="809.0">Monitor.rdp.ShotException</node>
+    <node x="0.0" y="679.0">Monitor.Monitor</node>
+    <node x="323.0" y="210.0">Monitor.Task</node>
+    <node x="732.0" y="679.0">Monitor.politics.Policy</node>
+    <node x="0.0" y="973.0">Monitor.Logger.Log</node>
+    <node x="495.0" y="785.0">Monitor.rdp.InvariantException</node>
+    <node x="0.0" y="0.0">Monitor.rdp.RDP</node>
+    <node x="348.0" y="104.0">java.lang.Runnable</node>
+    <node x="406.0" y="679.0">java.lang.Exception</node>
+    <node x="549.0" y="0.0">Monitor.Queue.QueueManagment</node>
   </nodes>
   <notes />
   <edges>
     <edge source="Monitor.rdp.ShotException" target="java.lang.Exception">
-      <point x="38.0" y="-38.5" />
-      <point x="547.0" y="84.0" />
-      <point x="456.84868421052636" y="84.0" />
-      <point x="41.5" y="27.0" />
+      <point x="0.0" y="-40.5" />
+      <point x="399.0" y="760.0" />
+      <point x="450.5" y="760.0" />
+      <point x="-44.5" y="28.0" />
     </edge>
     <edge source="java.lang.Runnable" target="java.lang.FunctionalInterface">
-      <point x="0.0" y="-27.0" />
-      <point x="0.0" y="26.0" />
-    </edge>
-    <edge source="Monitor.rdp.InvariantException" target="java.lang.Exception">
-      <point x="-48.0" y="-60.5" />
-      <point x="269.0" y="84.0" />
-      <point x="373.84868421052636" y="84.0" />
-      <point x="-41.5" y="27.0" />
-    </edge>
-    <edge source="Monitor.Task" target="java.lang.Runnable">
-      <point x="-60.799999999999955" y="-60.5" />
-      <point x="208.20000000000005" y="1210.0" />
-      <point x="100.0" y="1210.0" />
+      <point x="0.0" y="-28.0" />
       <point x="0.0" y="27.0" />
     </edge>
+    <edge source="Monitor.rdp.InvariantException" target="java.lang.Exception">
+      <point x="0.0" y="-64.5" />
+      <point x="591.0" y="760.0" />
+      <point x="539.5" y="760.0" />
+      <point x="44.5" y="28.0" />
+    </edge>
+    <edge source="Monitor.Task" target="java.lang.Runnable">
+      <point x="0.0" y="-64.5" />
+      <point x="0.0" y="28.0" />
+    </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.4184191443074692" x="587.5" y="679.5" />
+  <settings layout="Hierarchic Group" zoom="0.6279912980420594" x="587.5" y="679.5" />
   <SelectedNodes>
     <node>Monitor.Monitor</node>
   </SelectedNodes>

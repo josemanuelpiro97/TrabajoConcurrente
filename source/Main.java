@@ -40,14 +40,11 @@ public class Main {
         Thread[] threads = new Thread[NUMBER_OF_THREADS];
         //****************************************************
 
-
         /*
         Task testTask = new Task(new int[]{},monitor,INFINITE_TASK_NUMBER);
         Thread testThread = new Thread(testTask);
         testThread.start();
         */
-
-
 
         //assign task and started
         tasks[FIRST_TRANSITION] = new Task(new int[]{FIRST_TRANSITION}, monitor, NUMBER_OF_TASKS);
